@@ -1,15 +1,33 @@
 import Link from 'next/link'
 import { serverEcommerceApi } from '@/lib/api-server'
 import { Product } from '@/lib/types'
-import { Clock, Sparkles, Filter, Search } from 'lucide-react'
+import { Leaf, Filter, Search } from 'lucide-react'
 import AdminActions from '@/components/products/AdminActions'
 import ProductCard from '@/components/products/ProductCard'
 
-interface ProductsPageProps {
-  searchParams: Promise<{ condition?: string; category?: string; search?: string; page?: string }>
+interface ApiCategory {
+  id: string
+  name: string
+  slug: string
+  description?: string
 }
 
-async function getProducts(params: { condition?: string; category?: string; search?: string; page?: string }) {
+interface ProductsPageProps {
+  searchParams: Promise<{ category?: string; search?: string; page?: string }>
+}
+
+async function getCategories(): Promise<ApiCategory[]> {
+  try {
+    const res = await serverEcommerceApi.categories.list()
+    const data = (res as { success?: boolean; data?: ApiCategory[] })?.data
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    return []
+  }
+}
+
+async function getProducts(params: { category?: string; search?: string; page?: string }) {
   try {
     const productsData = await serverEcommerceApi.products.list({
       is_active: true,
@@ -18,21 +36,7 @@ async function getProducts(params: { condition?: string; category?: string; sear
       page: params.page ? parseInt(params.page) : 1,
     })
 
-    let products = Array.isArray(productsData) ? productsData : (productsData as any)?.data || (productsData as any)?.results || []
-    
-    // Filter by condition if specified
-    if (params.condition === 'vintage') {
-      products = products.filter((p: Product) => {
-        const tags = Array.isArray(p.tags) ? p.tags.map(t => typeof t === 'string' ? t : t.name) : []
-        return tags.includes('vintage')
-      })
-    } else if (params.condition === 'new') {
-      products = products.filter((p: Product) => {
-        const tags = Array.isArray(p.tags) ? p.tags.map(t => typeof t === 'string' ? t : t.name) : []
-        return !tags.includes('vintage')
-      })
-    }
-
+    const products = Array.isArray(productsData) ? productsData : (productsData as any)?.data || (productsData as any)?.results || []
     return products
   } catch (error) {
     console.error('Error fetching products:', error)
@@ -42,9 +46,10 @@ async function getProducts(params: { condition?: string; category?: string; sear
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams
-  const products = await getProducts(params)
-  const isVintage = params.condition === 'vintage'
-  const isNew = params.condition === 'new'
+  const [products, categories] = await Promise.all([getProducts(params), getCategories()])
+  const selectedCategory = params.category
+    ? categories.find((c) => c.slug === params.category)
+    : null
 
   return (
     <div className="min-h-screen bg-forest-background">
@@ -52,56 +57,48 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <AdminActions />
 
       {/* Page Header */}
-      <section className={`py-12 ${isVintage ? 'bg-forest-primary' : isNew ? 'bg-forest-primary' : 'bg-gradient-to-r from-forest-primary to-forest-primary'} text-white`}>
+      <section className="py-12 bg-gradient-to-r from-forest-primary to-forest-primary text-white">
         <div className="container-wide">
           <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
-            {isVintage ? 'Vintage Treasures' : isNew ? 'New Arrivals' : 'All Products'}
+            {selectedCategory ? selectedCategory.name : 'All Products'}
           </h1>
           <p className="text-lg opacity-90">
-            {isVintage 
-              ? 'Unique second-hand finds with character and history'
-              : isNew 
-                ? 'Fresh finds and modern essentials'
-                : 'Browse our complete collection of vintage and new items'}
+            {selectedCategory
+              ? selectedCategory.description || `Browse our ${selectedCategory.name.toLowerCase()} collection`
+              : 'Browse our complete collection by category'}
           </p>
         </div>
       </section>
 
-      {/* Filters */}
+      {/* Category Filters */}
       <section className="py-6 bg-white border-b border-gray-200">
         <div className="container-wide">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
               <Filter className="w-5 h-5 text-text-muted" />
-              <span className="font-medium">Filter:</span>
+              <span className="font-medium">Filter by category:</span>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/products"
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  !params.condition ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                  !selectedCategory ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
                 }`}
               >
                 All
               </Link>
-              <Link
-                href="/products?condition=vintage"
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  isVintage ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
-                }`}
-              >
-                <Clock className="w-4 h-4 inline mr-1" />
-                Vintage
-              </Link>
-              <Link
-                href="/products?condition=new"
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  isNew ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
-                }`}
-              >
-                <Sparkles className="w-4 h-4 inline mr-1" />
-                New
-              </Link>
+              {categories.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={`/products?category=${encodeURIComponent(cat.slug)}`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    selectedCategory?.slug === cat.slug ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                  }`}
+                >
+                  <Leaf className="w-4 h-4 inline mr-1" />
+                  {cat.name}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
@@ -121,9 +118,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <Search className="w-16 h-16 mx-auto mb-4 text-text-muted opacity-30" />
               <h2 className="text-xl font-semibold text-text mb-2">No products found</h2>
               <p className="text-text-muted mb-6">
-                {params.search 
+                {params.search
                   ? `No results for "${params.search}"`
-                  : 'Check back soon for new items!'}
+                  : selectedCategory
+                    ? `No products in ${selectedCategory.name} yet. Check back soon!`
+                    : 'Check back soon for new items!'}
               </p>
               <Link href="/products" className="btn btn-primary">
                 View All Products
