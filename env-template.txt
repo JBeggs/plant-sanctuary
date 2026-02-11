@@ -1,0 +1,5 @@
+# Plant Sanctuary - Environment Variables
+# Copy to .env.local
+
+NEXT_PUBLIC_API_URL=https://3pillars.pythonanywhere.com/api
+NEXT_PUBLIC_COMPANY_SLUG=plant-sanctuary

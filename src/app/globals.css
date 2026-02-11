@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Plant Sanctuary - Nature/Green Theme */
+:root {
+  --color-forest-primary: #228B22;
+  --color-forest-primary-dark: #1B6B1B;
+  --color-forest-background: #F5F5DC;
+  --color-forest-accent: #8B4513;
+  --color-forest-accent-dark: #6B3410;
+  
+  --color-sanctuary-primary: #2E7D32;
+  --color-sanctuary-primary-dark: #1B5E20;
+  --color-sanctuary-background: #FAFAFA;
+  --color-sanctuary-accent: #A0522D;
+  --color-sanctuary-accent-dark: #6B3529;
+  
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-text-muted: #999999;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-feature-settings: "rlig" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.heading-xl {
+  @apply text-4xl md:text-5xl lg:text-6xl font-bold font-playfair text-text leading-tight;
+}
+
+.heading-lg {
+  @apply text-3xl md:text-4xl font-bold font-playfair text-text leading-tight;
+}
+
+.heading-md {
+  @apply text-2xl md:text-3xl font-bold font-playfair text-text leading-tight;
+}
+
+.heading-sm {
+  @apply text-xl md:text-2xl font-semibold text-text leading-snug;
+}
+
+.body-lg {
+  @apply text-lg leading-relaxed text-text-light;
+}
+
+.body-md {
+  @apply text-base leading-relaxed text-text-light;
+}
+
+.body-sm {
+  @apply text-sm leading-relaxed text-text-muted;
+}
+
+.container-wide {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.container-narrow {
+  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.card {
+  @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+.card-elevated {
+  @apply bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200;
+}
+
+.card-forest {
+  @apply bg-forest-background border border-forest-primary/20 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.btn-primary {
+  @apply bg-forest-primary text-white hover:bg-forest-primary-dark focus:ring-forest-primary;
+}
+
+.btn-secondary {
+  @apply bg-gray-100 text-text hover:bg-gray-200 focus:ring-gray-500;
+}
+
+.btn-accent {
+  @apply bg-forest-accent text-white hover:bg-forest-accent-dark focus:ring-forest-accent;
+}
+
+.nav-link {
+  @apply text-text hover:text-forest-primary font-medium transition-colors duration-200;
+}
+
+.nav-link-active {
+  @apply text-forest-primary font-semibold;
+}
+
+.product-card {
+  @apply card overflow-hidden;
+}
+
+.product-card-forest {
+  @apply card-forest overflow-hidden;
+}
+
+.product-image {
+  @apply w-full h-48 object-cover;
+}
+
+.product-image-lg {
+  @apply w-full h-64 md:h-80 object-cover;
+}
+
+.tag {
+  @apply inline-block px-2 py-1 text-xs font-medium rounded-full;
+}
+
+.tag-plant {
+  @apply bg-forest-primary/10 text-forest-primary;
+}
+
+.tag-featured {
+  @apply bg-forest-accent/10 text-forest-accent;
+}
+
+.price {
+  @apply text-lg font-bold text-forest-primary;
+}
+
+.price-original {
+  @apply text-sm text-text-muted line-through;
+}
+
+.section-header {
+  @apply flex items-center justify-between mb-6 pb-3 border-b-2 border-forest-primary;
+}
+
+.section-title {
+  @apply heading-md text-text;
+}
+
+.product-grid {
+  @apply grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+}
+
+.article-grid {
+  @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.article-content {
+  @apply prose prose-lg max-w-none;
+}
+
+.form-input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-primary focus:border-transparent;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-text mb-1;
+}
+
+.form-error {
+  @apply text-sm text-forest-accent mt-1;
+}
+
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-forest-primary;
+}
+
+.skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
+}
