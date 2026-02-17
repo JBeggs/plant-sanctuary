@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import { Suspense } from 'react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import { serverNewsApi } from '@/lib/api-server'
 import { AuthProvider } from '@/contexts/AuthContext'
@@ -95,6 +96,7 @@ export default function RootLayout({
             </CartProvider>
           </AuthProvider>
         </ToastProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
