@@ -1,5 +1,9 @@
 # Plant Sanctuary - Environment Variables
 # Copy to .env.local
 
-NEXT_PUBLIC_API_URL=https://3pillars.pythonanywhere.com/api
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
 NEXT_PUBLIC_COMPANY_SLUG=plant-sanctuary
+
+# Optional: SSH key passphrase for git scripts (new_branch, commit_push, merge_to_main)
+# Add to .env to avoid interactive passphrase prompts when pushing/pulling over SSH
+# SSH_KEY_PASSPHRASE=your_passphrase

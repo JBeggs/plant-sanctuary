@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { Menu, X, ShoppingCart, User } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useMounted } from '@/hooks/useMounted'
 
 interface MobileNavProps {
   menuItems: { title: string; href: string }[]
@@ -12,11 +13,7 @@ interface MobileNavProps {
 export function MobileNav({ menuItems }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuth()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const mounted = useMounted()
 
   return (
     <div className="md:hidden">

@@ -38,7 +38,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <div className="h-full">
+    <div className="h-full" data-cy="product-card">
       <div className="product-card-forest group relative h-full flex flex-col">
         <div className="relative overflow-hidden aspect-square">
           <Link

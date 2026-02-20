@@ -1,19 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ShoppingCart, User, LogOut } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCart } from '@/contexts/CartContext'
+import { useMounted } from '@/hooks/useMounted'
 
 export default function ClientHeader() {
   const { user, signOut, loading: authLoading } = useAuth()
-  const { itemCount, loading: cartLoading } = useCart()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const { itemCount } = useCart()
+  const mounted = useMounted()
 
   if (!mounted || authLoading) {
     return (
@@ -41,7 +37,7 @@ export default function ClientHeader() {
       )}
 
           {user ? (
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3" data-cy="header-user">
           <Link
             href="/profile"
             className="p-2 text-text hover:text-forest-primary transition-colors"

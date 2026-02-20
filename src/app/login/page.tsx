@@ -63,6 +63,7 @@ export default function LoginPage() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  data-cy="login-username"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="Enter your username"
                   required
@@ -88,6 +89,7 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  data-cy="login-password"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
@@ -110,6 +112,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
+              data-cy="login-submit"
               className="btn btn-primary w-full py-4 text-base font-bold shadow-lg shadow-forest-primary/20 hover:shadow-forest-primary/30 active:scale-[0.98] transition-all disabled:opacity-70 disabled:scale-100"
             >
               {isLoading ? (

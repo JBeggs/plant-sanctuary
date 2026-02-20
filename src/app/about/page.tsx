@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { serverNewsApi } from '@/lib/api-server'
 import { Clock, Sparkles, Heart, Leaf } from 'lucide-react'
 
@@ -120,9 +121,9 @@ export default async function AboutPage() {
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
             Discover our collection of vintage treasures and modern finds.
           </p>
-          <a href="/products" className="btn btn-gold text-lg px-8 py-3">
+          <Link href="/products" className="btn btn-gold text-lg px-8 py-3">
             Shop Now
-          </a>
+          </Link>
         </div>
       </section>
     </div>

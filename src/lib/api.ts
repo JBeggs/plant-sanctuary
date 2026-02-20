@@ -522,6 +522,9 @@ export const authApi = {
 
     if (response.tokens?.access) {
       apiClient.setToken(response.tokens.access)
+      if (response.tokens?.refresh) {
+        apiClient.setRefreshToken(response.tokens.refresh)
+      }
       if (response.company?.id) {
         apiClient.setCompanyId(response.company.id)
       }

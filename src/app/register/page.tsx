@@ -76,6 +76,7 @@ export default function RegisterPage() {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
+                  data-cy="register-full-name"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="John Doe"
                   required
@@ -96,6 +97,7 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  data-cy="register-email"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="you@example.com"
                   required
@@ -116,6 +118,7 @@ export default function RegisterPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  data-cy="register-password"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
@@ -141,6 +144,7 @@ export default function RegisterPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  data-cy="register-password-confirm"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
@@ -152,6 +156,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isLoading}
+                data-cy="register-submit"
                 className="btn btn-primary w-full py-4 text-base font-bold shadow-lg shadow-forest-primary/20 hover:shadow-forest-primary/30 active:scale-[0.98] transition-all disabled:opacity-70 disabled:scale-100"
               >
                 {isLoading ? (

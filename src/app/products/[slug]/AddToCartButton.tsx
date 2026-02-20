@@ -87,6 +87,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
         <button
           onClick={handleAddToCart}
           disabled={loading || isOutOfStock || !user}
+          data-cy="add-to-cart"
           className={`w-full py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 transition-colors ${
             !user
               ? 'bg-gray-200 text-text-muted cursor-not-allowed'
