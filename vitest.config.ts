@@ -10,6 +10,7 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     env: {
+      NODE_ENV: 'development',
       NEXT_PUBLIC_API_URL: 'http://localhost:8000/api',
       NEXT_PUBLIC_COMPANY_SLUG: 'plant-sanctuary',
     },
