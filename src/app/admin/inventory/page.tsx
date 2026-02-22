@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { ecommerceApi } from '@/lib/api'
 import { Product } from '@/lib/types'
-import { X, Edit2, Trash2, Loader2, Search, ExternalLink, Package, AlertCircle, Image as ImageIcon, ArrowLeft, Plus, Settings, Filter } from 'lucide-react'
+import { Edit2, Trash2, Loader2, Search, ExternalLink, AlertCircle, Image as ImageIcon, ArrowLeft, Plus, Settings, Filter } from 'lucide-react'
 import { useToast } from '@/contexts/ToastContext'
 import ProductForm from '@/components/products/ProductForm'
 import CategoryManager from '@/components/products/CategoryManager'

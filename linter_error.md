@@ -8,6 +8,7 @@
 | `src/components/layout/ClientHeader.tsx` | `cartLoading` unused | Removed from destructuring |
 | `src/components/layout/MobileNav.tsx` | `react-hooks/set-state-in-effect` | Replaced with `useMounted()` hook |
 | `src/app/about/page.tsx` | `@next/next/no-html-link-for-pages` | Changed `<a href="/products">` to `<Link href="/products">` |
+| `src/app/testing/page.tsx` | `react-hooks/set-state-in-effect` | Removed redundant `setCoverageLoading(true)` (already `true` on mount) |
 
 ---
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/contexts/ToastContext'
-import { Mail, Lock, User, ArrowRight } from 'lucide-react'
+import { Lock, User, ArrowRight } from 'lucide-react'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -28,7 +28,7 @@ export default function LoginPage() {
         showSuccess('Welcome back!')
         router.push('/')
       }
-    } catch (err) {
+    } catch {
       showError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -134,7 +134,7 @@ export default function LoginPage() {
 
           <div className="mt-10 pt-8 border-t border-gray-100 text-center">
             <p className="text-text-muted">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/register" className="text-forest-primary hover:text-forest-primary-dark font-bold transition-colors underline underline-offset-4">
                 Create one
               </Link>

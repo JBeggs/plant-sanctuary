@@ -79,7 +79,7 @@ export default async function AboutPage() {
                   <h3 className="font-semibold text-text mb-2">Personal Touch</h3>
                   <p className="text-text-muted text-sm">
                     We believe shopping should be personal. Our team is always here to help 
-                    you find exactly what you're looking for.
+                    you find exactly what you&apos;re looking for.
                   </p>
                 </div>
 
@@ -89,7 +89,7 @@ export default async function AboutPage() {
                   </div>
                   <h3 className="font-semibold text-text mb-2">Sustainable Shopping</h3>
                   <p className="text-text-muted text-sm">
-                    By giving pre-loved items a new home, we're reducing waste and 
+                    By giving pre-loved items a new home, we&apos;re reducing waste and 
                     promoting a more sustainable way to shop.
                   </p>
                 </div>
@@ -98,7 +98,7 @@ export default async function AboutPage() {
               <h2 className="text-2xl font-bold font-playfair text-text mt-12 mb-6">Our Promise</h2>
               
               <p className="text-text-light leading-relaxed mb-6">
-                When you shop with Past and Present, you're not just buying a product – you're 
+                When you shop with Past and Present, you&apos;re not just buying a product – you&apos;re 
                 becoming part of a community that values quality, sustainability, and the stories 
                 that objects carry with them.
               </p>
