@@ -53,6 +53,19 @@ npm run dev
 
 ---
 
+## Test Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run test` | Run unit tests (single run) |
+| `npm run test:watch` | Run unit tests in watch mode |
+| `npm run test:coverage` | Run with coverage report |
+| `npm run test:coverage:public` | Generate coverage and copy to Testing page |
+| `npm run test:e2e` | Run Cypress E2E (headless, CI-friendly) |
+| `npm run test:e2e:open` | Open Cypress UI for interactive E2E testing |
+
+---
+
 ## Unit Tests (Vitest)
 
 ```bash
@@ -138,9 +151,9 @@ This creates:
 3. Run Cypress:
    ```bash
    cd plant-sanctuary
-   npm run test:e2e
+   npm run test:e2e        # Headless run (CI-friendly)
+   npm run test:e2e:open   # Open Cypress UI for interactive debugging
    ```
-   Or open Cypress UI: `npm run test:e2e:open`
 
 ### E2E Environment Variables
 
