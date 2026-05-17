@@ -9,6 +9,7 @@ import { ToastProvider } from '@/contexts/ToastContext'
 import { CartProvider } from '@/contexts/CartContext'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { CookieConsentBanner } from '@/components/layout/CookieConsentBanner'
 
 export const dynamic = 'force-dynamic'
 
@@ -93,6 +94,7 @@ export default function RootLayout({
                   <Footer />
                 </Suspense>
               </div>
+              <CookieConsentBanner />
             </CartProvider>
           </AuthProvider>
         </ToastProvider>

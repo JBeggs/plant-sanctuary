@@ -13,7 +13,7 @@ interface ApiCategory {
 }
 
 interface ProductsPageProps {
-  searchParams: Promise<{ category?: string; search?: string; page?: string }>
+  searchParams: Promise<{ category?: string; search?: string; page?: string; tags?: string }>
 }
 
 async function getCategories(): Promise<ApiCategory[]> {
@@ -27,14 +27,16 @@ async function getCategories(): Promise<ApiCategory[]> {
   }
 }
 
-async function getProducts(params: { category?: string; search?: string; page?: string }) {
+async function getProducts(params: { category?: string; search?: string; page?: string; tags?: string }) {
   try {
-    const productsData = await serverEcommerceApi.products.list({
+    const apiParams: Record<string, string | number | boolean | undefined> = {
       is_active: true,
       category: params.category,
       search: params.search,
       page: params.page ? parseInt(params.page) : 1,
-    })
+    }
+    if (params.tags) apiParams.tags = params.tags
+    const productsData = await serverEcommerceApi.products.list(apiParams)
 
     const products = Array.isArray(productsData) ? productsData : (productsData as any)?.data || (productsData as any)?.results || []
     return products
@@ -44,12 +46,15 @@ async function getProducts(params: { category?: string; search?: string; page?: 
   }
 }
 
+const TAG_LABELS: Record<string, string> = { indoor: 'Indoor', succulents: 'Succulents' }
+
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams
   const [products, categories] = await Promise.all([getProducts(params), getCategories()])
   const selectedCategory = params.category
     ? categories.find((c) => c.slug === params.category)
     : null
+  const selectedTag = params.tags || null
 
   return (
     <div className="min-h-screen bg-forest-background">
@@ -60,32 +65,50 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <section className="py-12 bg-gradient-to-r from-forest-primary to-forest-primary text-white">
         <div className="container-wide">
           <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
-            {selectedCategory ? selectedCategory.name : 'All Products'}
+            {selectedTag ? TAG_LABELS[selectedTag] || selectedTag : selectedCategory ? selectedCategory.name : 'All Products'}
           </h1>
           <p className="text-lg opacity-90">
-            {selectedCategory
-              ? selectedCategory.description || `Browse our ${selectedCategory.name.toLowerCase()} collection`
-              : 'Browse our complete collection by category'}
+            {selectedTag
+              ? `Browse our ${TAG_LABELS[selectedTag] || selectedTag} collection`
+              : selectedCategory
+                ? selectedCategory.description || `Browse our ${selectedCategory.name.toLowerCase()} collection`
+                : 'Browse our complete collection by category'}
           </p>
         </div>
       </section>
 
-      {/* Category Filters */}
+      {/* Category & Tag Filters */}
       <section className="py-6 bg-white border-b border-gray-200">
         <div className="container-wide">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
               <Filter className="w-5 h-5 text-text-muted" />
-              <span className="font-medium">Filter by category:</span>
+              <span className="font-medium">Filter:</span>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/products"
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  !selectedCategory ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                  !selectedCategory && !selectedTag ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
                 }`}
               >
                 All
+              </Link>
+              <Link
+                href="/products?tags=indoor"
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedTag === 'indoor' ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                }`}
+              >
+                Indoor
+              </Link>
+              <Link
+                href="/products?tags=succulents"
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedTag === 'succulents' ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                }`}
+              >
+                Succulents
               </Link>
               {categories.map((cat) => (
                 <Link
@@ -120,9 +143,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <p className="text-text-muted mb-6">
                 {params.search
                   ? `No results for "${params.search}"`
-                  : selectedCategory
-                    ? `No products in ${selectedCategory.name} yet. Check back soon!`
-                    : 'Check back soon for new items!'}
+                  : selectedTag
+                    ? `No ${TAG_LABELS[selectedTag] || selectedTag} products yet. Check back soon!`
+                    : selectedCategory
+                      ? `No products in ${selectedCategory.name} yet. Check back soon!`
+                      : 'Check back soon for new items!'}
               </p>
               <Link href="/products" className="btn btn-primary">
                 View All Products

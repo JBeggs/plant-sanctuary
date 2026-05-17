@@ -33,10 +33,17 @@ export default function RegisterPage() {
     setIsLoading(true)
 
     try {
-      const { error } = await signUp(email, password, fullName)
-      
+      const { error, verificationRequired, email: verificationEmail } = await signUp(
+        email,
+        password,
+        fullName,
+      )
+
       if (error) {
         showError(error)
+      } else if (verificationRequired && verificationEmail) {
+        showSuccess('Check your email to verify your account before signing in.')
+        router.push(`/auth/verify-email?email=${encodeURIComponent(verificationEmail.trim())}`)
       } else {
         showSuccess('Account created successfully!')
         router.push('/')

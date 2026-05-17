@@ -128,12 +128,22 @@ body {
   @apply inline-block px-2 py-1 text-xs font-medium rounded-full;
 }
 
-.tag-plant {
-  @apply bg-forest-primary/10 text-forest-primary;
+/* Opaque chips on product photos (no /10 tints) */
+.tag-plant,
+.tag-vintage {
+  @apply bg-white text-forest-primary border border-forest-primary;
+}
+
+.tag-new {
+  @apply bg-white text-forest-primary border border-forest-primary;
+}
+
+.tag-sale {
+  @apply bg-white text-forest-accent border border-forest-accent;
 }
 
 .tag-featured {
-  @apply bg-forest-accent/10 text-forest-accent;
+  @apply bg-white text-forest-accent border border-forest-accent;
 }
 
 .price {

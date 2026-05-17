@@ -15,15 +15,45 @@ export default function LoginPage() {
   const { showError, showSuccess } = useToast()
   const router = useRouter()
 
+  const [needsVerifyHint, setNeedsVerifyHint] = useState(false)
+  const [needsPhoneVerifyHint, setNeedsPhoneVerifyHint] = useState(false)
+  const [resendBusy, setResendBusy] = useState(false)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setNeedsVerifyHint(false)
+    setNeedsPhoneVerifyHint(false)
 
     try {
-      const { error } = await signIn(username, password)
-      
+      const {
+        error,
+        code,
+        verificationEmailSent,
+        verificationEmailCooldown,
+      } = await signIn(username, password)
+
       if (error) {
-        showError(error)
+        if (code === 'email_not_verified') {
+          let detail =
+            'Your account is not verified yet. Check your email (including spam) for a verification link.'
+          if (verificationEmailSent) {
+            detail += ' We sent another verification email.'
+          } else if (verificationEmailCooldown) {
+            detail += ' Try “Resend email” below when eligible.'
+          }
+          showError(detail)
+          setNeedsVerifyHint(true)
+        } else if (code === 'phone_not_verified') {
+          const detail =
+            typeof error === 'string' && error.trim()
+              ? error
+              : 'Your cellphone number must be verified before you can sign in. Open your profile to complete verification.'
+          showError(detail)
+          setNeedsPhoneVerifyHint(true)
+        } else {
+          showError(typeof error === 'string' ? error : 'Login failed')
+        }
       } else {
         showSuccess('Welcome back!')
         router.push('/')
@@ -131,6 +161,57 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          {needsVerifyHint ? (
+            <div className="mt-6 p-4 rounded-lg bg-amber-50 border border-amber-200 text-sm space-y-3">
+              <p className="text-text font-medium">
+                Email verification required. Check your inbox and spam folder for our link before signing in.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href={`/auth/verify-email?email=${encodeURIComponent(username.trim())}`}
+                  className="inline-flex items-center justify-center rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-text hover:bg-gray-50"
+                >
+                  Verification help
+                </Link>
+                <button
+                  type="button"
+                  disabled={resendBusy}
+                  onClick={async () => {
+                    try {
+                      setResendBusy(true)
+                      const { authApi } = await import('@/lib/api')
+                      await authApi.resendVerificationEmail(username.trim())
+                      showSuccess(
+                        'If your account exists and still needs verification, we sent another email.',
+                      )
+                    } catch {
+                      showError('Could not resend. Try again shortly.')
+                    } finally {
+                      setResendBusy(false)
+                    }
+                  }}
+                  className="rounded-md bg-gradient-to-r from-forest-primary to-forest-primary-dark px-3 py-2 text-sm font-semibold text-white shadow disabled:opacity-50"
+                >
+                  {resendBusy ? 'Sending…' : 'Resend email'}
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          {needsPhoneVerifyHint ? (
+            <div className="mt-6 p-4 rounded-lg bg-amber-50 border border-amber-200 text-sm space-y-3">
+              <p className="text-text font-medium">
+                Phone verification is required. Complete verification from your profile, then sign in again.
+              </p>
+              <Link
+                href="/profile"
+                className="inline-flex items-center justify-center rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-text hover:bg-gray-50"
+              >
+                Go to profile
+              </Link>
+            </div>
+          ) : null}
 
           <div className="mt-10 pt-8 border-t border-gray-100 text-center">
             <p className="text-text-muted">

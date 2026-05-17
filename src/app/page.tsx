@@ -1,21 +1,52 @@
 import Link from 'next/link'
 import { serverEcommerceApi, serverNewsApi } from '@/lib/api-server'
 import { Product, Article } from '@/lib/types'
-import { ArrowRight, Leaf, BookOpen } from 'lucide-react'
+import { ArrowRight, Leaf, BookOpen, Home, Sprout } from 'lucide-react'
 
 async function getHomeData() {
   try {
-    const [productsData, articlesData] = await Promise.all([
+    /**
+     * One bad fetch should NOT zero every shelf.
+     * `Promise.allSettled` lets each shelf fail independently; the rest still render.
+     */
+    const settled = await Promise.allSettled([
       serverEcommerceApi.products.list({ is_active: true }),
+      serverEcommerceApi.products.list({ is_active: true, tags: 'indoor', exclude_featured: true, page_size: 20 }),
+      serverEcommerceApi.products.list({ is_active: true, tags: 'succulents', exclude_featured: true, page_size: 20 }),
       serverNewsApi.articles.list({ status: 'published' }),
     ])
 
+    const SHELF_LABELS = ['products', 'indoor', 'succulents', 'articles'] as const
+    const failures = settled
+      .map((s, i) =>
+        s.status === 'rejected'
+          ? { shelf: SHELF_LABELS[i], reason: (s as PromiseRejectedResult).reason }
+          : null,
+      )
+      .filter(Boolean)
+    if (failures.length) {
+      console.error('[home] some SSR fetches failed; rendering remaining shelves', failures)
+    }
+
+    const valueOrEmpty = (i: number): unknown =>
+      settled[i].status === 'fulfilled'
+        ? (settled[i] as PromiseFulfilledResult<unknown>).value
+        : []
+
+    const [productsData, indoorData, succulentsData, articlesData] = settled.map((_, i) =>
+      valueOrEmpty(i),
+    )
+
     const products = Array.isArray(productsData) ? productsData : (productsData as any)?.data || (productsData as any)?.results || []
+    const indoorProducts = Array.isArray(indoorData) ? indoorData : (indoorData as any)?.data || (indoorData as any)?.results || []
+    const succulentsProducts = Array.isArray(succulentsData) ? succulentsData : (succulentsData as any)?.data || (succulentsData as any)?.results || []
     const articles = Array.isArray(articlesData) ? articlesData : (articlesData as any)?.data || (articlesData as any)?.results || []
 
     return {
       featuredProducts: products.filter((p: Product) => p.featured).slice(0, 8),
       allProducts: products.slice(0, 8),
+      indoorProducts: indoorProducts.filter((p: Product) => p.status !== 'archived').slice(0, 6),
+      succulentsProducts: succulentsProducts.filter((p: Product) => p.status !== 'archived').slice(0, 6),
       latestArticles: articles.slice(0, 3),
     }
   } catch (error) {
@@ -23,13 +54,15 @@ async function getHomeData() {
     return {
       featuredProducts: [],
       allProducts: [],
+      indoorProducts: [],
+      succulentsProducts: [],
       latestArticles: [],
     }
   }
 }
 
 export default async function HomePage() {
-  const { featuredProducts, allProducts, latestArticles } = await getHomeData()
+  const { featuredProducts, allProducts, indoorProducts, succulentsProducts, latestArticles } = await getHomeData()
   const displayProducts = featuredProducts.length > 0 ? featuredProducts : allProducts
 
   return (
@@ -49,6 +82,14 @@ export default async function HomePage() {
               <Link href="/products" className="btn bg-forest-accent text-white hover:bg-forest-accent-dark">
                 <Leaf className="w-5 h-5 mr-2" />
                 Shop Plants
+              </Link>
+              <Link href="/products?tags=indoor" className="btn bg-white text-forest-primary hover:bg-gray-100">
+                <Home className="w-5 h-5 mr-2" />
+                Indoor
+              </Link>
+              <Link href="/products?tags=succulents" className="btn bg-white text-forest-primary hover:bg-gray-100">
+                <Sprout className="w-5 h-5 mr-2" />
+                Succulents
               </Link>
               <Link href="/articles" className="btn bg-white text-forest-primary hover:bg-gray-100">
                 <BookOpen className="w-5 h-5 mr-2" />
@@ -102,6 +143,98 @@ export default async function HomePage() {
                       {product.compare_at_price && Number(product.compare_at_price) > Number(product.price) && (
                         <span className="price-original">R{Number(product.compare_at_price).toFixed(2)}</span>
                       )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Indoor Plants Section */}
+      {indoorProducts.length > 0 && (
+        <section className="py-16 bg-forest-background">
+          <div className="container-wide">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">Indoor Plants</h2>
+                <p className="text-text-muted mt-1">Perfect for your home or office</p>
+              </div>
+              <Link href="/products?tags=indoor" className="btn btn-primary">
+                View All <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </div>
+            <div className="product-grid">
+              {indoorProducts.map((product: any) => (
+                <Link key={product.id} href={`/products/${product.slug}`} className="group relative flex flex-col product-card-forest">
+                  <div className="relative overflow-hidden aspect-square">
+                    {product.featured_image?.file_url || product.image ? (
+                      <img
+                        src={product.featured_image?.file_url || product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-forest-background flex items-center justify-center">
+                        <Home className="w-12 h-12 text-forest-primary/30" />
+                      </div>
+                    )}
+                    <span className="tag tag-featured absolute top-2 left-2">Indoor</span>
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col">
+                    <h3 className="font-semibold text-text group-hover:text-forest-primary transition-colors line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-text-muted mt-1 line-clamp-2 flex-1">{product.description}</p>
+                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-gray-100">
+                      <span className="price">R{Number(product.price).toFixed(2)}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Succulents Section */}
+      {succulentsProducts.length > 0 && (
+        <section className="py-16 bg-white">
+          <div className="container-wide">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">Succulents</h2>
+                <p className="text-text-muted mt-1">Low-maintenance and drought-tolerant</p>
+              </div>
+              <Link href="/products?tags=succulents" className="btn btn-secondary">
+                View All <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </div>
+            <div className="product-grid">
+              {succulentsProducts.map((product: any) => (
+                <Link key={product.id} href={`/products/${product.slug}`} className="group relative flex flex-col product-card-forest">
+                  <div className="relative overflow-hidden aspect-square">
+                    {product.featured_image?.file_url || product.image ? (
+                      <img
+                        src={product.featured_image?.file_url || product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-forest-background flex items-center justify-center">
+                        <Sprout className="w-12 h-12 text-forest-primary/30" />
+                      </div>
+                    )}
+                    <span className="tag absolute top-2 left-2 bg-forest-accent/90 text-white">Succulents</span>
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col">
+                    <h3 className="font-semibold text-text group-hover:text-forest-primary transition-colors line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-text-muted mt-1 line-clamp-2 flex-1">{product.description}</p>
+                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-gray-100">
+                      <span className="price">R{Number(product.price).toFixed(2)}</span>
                     </div>
                   </div>
                 </Link>
