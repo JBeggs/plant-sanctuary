@@ -72,7 +72,7 @@ export function CookieConsentBanner() {
       aria-label="Cookie notice"
       className="fixed inset-x-0 bottom-0 z-40 px-4 pb-4 sm:px-6"
     >
-      <div className="mx-auto max-w-5xl rounded-2xl border border-gray-200 bg-white/95 p-4 text-gray-900 shadow-2xl backdrop-blur sm:flex sm:items-center sm:justify-between sm:gap-6">
+      <div className="mx-auto max-w-5xl rounded-2xl border border-border bg-surface/95 p-4 text-text shadow-2xl backdrop-blur sm:flex sm:items-center sm:justify-between sm:gap-6">
         <div className="space-y-2">
           <h2 className="text-base font-semibold">Cookies on this site</h2>
           <p className="text-sm leading-6 text-gray-700">

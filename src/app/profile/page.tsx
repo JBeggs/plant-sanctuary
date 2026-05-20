@@ -138,7 +138,7 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen bg-forest-background flex items-center justify-center p-4">
         <div className="card p-8 text-center max-w-md w-full space-y-6">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 bg-surface-raised rounded-full flex items-center justify-center mx-auto">
             <User className="w-8 h-8 text-text-muted" />
           </div>
           <h1 className="text-2xl font-bold font-playfair">Please Sign In</h1>
@@ -154,7 +154,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-forest-background py-12">
       <div className="container-wide">
-        <div className="flex flex-wrap gap-2 mb-8 border-b border-gray-200 pb-4">
+        <div className="flex flex-wrap gap-2 mb-8 border-b border-border pb-4">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -164,7 +164,7 @@ export default function ProfilePage() {
                 'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-colors ' +
                 (activeTab === tab.id
                   ? 'bg-forest-primary text-white'
-                  : 'bg-white text-text-muted hover:text-forest-primary border border-gray-200')
+                  : 'bg-surface text-text-muted hover:text-forest-primary border border-border')
               }
             >
               {tab.icon}
@@ -289,7 +289,7 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="text-center py-12 space-y-4">
-                  <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto text-gray-200">
+                  <div className="w-16 h-16 bg-surface-raised rounded-full flex items-center justify-center mx-auto text-text-muted">
                     <Package className="w-8 h-8" />
                   </div>
                   <p className="text-text-muted">You haven't placed any orders yet.</p>

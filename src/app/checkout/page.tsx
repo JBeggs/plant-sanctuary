@@ -272,7 +272,7 @@ export default function CheckoutPage() {
                         id="shipping_country"
                         type="text"
                         value={formData.shipping_country}
-                        className="form-input bg-gray-50"
+                        className="form-input bg-surface-raised"
                         disabled
                       />
                     </div>
@@ -360,7 +360,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Trust Badges */}
-                <div className="mt-6 pt-6 border-t border-gray-200 grid grid-cols-2 gap-4 text-center text-xs text-text-muted">
+                <div className="mt-6 pt-6 border-t border-border grid grid-cols-2 gap-4 text-center text-xs text-text-muted">
                   <div>
                     <Shield className="w-5 h-5 mx-auto mb-1" />
                     <span>Secure Checkout</span>

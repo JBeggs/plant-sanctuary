@@ -9,7 +9,7 @@ import { useToast } from '@/contexts/ToastContext'
 
 function MissingTokenFallback() {
   return (
-    <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-xl border border-forest-primary/10 text-center">
+    <div className="max-w-md w-full bg-surface p-8 rounded-xl shadow-xl border border-forest-primary/10 text-center">
       <p className="text-text-muted text-sm mb-4">Could not complete sign-in from this link.</p>
       <Link href="/login" className="btn btn-primary w-full py-3">
         Go to login
@@ -46,7 +46,7 @@ function MagicConsume({ token }: { token: string }) {
   }, [token, router, showError, showSuccess])
 
   return (
-    <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-xl border border-forest-primary/10 text-center">
+    <div className="max-w-md w-full bg-surface p-8 rounded-xl shadow-xl border border-forest-primary/10 text-center">
       {phase === 'loading' ? (
         <div className="flex flex-col items-center gap-3 py-10">
           <Loader2 className="w-10 h-10 animate-spin text-forest-primary" />
@@ -76,7 +76,7 @@ function MagicLinkInner() {
 export default function MagicLinkPage() {
   return (
     <div className="min-h-screen bg-forest-background flex items-center justify-center py-12 px-4">
-      <Suspense fallback={<div className="bg-white p-8 rounded-xl text-text-muted">Loading…</div>}>
+      <Suspense fallback={<div className="bg-surface p-8 rounded-xl text-text-muted">Loading…</div>}>
         <MagicLinkInner />
       </Suspense>
     </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
 import { Inter, Playfair_Display } from 'next/font/google'
 import { Suspense } from 'react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -7,6 +8,13 @@ import { serverNewsApi } from '@/lib/api-server'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ToastProvider } from '@/contexts/ToastContext'
 import { CartProvider } from '@/contexts/CartContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
+import {
+  DEFAULT_THEME,
+  THEMES,
+  THEME_BOOTSTRAP_SCRIPT,
+  type Theme,
+} from '@/contexts/theme-config'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CookieConsentBanner } from '@/components/layout/CookieConsentBanner'
@@ -68,36 +76,52 @@ async function generateMetadata(): Promise<Metadata> {
 
 export const metadata = await generateMetadata()
 
-export default function RootLayout({
+function readThemeCookie(value: string | undefined): Theme {
+  if (value && (THEMES as readonly string[]).includes(value)) return value as Theme
+  return DEFAULT_THEME
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const cookieStore = await cookies()
+  const initialTheme = readThemeCookie(cookieStore.get('site_theme')?.value)
+
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} data-scroll-behavior="smooth">
+    <html
+      lang="en"
+      data-theme={initialTheme}
+      className={`${inter.variable} ${playfair.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
       </head>
-      <body className={`${inter.className} antialiased bg-forest-background`}>
-        <ToastProvider>
-          <AuthProvider>
-            <CartProvider>
-              <div className="min-h-screen flex flex-col">
-                <Suspense fallback={<div className="h-20 bg-white border-b border-gray-200" />}>
-                  <Header />
-                </Suspense>
-                <main className="flex-1">
-                  {children}
-                </main>
-                <Suspense fallback={<div className="h-64 bg-forest-primary" />}>
-                  <Footer />
-                </Suspense>
-              </div>
-              <CookieConsentBanner />
-            </CartProvider>
-          </AuthProvider>
-        </ToastProvider>
+      <body className={`${inter.className} antialiased bg-forest-background text-text`}>
+        <ThemeProvider initialTheme={initialTheme}>
+          <ToastProvider>
+            <AuthProvider>
+              <CartProvider>
+                <div className="min-h-screen flex flex-col">
+                  <Suspense fallback={<div className="h-20 bg-surface border-b border-border" />}>
+                    <Header />
+                  </Suspense>
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                  <Suspense fallback={<div className="h-64 bg-forest-primary" />}>
+                    <Footer />
+                  </Suspense>
+                </div>
+                <CookieConsentBanner />
+              </CartProvider>
+            </AuthProvider>
+          </ToastProvider>
+        </ThemeProvider>
         <SpeedInsights />
       </body>
     </html>

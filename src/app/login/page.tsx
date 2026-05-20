@@ -92,7 +92,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-forest-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 animate-in fade-in duration-500">
-        <div className="bg-white p-8 rounded-xl shadow-xl border border-forest-primary/10">
+        <div className="bg-surface p-8 rounded-xl shadow-xl border border-forest-primary/10">
           <div className="text-center mb-10">
             <Link href="/" className="inline-block group transition-transform hover:scale-105 duration-300">
               <div className="w-20 h-20 bg-gradient-to-br from-forest-primary to-forest-primary-dark rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-forest-primary/20 group-hover:shadow-forest-primary/30 transition-shadow">
@@ -128,7 +128,7 @@ export default function LoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   data-cy="login-username"
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="Enter your username"
                   required
                 />
@@ -154,7 +154,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   data-cy="login-password"
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
                 />
@@ -204,7 +204,7 @@ export default function LoginPage() {
               <div className="flex flex-wrap gap-2">
                 <Link
                   href={`/auth/verify-email?email=${encodeURIComponent(username.trim())}`}
-                  className="inline-flex items-center justify-center rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-text hover:bg-gray-50"
+                  className="inline-flex items-center justify-center rounded-md border border-border px-3 py-2 text-sm font-medium text-text hover:bg-surface-raised"
                 >
                   Verification help
                 </Link>
@@ -240,7 +240,7 @@ export default function LoginPage() {
               </p>
               <Link
                 href="/profile"
-                className="inline-flex items-center justify-center rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-text hover:bg-gray-50"
+                className="inline-flex items-center justify-center rounded-md border border-border px-3 py-2 text-sm font-medium text-text hover:bg-surface-raised"
               >
                 Go to profile
               </Link>

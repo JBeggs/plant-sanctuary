@@ -44,7 +44,7 @@ export function MobileNav({ menuItems }: MobileNavProps) {
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50">
+        <div className="absolute top-full left-0 right-0 bg-surface border-b border-border shadow-lg z-50">
           <nav className="container-wide py-4">
             <div className="flex flex-col space-y-4">
               <Link
@@ -65,7 +65,7 @@ export function MobileNav({ menuItems }: MobileNavProps) {
                 </Link>
               ))}
               {mounted && isAdmin ? (
-                <div className="border-t border-gray-200 pt-4 space-y-2">
+                <div className="border-t border-border pt-4 space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">Admin</p>
                   <Link href="/admin/inventory" className="nav-link flex items-center gap-2 py-2" onClick={() => setIsOpen(false)}>
                     <Package className="w-5 h-5 shrink-0" />
@@ -81,13 +81,13 @@ export function MobileNav({ menuItems }: MobileNavProps) {
                   </Link>
                 </div>
               ) : null}
-              <div className="border-t border-gray-200 pt-4">
+              <div className="border-t border-border pt-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">
                   Account
                 </p>
                 {mounted && user ? (
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-200">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised border border-border">
                       <ProfileNavAvatar profile={profile} user={user} size="md" />
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-semibold text-text truncate">{displayName}</p>

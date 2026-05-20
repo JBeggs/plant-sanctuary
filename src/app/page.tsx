@@ -75,7 +75,7 @@ export default async function HomePage() {
 
       {/* Featured Plants Section */}
       {displayProducts.length > 0 && (
-        <section className="py-16 bg-white">
+        <section className="py-16 bg-surface">
           <div className="container-wide">
             <div className="section-header">
               <div>
@@ -173,7 +173,7 @@ export default async function HomePage() {
 
       {/* Succulents Section */}
       {succulentsProducts.length > 0 && (
-        <section className="py-16 bg-white">
+        <section className="py-16 bg-surface">
           <div className="container-wide">
             <div className="section-header">
               <div>
@@ -277,7 +277,7 @@ export default async function HomePage() {
           <h2 className="text-3xl md:text-4xl font-bold font-playfair mb-4">
             Join Our Community
           </h2>
-          <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-on-brand-muted mb-8 max-w-2xl mx-auto">
             Be the first to know about new arrivals, care tips, and exclusive offers.
           </p>
           <Link href="/register" className="btn bg-forest-accent hover:bg-forest-accent-dark text-lg px-8 py-3">

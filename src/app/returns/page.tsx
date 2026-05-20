@@ -9,7 +9,7 @@ export default function ReturnsPage() {
           <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
             Returns & Exchanges
           </h1>
-          <p className="text-lg text-green-100">
+          <p className="text-lg text-on-brand-muted">
             Our hassle-free return policy
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function ReturnsPage() {
           </div>
 
           {/* Contact */}
-          <div className="mt-8 p-6 bg-white rounded-lg border border-gray-200">
+          <div className="mt-8 p-6 bg-surface rounded-lg border border-border">
             <h3 className="font-semibold text-text mb-2">Need help with a return?</h3>
             <p className="text-text-muted mb-4">
               Our team is here to make the process easy.

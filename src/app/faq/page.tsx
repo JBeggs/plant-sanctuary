@@ -44,7 +44,7 @@ export default function FAQPage() {
           <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
             Frequently Asked Questions
           </h1>
-          <p className="text-lg text-green-100">
+          <p className="text-lg text-on-brand-muted">
             Find answers to common questions about shopping with us
           </p>
         </div>
@@ -69,7 +69,7 @@ export default function FAQPage() {
           </div>
 
           {/* Contact CTA */}
-          <div className="mt-12 text-center p-8 bg-white rounded-lg border border-gray-200">
+          <div className="mt-12 text-center p-8 bg-surface rounded-lg border border-border">
             <h2 className="text-xl font-semibold font-playfair text-text mb-2">
               Still have questions?
             </h2>

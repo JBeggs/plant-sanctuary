@@ -2,23 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Plant Sanctuary - Nature/Green Theme */
-:root {
-  --color-forest-primary: #228B22;
-  --color-forest-primary-dark: #1B6B1B;
-  --color-forest-background: #F5F5DC;
-  --color-forest-accent: #8B4513;
-  --color-forest-accent-dark: #6B3410;
-  
-  --color-sanctuary-primary: #2E7D32;
-  --color-sanctuary-primary-dark: #1B5E20;
-  --color-sanctuary-background: #FAFAFA;
-  --color-sanctuary-accent: #A0522D;
-  --color-sanctuary-accent-dark: #6B3529;
-  
-  --color-text: #333333;
-  --color-text-light: #666666;
-  --color-text-muted: #999999;
+/* ============================================================
+   Theme tokens — RGB triplets for Tailwind opacity modifiers
+   ============================================================ */
+
+:root,
+:root[data-theme="classic"] {
+  --color-forest-primary: 34 139 34;
+  --color-forest-primary-dark: 27 107 27;
+  --color-forest-background: 245 245 220;
+  --color-forest-accent: 139 69 19;
+  --color-forest-accent-dark: 107 52 16;
+
+  --color-sanctuary-primary: 46 125 50;
+  --color-sanctuary-primary-dark: 27 94 32;
+  --color-sanctuary-background: 250 250 250;
+  --color-sanctuary-accent: 160 82 45;
+  --color-sanctuary-accent-dark: 107 53 41;
+
+  --color-text: 51 51 51;
+  --color-text-light: 102 102 102;
+  --color-text-muted: 153 153 153;
+  --color-text-inverse: 255 255 255;
+
+  --color-on-brand: 220 252 231;
+  --color-on-brand-muted: 187 247 208;
+
+  --color-surface: 255 255 255;
+  --color-surface-raised: 243 244 246;
+  --color-border: 229 231 235;
+
+  --hero-overlay-gradient: linear-gradient(
+    to bottom,
+    rgb(27 107 27 / 0.55) 0%,
+    rgb(34 139 34 / 0.75) 50%,
+    rgb(27 107 27 / 0.9) 100%
+  );
+}
+
+:root[data-theme="dark-green"] {
+  --color-forest-primary: 88 200 120;
+  --color-forest-primary-dark: 58 168 92;
+  --color-forest-background: 15 35 22;
+  --color-forest-accent: 196 148 88;
+  --color-forest-accent-dark: 160 118 64;
+
+  --color-sanctuary-primary: 72 175 105;
+  --color-sanctuary-primary-dark: 52 140 82;
+  --color-sanctuary-background: 15 35 22;
+  --color-sanctuary-accent: 196 148 88;
+  --color-sanctuary-accent-dark: 160 118 64;
+
+  --color-text: 230 240 235;
+  --color-text-light: 200 215 205;
+  --color-text-muted: 160 185 170;
+  --color-text-inverse: 15 35 22;
+
+  --color-on-brand: 220 252 231;
+  --color-on-brand-muted: 187 247 208;
+
+  --color-surface: 22 48 32;
+  --color-surface-raised: 30 58 40;
+  --color-border: 45 75 55;
+
+  --hero-overlay-gradient: linear-gradient(
+    to bottom,
+    rgb(8 22 14 / 0.75) 0%,
+    rgb(22 48 32 / 0.85) 50%,
+    rgb(8 22 14 / 0.95) 100%
+  );
+}
+
+:root[data-theme="dark"] {
+  --color-forest-primary: 72 175 105;
+  --color-forest-primary-dark: 52 140 82;
+  --color-forest-background: 17 17 17;
+  --color-forest-accent: 196 148 88;
+  --color-forest-accent-dark: 160 118 64;
+
+  --color-sanctuary-primary: 72 175 105;
+  --color-sanctuary-primary-dark: 52 140 82;
+  --color-sanctuary-background: 17 17 17;
+  --color-sanctuary-accent: 196 148 88;
+  --color-sanctuary-accent-dark: 160 118 64;
+
+  --color-text: 245 245 245;
+  --color-text-light: 200 200 200;
+  --color-text-muted: 160 160 160;
+  --color-text-inverse: 17 17 17;
+
+  --color-on-brand: 230 245 235;
+  --color-on-brand-muted: 180 200 190;
+
+  --color-surface: 28 28 28;
+  --color-surface-raised: 38 38 38;
+  --color-border: 55 55 55;
+
+  --hero-overlay-gradient: linear-gradient(
+    to bottom,
+    rgb(10 10 10 / 0.8) 0%,
+    rgb(28 28 28 / 0.88) 50%,
+    rgb(10 10 10 / 0.95) 100%
+  );
 }
 
 * {
@@ -73,11 +158,11 @@ body {
 }
 
 .card {
-  @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
+  @apply bg-surface border border-border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
 }
 
 .card-elevated {
-  @apply bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200;
+  @apply bg-surface border border-border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200;
 }
 
 .card-forest {
@@ -89,15 +174,15 @@ body {
 }
 
 .btn-primary {
-  @apply bg-forest-primary text-white hover:bg-forest-primary-dark focus:ring-forest-primary;
+  @apply bg-forest-primary text-text-inverse hover:bg-forest-primary-dark focus:ring-forest-primary;
 }
 
 .btn-secondary {
-  @apply bg-gray-100 text-text hover:bg-gray-200 focus:ring-gray-500;
+  @apply bg-surface-raised text-text hover:bg-border focus:ring-forest-primary;
 }
 
 .btn-accent {
-  @apply bg-forest-accent text-white hover:bg-forest-accent-dark focus:ring-forest-accent;
+  @apply bg-forest-accent text-text-inverse hover:bg-forest-accent-dark focus:ring-forest-accent;
 }
 
 .nav-link {
@@ -128,7 +213,7 @@ body {
   @apply inline-block px-2 py-1 text-xs font-medium rounded-full;
 }
 
-/* Opaque chips on product photos (no /10 tints) */
+/* Opaque chips on product photos */
 .tag-plant,
 .tag-vintage {
   @apply bg-white text-forest-primary border border-forest-primary;
@@ -171,19 +256,19 @@ body {
 }
 
 .article-content {
-  @apply prose prose-lg max-w-none;
+  @apply prose prose-lg max-w-none prose-headings:text-text prose-p:text-text-light;
 }
 
 .form-input {
-  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-primary focus:border-transparent;
+  @apply w-full px-4 py-2 bg-surface border border-border rounded-md text-text focus:outline-none focus:ring-2 focus:ring-forest-primary focus:border-transparent;
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
-  -webkit-text-fill-color: var(--color-text) !important;
+  -webkit-box-shadow: 0 0 0 30px rgb(var(--color-surface)) inset !important;
+  -webkit-text-fill-color: rgb(var(--color-text)) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -200,14 +285,9 @@ input:-webkit-autofill:active {
 }
 
 .skeleton {
-  @apply bg-gray-200 animate-pulse rounded;
+  @apply bg-surface-raised animate-pulse rounded;
 }
 
 .hero-gradient-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba(27, 107, 27, 0.55) 0%,
-    rgba(34, 139, 34, 0.75) 50%,
-    rgba(27, 107, 27, 0.9) 100%
-  );
+  background: var(--hero-overlay-gradient);
 }

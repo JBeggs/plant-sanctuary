@@ -65,7 +65,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <PageHero pageSlug="products" fallback={null} />
 
       {/* Category & Tag Filters */}
-      <section className="py-6 bg-white border-b border-gray-200">
+      <section className="py-6 bg-surface border-b border-border">
         <div className="container-wide">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
@@ -76,7 +76,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <Link
                 href="/products"
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  !selectedCategory && !selectedTag ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                  !selectedCategory && !selectedTag ? 'bg-forest-primary text-text-inverse' : 'bg-surface-raised text-text hover:bg-border'
                 }`}
               >
                 All
@@ -84,7 +84,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <Link
                 href="/products?tags=indoor"
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedTag === 'indoor' ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                  selectedTag === 'indoor' ? 'bg-forest-primary text-text-inverse' : 'bg-surface-raised text-text hover:bg-border'
                 }`}
               >
                 Indoor
@@ -92,7 +92,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <Link
                 href="/products?tags=succulents"
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedTag === 'succulents' ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                  selectedTag === 'succulents' ? 'bg-forest-primary text-text-inverse' : 'bg-surface-raised text-text hover:bg-border'
                 }`}
               >
                 Succulents
@@ -102,7 +102,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   key={cat.id}
                   href={`/products?category=${encodeURIComponent(cat.slug)}`}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory?.slug === cat.slug ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
+                    selectedCategory?.slug === cat.slug ? 'bg-forest-primary text-text-inverse' : 'bg-surface-raised text-text hover:bg-border'
                   }`}
                 >
                   <Leaf className="w-4 h-4 inline mr-1" />

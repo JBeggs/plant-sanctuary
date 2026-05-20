@@ -39,7 +39,7 @@ export default function PageHeroView({
         <div className="absolute inset-0 hero-gradient-overlay" aria-hidden />
       </div>
 
-      <div className="relative container-wide py-24 md:py-32 text-white w-full">
+      <div className="relative container-wide py-24 md:py-32 text-on-brand w-full">
         <div className="max-w-2xl">
           {heading && (
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-playfair mb-4">{heading}</h1>
@@ -47,22 +47,22 @@ export default function PageHeroView({
 
           {isHome && company ? (
             hero.subtitle?.trim() ? (
-              <p className="text-lg md:text-xl text-green-100 mb-8 max-w-xl">{hero.subtitle}</p>
+              <p className="text-lg md:text-xl text-on-brand-muted mb-8 max-w-xl">{hero.subtitle}</p>
             ) : (
               <>
                 {company.tagline && (
-                  <p className="text-base md:text-lg uppercase tracking-[0.25em] text-green-100 mb-6">
+                  <p className="text-base md:text-lg uppercase tracking-[0.25em] text-on-brand-muted mb-6">
                     {company.tagline}
                   </p>
                 )}
                 {company.description && (
-                  <p className="text-lg md:text-xl text-green-100 mb-8 max-w-xl">{company.description}</p>
+                  <p className="text-lg md:text-xl text-on-brand-muted mb-8 max-w-xl">{company.description}</p>
                 )}
               </>
             )
           ) : (
             hero.subtitle?.trim() && (
-              <p className="text-lg md:text-xl text-green-100 mb-8 max-w-xl">{hero.subtitle}</p>
+              <p className="text-lg md:text-xl text-on-brand-muted mb-8 max-w-xl">{hero.subtitle}</p>
             )
           )}
 
@@ -73,7 +73,7 @@ export default function PageHeroView({
                   {hero.ctaLabel}
                 </Link>
               )}
-              <Link href="/products" className="btn bg-forest-accent text-white hover:bg-forest-accent-dark text-base px-6 py-3">
+              <Link href="/products" className="btn bg-forest-accent text-text-inverse hover:bg-forest-accent-dark text-base px-6 py-3">
                 <Leaf className="w-5 h-5 mr-2" />
                 Shop Plants
               </Link>
@@ -94,7 +94,7 @@ export default function PageHeroView({
 
           {!isHome && hasCta && (
             <div className="flex flex-wrap gap-4">
-              <Link href={hero.ctaHref!} className="btn bg-forest-accent text-white hover:bg-forest-accent-dark text-base px-6 py-3">
+              <Link href={hero.ctaHref!} className="btn bg-forest-accent text-text-inverse hover:bg-forest-accent-dark text-base px-6 py-3">
                 {hero.ctaLabel}
               </Link>
             </div>

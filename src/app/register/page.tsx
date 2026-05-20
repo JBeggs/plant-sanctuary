@@ -124,7 +124,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-forest-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 animate-in fade-in duration-500">
-        <div className="bg-white p-8 rounded-xl shadow-xl border border-forest-primary/10">
+        <div className="bg-surface p-8 rounded-xl shadow-xl border border-forest-primary/10">
           <div className="text-center mb-10">
             <Link href="/" className="inline-block group transition-transform hover:scale-105 duration-300">
               <div className="w-20 h-20 bg-gradient-to-br from-forest-primary to-forest-accent rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-forest-primary/20 group-hover:shadow-forest-primary/30 transition-shadow">
@@ -197,7 +197,7 @@ export default function RegisterPage() {
                   autoComplete="given-name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="John"
                   required
                 />
@@ -219,7 +219,7 @@ export default function RegisterPage() {
                   autoComplete="family-name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="Doe"
                   required
                 />
@@ -241,7 +241,7 @@ export default function RegisterPage() {
                   autoComplete="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="+27 82 123 4567"
                   required
                 />
@@ -268,7 +268,7 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="you@example.com"
                   required
                 />
@@ -289,7 +289,7 @@ export default function RegisterPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
                   minLength={8}
@@ -315,7 +315,7 @@ export default function RegisterPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  className="w-full pl-12 pr-4 py-3 bg-surface-raised border border-border rounded-md hover:border-forest-primary/50 transition-all focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
                 />

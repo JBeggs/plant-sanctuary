@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { MobileNav } from './MobileNav'
 import ClientHeader from './ClientHeader'
 import { BrandLogo } from './BrandLogo'
+import ThemeToggle from '@/components/theme/ThemeToggle'
 import { getCompany } from '@/lib/company'
 
 const menuItems = [
@@ -15,12 +16,12 @@ export async function Header() {
   const company = await getCompany()
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="bg-forest-primary text-white">
+    <header className="bg-surface border-b border-border sticky top-0 z-50">
+      <div className="bg-forest-primary text-on-brand">
         <div className="container-wide">
-          <div className="flex items-center justify-between py-2 text-sm">
-            <div className="flex items-center space-x-4">
-              <span className="font-playfair italic">
+          <div className="flex items-center justify-between py-2 text-sm gap-4">
+            <div className="flex items-center space-x-4 min-w-0">
+              <span className="font-playfair italic truncate">
                 {new Date().toLocaleDateString('en-US', {
                   weekday: 'long',
                   year: 'numeric',
@@ -29,9 +30,10 @@ export async function Header() {
                 })}
               </span>
             </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/contact" className="hover:text-forest-accent transition-colors">Contact</Link>
-              <Link href="/faq" className="hover:text-forest-accent transition-colors">FAQ</Link>
+            <div className="flex items-center space-x-3 sm:space-x-4 shrink-0">
+              <ThemeToggle variant="icon" label="Store theme" />
+              <Link href="/contact" className="hover:text-forest-accent transition-colors hidden sm:inline">Contact</Link>
+              <Link href="/faq" className="hover:text-forest-accent transition-colors hidden sm:inline">FAQ</Link>
             </div>
           </div>
         </div>

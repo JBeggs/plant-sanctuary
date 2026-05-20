@@ -126,7 +126,7 @@ export default function PageHeroEditor({
   }
 
   return (
-    <section className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+    <section className="bg-surface border border-border rounded-xl p-6 shadow-sm">
       <header className="flex items-start justify-between gap-4 mb-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
@@ -165,7 +165,7 @@ export default function PageHeroEditor({
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4">
-        <div className="aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden border border-dashed border-gray-200 flex items-center justify-center">
+        <div className="aspect-[4/3] bg-surface-raised rounded-lg overflow-hidden border border-dashed border-border flex items-center justify-center">
           {currentImageUrl ? (
             <img src={currentImageUrl} alt="" className="w-full h-full object-cover" />
           ) : (

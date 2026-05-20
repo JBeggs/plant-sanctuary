@@ -59,7 +59,7 @@ function VerifyEmailInner() {
   }
 
   return (
-    <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-xl border border-forest-primary/10 text-center space-y-4">
+    <div className="max-w-md w-full bg-surface p-8 rounded-xl shadow-xl border border-forest-primary/10 text-center space-y-4">
       {!token ? (
         <>
           <h1 className="text-xl font-bold font-playfair">Check your email</h1>
@@ -119,7 +119,7 @@ export default function VerifyEmailPage() {
   return (
     <div className="min-h-screen bg-forest-background flex items-center justify-center py-12 px-4">
       <Suspense
-        fallback={<div className="bg-white p-8 rounded-xl text-text-muted shadow-xl border border-forest-primary/10">Loading…</div>}
+        fallback={<div className="bg-surface p-8 rounded-xl text-text-muted shadow-xl border border-forest-primary/10">Loading…</div>}
       >
         <VerifyEmailInner />
       </Suspense>

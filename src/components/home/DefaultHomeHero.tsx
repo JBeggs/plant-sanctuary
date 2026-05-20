@@ -22,21 +22,21 @@ export default function DefaultHomeHero({ company }: { company: Company }) {
         <div className="absolute inset-0 bg-gradient-to-br from-forest-primary/90 to-forest-primary-dark/95" aria-hidden />
       </div>
 
-      <div className="relative container-wide py-20 md:py-28 text-white w-full">
+      <div className="relative container-wide py-20 md:py-28 text-on-brand w-full">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-playfair mb-6">
             {company.name}
           </h1>
           {company.tagline ? (
-            <p className="text-base md:text-lg uppercase tracking-[0.2em] text-green-100 mb-4">
+            <p className="text-base md:text-lg uppercase tracking-[0.2em] text-on-brand-muted mb-4">
               {company.tagline}
             </p>
           ) : null}
-          <p className="text-xl text-green-100 mb-8">
+          <p className="text-xl text-on-brand-muted mb-8">
             {company.description}
           </p>
           <div className="flex flex-wrap gap-4">
-            <Link href="/products" className="btn bg-forest-accent text-white hover:bg-forest-accent-dark">
+            <Link href="/products" className="btn bg-forest-accent text-text-inverse hover:bg-forest-accent-dark">
               <Leaf className="w-5 h-5 mr-2" />
               Shop Plants
             </Link>

@@ -112,7 +112,7 @@ export default function CartPage() {
               {items.map((item: CartItem) => (
                 <div key={item.id} className="card p-4 flex gap-4" data-cy="cart-item">
                   {/* Product Image */}
-                  <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                  <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-raised">
                     {(item as any).product_image ? (
                       <img
                         src={(item as any).product_image}
@@ -155,7 +155,7 @@ export default function CartPage() {
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           disabled={updating === item.id || item.quantity <= 1}
-                          className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 disabled:opacity-50"
+                          className="w-8 h-8 rounded-full bg-surface-raised flex items-center justify-center hover:bg-border disabled:opacity-50"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
@@ -163,7 +163,7 @@ export default function CartPage() {
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           disabled={updating === item.id}
-                          className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 disabled:opacity-50"
+                          className="w-8 h-8 rounded-full bg-surface-raised flex items-center justify-center hover:bg-border disabled:opacity-50"
                         >
                           <Plus className="w-4 h-4" />
                         </button>

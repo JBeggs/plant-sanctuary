@@ -328,7 +328,7 @@ export default function ProfileOwnerTabs({
             <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Company Logo</label>
             <div className="flex items-center gap-4 flex-wrap">
               {companyForm.logo ? (
-                <img src={companyForm.logo} alt="Logo" className="w-16 h-16 rounded object-contain border border-gray-200" />
+                <img src={companyForm.logo} alt="Logo" className="w-16 h-16 rounded object-contain border border-border" />
               ) : (
                 <div className="w-16 h-16 rounded bg-forest-primary/10 flex items-center justify-center">
                   <ImageIcon className="w-8 h-8 text-forest-primary/40" />

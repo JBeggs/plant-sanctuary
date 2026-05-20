@@ -46,7 +46,7 @@ function ResetPasswordForm() {
 
   if (!uid || !token) {
     return (
-      <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-xl border border-forest-primary/10">
+      <div className="max-w-md w-full bg-surface p-8 rounded-xl shadow-xl border border-forest-primary/10">
         <p className="text-text-muted">This page needs a reset link from your email.</p>
         <Link href="/forgot-password" className="btn btn-secondary mt-4 inline-flex">
           Request a new link
@@ -56,7 +56,7 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-xl border border-forest-primary/10">
+    <div className="max-w-md w-full bg-surface p-8 rounded-xl shadow-xl border border-forest-primary/10">
       <Link href="/login" className="inline-flex items-center gap-2 text-sm text-forest-primary mb-6">
         <ArrowLeft className="w-4 h-4" />
         Sign in
@@ -74,7 +74,7 @@ function ResetPasswordForm() {
               minLength={8}
               value={p1}
               onChange={(e) => setP1(e.target.value)}
-              className="w-full pl-11 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-md"
+              className="w-full pl-11 pr-3 py-3 bg-surface-raised border border-border rounded-md"
             />
           </div>
         </div>
@@ -89,7 +89,7 @@ function ResetPasswordForm() {
               minLength={8}
               value={p2}
               onChange={(e) => setP2(e.target.value)}
-              className="w-full pl-11 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-md"
+              className="w-full pl-11 pr-3 py-3 bg-surface-raised border border-border rounded-md"
             />
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen bg-forest-background flex items-center justify-center py-12 px-4">
       <Suspense
         fallback={
-          <div className="bg-white p-8 rounded-xl border border-gray-100 text-text-muted">Loading…</div>
+          <div className="bg-surface p-8 rounded-xl border border-border text-text-muted">Loading…</div>
         }
       >
         <ResetPasswordForm />

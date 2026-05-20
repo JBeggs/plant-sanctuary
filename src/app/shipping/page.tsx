@@ -9,7 +9,7 @@ export default function ShippingPage() {
           <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
             Shipping Information
           </h1>
-          <p className="text-lg text-green-100">
+          <p className="text-lg text-on-brand-muted">
             Everything you need to know about delivery
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function ShippingPage() {
           </div>
 
           {/* Contact */}
-          <div className="mt-12 p-6 bg-white rounded-lg border border-gray-200">
+          <div className="mt-12 p-6 bg-surface rounded-lg border border-border">
             <h3 className="font-semibold text-text mb-2">Questions about shipping?</h3>
             <p className="text-text-muted mb-4">
               Contact our team for assistance with delivery inquiries.
