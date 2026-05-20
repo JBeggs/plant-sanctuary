@@ -37,17 +37,23 @@ function drfErrorToMessage(value: unknown, fallback: string): string {
 
 /** Use in catch blocks so API/network errors always produce a visible toast message. */
 export function getApiErrorMessage(error: unknown, fallback = 'Something went wrong'): string {
+  if (typeof error === 'string' && error.trim()) return error.trim()
   if (error instanceof Error && error.message) return error.message
   if (error && typeof error === 'object') {
-    const o = error as { message?: unknown; details?: unknown }
+    const o = error as { message?: unknown; details?: Record<string, unknown> }
     const fromMsg = drfErrorToMessage(o.message, '')
     if (fromMsg) return fromMsg
+    const errPayload =
+      o.details && typeof o.details === 'object' && 'error' in o.details ? o.details.error : undefined
+    if (errPayload !== undefined && errPayload !== null) {
+      const fromValidation = drfErrorToMessage(errPayload, '')
+      if (fromValidation) return fromValidation
+    }
     if (o.details && typeof o.details === 'object') {
       const fromDetails = drfErrorToMessage(o.details, '')
       if (fromDetails) return fromDetails
     }
   }
-  if (typeof error === 'string' && error.trim()) return error
   return fallback
 }
 
@@ -137,7 +143,7 @@ export class ApiClient {
     if (typeof window !== 'undefined') {
       try {
         return localStorage.getItem('refresh_token') || this.getCookie('refresh_token')
-      } catch (e) {
+      } catch {
         return this.getCookie('refresh_token')
       }
     }
@@ -197,7 +203,7 @@ export class ApiClient {
     if (typeof window !== 'undefined') {
       try {
         return localStorage.getItem('auth_token') || this.getCookie('auth_token')
-      } catch (e) {
+      } catch {
         return this.getCookie('auth_token')
       }
     }
@@ -231,7 +237,7 @@ export class ApiClient {
     if (typeof window !== 'undefined') {
       try {
         return localStorage.getItem('company_id') || this.getCookie('company_id')
-      } catch (e) {
+      } catch {
         return this.getCookie('company_id')
       }
     }
@@ -679,7 +685,7 @@ export const authApi = {
   async magicLinkRequest(email: string) {
     return apiClient.post<{ detail: string }>(
       '/auth/magic-link/request/',
-      { email: email.trim().toLowerCase() },
+      { email: email.trim().toLowerCase(), company_slug: DEFAULT_COMPANY_SLUG },
       false,
     )
   },
@@ -704,9 +710,50 @@ export const authApi = {
   async resendVerificationEmail(email: string) {
     return apiClient.post<{ detail: string }>(
       '/auth/resend-verification/',
-      { email: email.trim().toLowerCase() },
+      { email: email.trim().toLowerCase(), company_slug: DEFAULT_COMPANY_SLUG },
       false,
     )
+  },
+  async checkRegistrationEmail(email: string, options?: { linkable?: boolean }) {
+    return apiClient.post<{ status: 'available' | 'existing_can_link' | 'existing_no_link' | 'already_linked' }>(
+      '/auth/check-registration-email/',
+      {
+        email: email.trim().toLowerCase(),
+        company_slug: DEFAULT_COMPANY_SLUG,
+        linkable: options?.linkable ?? true,
+      },
+      false,
+    )
+  },
+  async linkTenantAccount(data: { email: string; password: string }) {
+    const response = await apiClient.post<{
+      user: any
+      company: { id: string; name: string }
+      tokens?: { access: string; refresh: string }
+      profile?: { role: string; is_verified: boolean }
+      account_linked?: boolean
+      email_verification_required?: boolean
+    }>(
+      '/auth/link-tenant/',
+      {
+        email: data.email.trim().toLowerCase(),
+        password: data.password,
+        company_slug: DEFAULT_COMPANY_SLUG,
+      },
+      false,
+    )
+
+    if (response.tokens?.access) {
+      apiClient.setToken(response.tokens.access)
+      if (response.tokens?.refresh) {
+        apiClient.setRefreshToken(response.tokens.refresh)
+      }
+      if (response.company?.id) {
+        apiClient.setCompanyId(response.company.id)
+      }
+    }
+
+    return response
   },
 
   logout() {
