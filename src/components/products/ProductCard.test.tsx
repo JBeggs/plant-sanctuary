@@ -1,8 +1,13 @@
 /**
  * Unit tests for ProductCard component
  */
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+
+/** Inline image avoids jsdom network fetches that can exceed the 5s test timeout */
+const TEST_IMAGE =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 import ProductCard from './ProductCard';
 import type { Product } from '@/lib/types';
 
@@ -17,6 +22,20 @@ vi.mock('@/contexts/ToastContext', () => ({
 }));
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn() }),
+}));
+vi.mock('next/link', () => ({
+  default: ({
+    children,
+    href,
+    ...rest
+  }: {
+    children?: React.ReactNode;
+    href?: string;
+  }) => (
+    <a href={href} {...rest}>
+      {children}
+    </a>
+  ),
 }));
 vi.mock('@/lib/api', () => ({
   ecommerceApi: { products: { delete: vi.fn() } },
@@ -51,20 +70,20 @@ describe('ProductCard', () => {
   });
 
   it('renders product image when provided', () => {
-    const product = { ...baseProduct, image: 'https://example.com/plant.jpg' };
+    const product = { ...baseProduct, image: TEST_IMAGE };
     render(<ProductCard product={product} />);
     const img = screen.getByRole('img', { name: 'Test Plant' });
-    expect(img).toHaveAttribute('src', 'https://example.com/plant.jpg');
+    expect(img).toHaveAttribute('src', TEST_IMAGE);
   });
 
   it('renders product image from featured_image when provided', () => {
     const product = {
       ...baseProduct,
-      featured_image: { file_url: 'https://example.com/featured.jpg' } as any,
+      featured_image: { file_url: TEST_IMAGE } as any,
     };
     render(<ProductCard product={product} />);
     const img = screen.getByRole('img', { name: 'Test Plant' });
-    expect(img).toHaveAttribute('src', 'https://example.com/featured.jpg');
+    expect(img).toHaveAttribute('src', TEST_IMAGE);
   });
 
   it('shows category tag when product has category', () => {

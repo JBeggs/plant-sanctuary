@@ -50,6 +50,11 @@ module.exports = {
         border: {
           DEFAULT: rgbVar('--color-border'),
         },
+        'border-default': rgbVar('--color-border'),
+        primary: {
+          DEFAULT: rgbVar('--color-forest-primary'),
+          hover: rgbVar('--color-forest-primary-dark'),
+        },
       },
     },
   },
