@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { ShoppingCart, User, LogOut } from 'lucide-react'
+import { ShoppingCart, LogOut } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCart } from '@/contexts/CartContext'
 import { useMounted } from '@/hooks/useMounted'
+import { ProfileNavAvatar } from '@/components/layout/ProfileNavAvatar'
 
 export default function ClientHeader() {
-  const { user, signOut, loading: authLoading } = useAuth()
+  const { user, profile, signOut, loading: authLoading } = useAuth()
   const { itemCount } = useCart()
   const mounted = useMounted()
 
@@ -42,8 +43,9 @@ export default function ClientHeader() {
             href="/profile"
             className="p-2 text-text hover:text-forest-primary transition-colors"
             aria-label="Profile"
+            data-cy="header-profile"
           >
-            <User className="w-5 h-5" />
+            <ProfileNavAvatar profile={profile} user={user} size="sm" />
           </Link>
           <button
             onClick={() => signOut()}
