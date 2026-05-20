@@ -73,9 +73,9 @@
 
   --hero-overlay-gradient: linear-gradient(
     to bottom,
-    rgb(6 14 10 / 0.88) 0%,
-    rgb(10 20 14 / 0.92) 50%,
-    rgb(6 14 10 / 0.97) 100%
+    rgb(6 14 10 / 0.25) 0%,
+    rgb(10 20 14 / 0.42) 45%,
+    rgb(6 14 10 / 0.58) 100%
   );
 }
 
@@ -109,9 +109,9 @@
 
   --hero-overlay-gradient: linear-gradient(
     to bottom,
-    rgb(8 8 8 / 0.9) 0%,
-    rgb(14 14 14 / 0.94) 50%,
-    rgb(8 8 8 / 0.98) 100%
+    rgb(8 8 8 / 0.3) 0%,
+    rgb(14 14 14 / 0.48) 45%,
+    rgb(8 8 8 / 0.62) 100%
   );
 }
 

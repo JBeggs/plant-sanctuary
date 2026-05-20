@@ -19,7 +19,7 @@ export default function DefaultHomeHero({ company }: { company: Company }) {
           className="absolute inset-0"
           imgClassName="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-forest-primary/90 to-forest-primary-dark/95" aria-hidden />
+        <div className="absolute inset-0 hero-gradient-overlay" aria-hidden />
       </div>
 
       <div className="relative container-wide py-20 md:py-28 text-on-brand w-full">
