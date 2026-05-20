@@ -77,14 +77,14 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-20">
               <Link
                 href={`/admin/inventory/edit/${product.id}`}
-                className="bg-white p-2 rounded-full text-forest-primary hover:bg-forest-primary hover:text-white transition-all shadow-lg"
+                className="btn-hero-chip p-2 rounded-full hover:bg-forest-primary hover:text-text-inverse transition-all shadow-lg"
                 title="Edit Product"
               >
                 <Edit2 className="w-5 h-5" />
               </Link>
               <button
                 onClick={handleDelete}
-                className="bg-white p-2 rounded-full text-forest-accent hover:bg-forest-accent hover:text-white transition-all shadow-lg"
+                className="btn-hero-chip p-2 rounded-full text-forest-accent hover:bg-forest-accent hover:text-text-inverse transition-all shadow-lg"
                 title="Delete Product"
               >
                 <Trash2 className="w-5 h-5" />

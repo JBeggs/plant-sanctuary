@@ -138,10 +138,10 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-forest-background py-12">
         <div className="container-wide">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-48 mb-8" />
+            <div className="h-8 skeleton rounded w-48 mb-8" />
             <div className="grid lg:grid-cols-2 gap-8">
-              <div className="h-96 bg-gray-200 rounded" />
-              <div className="h-64 bg-gray-200 rounded" />
+              <div className="h-96 skeleton rounded" />
+              <div className="h-64 skeleton rounded" />
             </div>
           </div>
         </div>

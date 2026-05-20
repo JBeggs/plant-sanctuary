@@ -213,11 +213,11 @@ export default function AdminOrdersPage() {
   return (
     <div className="min-h-screen bg-forest-background pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
+      <div className="admin-shell-bar sticky top-0 z-30">
         <div className="container-wide py-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <Link href="/admin/inventory" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <Link href="/admin/inventory" className="p-2 hover:bg-surface-raised rounded-full transition-colors">
                 <ArrowLeft className="w-6 h-6 text-text-light" />
               </Link>
               <div>
@@ -228,7 +228,7 @@ export default function AdminOrdersPage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-gray-50 border-t border-gray-100 mt-4 -mx-4 px-4 py-3">
+          <div className="admin-toolbar mt-4 -mx-4 px-4 py-3">
             <div className="flex flex-col md:flex-row items-center gap-4">
               <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
                 <Filter className="w-4 h-4 text-text-muted flex-shrink-0" />
@@ -239,8 +239,8 @@ export default function AdminOrdersPage() {
                       onClick={() => updateUrl({ status, page: 1 })}
                       className={`min-h-[44px] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all whitespace-nowrap flex-shrink-0 ${
                         statusFromUrl === status
-                          ? 'bg-forest-primary text-white'
-                          : 'bg-white text-text-muted border border-gray-200 hover:border-forest-primary/30'
+                          ? 'bg-forest-primary text-text-inverse'
+                          : 'bg-surface text-text-muted border border-border hover:border-forest-primary/30'
                       }`}
                     >
                       {status}
@@ -248,7 +248,7 @@ export default function AdminOrdersPage() {
                   ))}
                 </div>
               </div>
-              <div className="hidden lg:flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-text-muted border-l border-gray-200 pl-4">
+              <div className="hidden lg:flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-text-muted border-l border-border pl-4">
                 <div className="flex flex-col items-center">
                   <span className="text-text text-sm">{counts.total}</span>
                   <span>Total</span>
@@ -288,7 +288,7 @@ export default function AdminOrdersPage() {
             {orders.map((order) => (
               <div
                 key={order.id}
-                className="flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl hover:border-forest-primary/30 hover:shadow-md transition-all group relative overflow-hidden"
+                className="flex items-center gap-3 p-3 admin-panel hover:border-forest-primary/30 hover:shadow-md transition-all group relative overflow-hidden"
               >
                 <div
                   className={`absolute left-0 top-0 bottom-0 w-1 ${
@@ -299,7 +299,7 @@ export default function AdminOrdersPage() {
                     'bg-gray-400'
                   }`}
                 />
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-lg overflow-hidden border border-gray-100 flex-shrink-0 shadow-inner">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-surface-raised rounded-lg overflow-hidden border border-border flex-shrink-0 shadow-inner">
                   {getFirstItemImage(order) ? (
                     <img src={getFirstItemImage(order)} alt="" className="w-full h-full object-cover" />
                   ) : (
@@ -331,7 +331,7 @@ export default function AdminOrdersPage() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center gap-2 sm:border-l sm:border-gray-100 sm:pl-3">
+                <div className="flex flex-col sm:flex-row items-center gap-2 sm:border-l sm:border-border sm:pl-3">
                   <div className="text-right sm:mr-2">
                     <p className="text-[10px] font-bold uppercase text-text-muted">Total</p>
                     <p className="font-bold text-text">R{Number(order.total).toFixed(2)}</p>

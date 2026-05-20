@@ -30,7 +30,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   return (
     <div className="min-h-screen bg-forest-background">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-surface border-b border-border">
         <div className="container-wide py-4">
           <Link href="/articles" className="flex items-center text-text-muted hover:text-forest-primary transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -69,7 +69,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           )}
 
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-text-muted mb-8 pb-8 border-b border-gray-200">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-text-muted mb-8 pb-8 border-b border-border">
             {article.author?.full_name && (
               <span className="flex items-center gap-2">
                 <User className="w-4 h-4" />
@@ -102,7 +102,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-gray-200">
+            <div className="mt-12 pt-8 border-t border-border">
               <h3 className="text-sm font-semibold text-text-muted mb-3">Tags</h3>
               <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) => (
@@ -117,7 +117,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </article>
 
       {/* CTA */}
-      <section className="py-12 bg-white border-t border-gray-200">
+      <section className="py-12 bg-surface border-t border-border">
         <div className="container-narrow text-center">
           <h2 className="text-2xl font-bold font-playfair text-text mb-4">
             Discover Our Collection

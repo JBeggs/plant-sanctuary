@@ -465,7 +465,7 @@ export default function ProfileOwnerTabs({
       </h2>
       <p className="text-xs text-text-muted mb-4">Configure Yoco payments and Courier Guy shipping.</p>
       <form onSubmit={handleUpdateIntegrationSettings} className="space-y-6">
-        <div className="space-y-4 border-b border-gray-100 pb-6">
+        <div className="space-y-4 border-b border-border pb-6">
           <h3 className="text-sm font-bold flex items-center gap-2">
             <CreditCard className="w-4 h-4" />
             Yoco

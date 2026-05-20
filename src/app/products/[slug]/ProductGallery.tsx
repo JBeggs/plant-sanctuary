@@ -22,7 +22,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
   if (allImages.length === 0) {
     return (
-      <div className="w-full h-96 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200">
+      <div className="w-full h-96 bg-surface-raised rounded-2xl flex items-center justify-center border border-border">
         {isVintage ? (
           <Clock className="w-24 h-24 text-forest-primary/20" />
         ) : (
@@ -35,7 +35,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
       {/* Main Image */}
-      <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm group">
+      <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface border border-border shadow-sm group">
         <img
           src={activeImage}
           alt={product.name}
@@ -61,7 +61,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
               className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
                 activeImage === img 
                   ? 'border-forest-primary shadow-md scale-95' 
-                  : 'border-transparent hover:border-gray-300 opacity-70 hover:opacity-100'
+                  : 'border-transparent hover:border-border opacity-70 hover:opacity-100'
               }`}
             >
               <img

@@ -67,7 +67,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
             disabled={quantity <= 1 || isOutOfStock}
-            className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 transition-colors"
+            className="w-10 h-10 rounded-full bg-surface-raised flex items-center justify-center hover:bg-border disabled:opacity-50 transition-colors"
           >
             <Minus className="w-4 h-4" />
           </button>
@@ -75,7 +75,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           <button
             onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
             disabled={quantity >= maxQuantity || isOutOfStock}
-            className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 transition-colors"
+            className="w-10 h-10 rounded-full bg-surface-raised flex items-center justify-center hover:bg-border disabled:opacity-50 transition-colors"
           >
             <Plus className="w-4 h-4" />
           </button>
@@ -90,12 +90,12 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           data-cy="add-to-cart"
           className={`w-full py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 transition-colors ${
             !user
-              ? 'bg-gray-200 text-text-muted cursor-not-allowed'
+              ? 'bg-surface-raised text-text-muted cursor-not-allowed'
               : isOutOfStock
-              ? 'bg-gray-200 text-text-muted cursor-not-allowed'
+              ? 'bg-surface-raised text-text-muted cursor-not-allowed'
               : (Array.isArray(product.tags) && product.tags.some((t: any) => (typeof t === 'string' ? t : t.name) === 'vintage'))
-              ? 'bg-forest-primary text-white hover:bg-forest-primary-dark'
-              : 'bg-forest-primary text-white hover:bg-forest-primary-dark'
+              ? 'bg-forest-primary text-text-inverse hover:bg-forest-primary-dark'
+              : 'bg-forest-primary text-text-inverse hover:bg-forest-primary-dark'
           } shadow-lg shadow-forest-primary/10`}
         >
           {!user ? <Lock className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}

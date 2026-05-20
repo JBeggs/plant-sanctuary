@@ -31,9 +31,9 @@ export default function AddProductPage() {
 
   return (
     <div className="min-h-screen bg-forest-background">
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
+      <div className="admin-shell-bar sticky top-0 z-30">
         <div className="container-wide py-4 flex items-center gap-4">
-          <Link href="/admin/inventory" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <Link href="/admin/inventory" className="p-2 hover:bg-surface-raised rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6 text-text-light" />
           </Link>
           <div>
@@ -44,7 +44,7 @@ export default function AddProductPage() {
       </div>
 
       <div className="container-narrow py-8">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100">
+        <div className="admin-panel rounded-2xl shadow-xl">
           <ProductForm 
             onClose={() => router.push('/admin/inventory')} 
             onSuccess={() => router.push('/admin/inventory')}

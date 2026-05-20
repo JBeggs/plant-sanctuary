@@ -40,15 +40,15 @@ export default function DefaultHomeHero({ company }: { company: Company }) {
               <Leaf className="w-5 h-5 mr-2" />
               Shop Plants
             </Link>
-            <Link href="/products?tags=indoor" className="btn bg-white text-forest-primary hover:bg-gray-100">
+            <Link href="/products?tags=indoor" className="btn btn-hero-chip">
               <Home className="w-5 h-5 mr-2" />
               Indoor
             </Link>
-            <Link href="/products?tags=succulents" className="btn bg-white text-forest-primary hover:bg-gray-100">
+            <Link href="/products?tags=succulents" className="btn btn-hero-chip">
               <Sprout className="w-5 h-5 mr-2" />
               Succulents
             </Link>
-            <Link href="/articles" className="btn bg-white text-forest-primary hover:bg-gray-100">
+            <Link href="/articles" className="btn btn-hero-chip">
               <BookOpen className="w-5 h-5 mr-2" />
               Care Guides
             </Link>

@@ -69,7 +69,7 @@ export default function PageHeroView({
           {isHome && (
             <div className="flex flex-wrap gap-4">
               {hasCta && (
-                <Link href={hero.ctaHref!} className="btn bg-white text-forest-primary hover:bg-gray-100 text-base px-6 py-3">
+                <Link href={hero.ctaHref!} className="btn btn-hero-chip text-base px-6 py-3">
                   {hero.ctaLabel}
                 </Link>
               )}
@@ -77,15 +77,15 @@ export default function PageHeroView({
                 <Leaf className="w-5 h-5 mr-2" />
                 Shop Plants
               </Link>
-              <Link href="/products?tags=indoor" className="btn bg-white text-forest-primary hover:bg-gray-100 text-base px-6 py-3">
+              <Link href="/products?tags=indoor" className="btn btn-hero-chip text-base px-6 py-3">
                 <Home className="w-5 h-5 mr-2" />
                 Indoor
               </Link>
-              <Link href="/products?tags=succulents" className="btn bg-white text-forest-primary hover:bg-gray-100 text-base px-6 py-3">
+              <Link href="/products?tags=succulents" className="btn btn-hero-chip text-base px-6 py-3">
                 <Sprout className="w-5 h-5 mr-2" />
                 Succulents
               </Link>
-              <Link href="/articles" className="btn bg-white text-forest-primary hover:bg-gray-100 text-base px-6 py-3">
+              <Link href="/articles" className="btn btn-hero-chip text-base px-6 py-3">
                 <BookOpen className="w-5 h-5 mr-2" />
                 Care Guides
               </Link>

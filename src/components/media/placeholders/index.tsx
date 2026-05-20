@@ -54,7 +54,7 @@ export function LogoPlaceholder({ monogram = 'PS', label, className }: Placehold
     <Base label={label} className={className}>
       <div
         aria-hidden
-        className="flex h-full w-full items-center justify-center bg-forest-primary text-white font-playfair font-bold"
+        className="flex h-full w-full items-center justify-center bg-brand-band text-on-brand font-playfair font-bold"
         style={{ fontSize: 'clamp(1rem, 3vw, 2.5rem)' }}
       >
         {letters}
@@ -70,7 +70,7 @@ export function HeroPlaceholder({ label, className }: PlaceholderProps) {
         aria-hidden
         className="absolute inset-0 bg-gradient-to-br from-forest-primary to-forest-primary-dark"
       />
-      <div className="relative flex flex-col items-center gap-2 text-white">
+      <div className="relative flex flex-col items-center gap-2 text-on-brand">
         <Sparkles className="h-10 w-10" strokeWidth={1.5} />
         <span className="font-playfair text-sm uppercase tracking-[0.2em]">Your hero image</span>
       </div>

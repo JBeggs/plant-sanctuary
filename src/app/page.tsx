@@ -111,7 +111,7 @@ export default async function HomePage() {
                       {product.name}
                     </h3>
                     <p className="text-sm text-text-muted mt-1 line-clamp-2 flex-1">{product.description}</p>
-                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-border">
                       <span className="price">R{Number(product.price).toFixed(2)}</span>
                       {product.compare_at_price && Number(product.compare_at_price) > Number(product.price) && (
                         <span className="price-original">R{Number(product.compare_at_price).toFixed(2)}</span>
@@ -160,7 +160,7 @@ export default async function HomePage() {
                       {product.name}
                     </h3>
                     <p className="text-sm text-text-muted mt-1 line-clamp-2 flex-1">{product.description}</p>
-                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-border">
                       <span className="price">R{Number(product.price).toFixed(2)}</span>
                     </div>
                   </div>
@@ -199,14 +199,14 @@ export default async function HomePage() {
                         <Sprout className="w-12 h-12 text-forest-primary/30" />
                       </div>
                     )}
-                    <span className="tag absolute top-2 left-2 bg-forest-accent/90 text-white">Succulents</span>
+                    <span className="tag absolute top-2 left-2 bg-forest-accent/90 text-text-inverse">Succulents</span>
                   </div>
                   <div className="p-4 flex-1 flex flex-col">
                     <h3 className="font-semibold text-text group-hover:text-forest-primary transition-colors line-clamp-1">
                       {product.name}
                     </h3>
                     <p className="text-sm text-text-muted mt-1 line-clamp-2 flex-1">{product.description}</p>
-                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="mt-3 flex items-center justify-between pt-3 border-t border-border">
                       <span className="price">R{Number(product.price).toFixed(2)}</span>
                     </div>
                   </div>

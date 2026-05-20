@@ -16,7 +16,7 @@ export default function ClientHeader() {
   if (!mounted || authLoading) {
     return (
       <div className="flex items-center space-x-4">
-        <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />
+        <div className="w-8 h-8 skeleton rounded-full animate-pulse" />
       </div>
     )
   }
@@ -31,7 +31,7 @@ export default function ClientHeader() {
         >
           <ShoppingCart className="w-5 h-5" />
           {itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-forest-accent text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm group-hover:scale-110 transition-transform">
+            <span className="absolute -top-1 -right-1 bg-forest-accent text-text-inverse text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm group-hover:scale-110 transition-transform">
               {itemCount}
             </span>
           )}

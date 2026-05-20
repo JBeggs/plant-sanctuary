@@ -159,11 +159,11 @@ export default function OrderDetailPage() {
   return (
     <div className="min-h-screen bg-forest-background pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
+      <div className="admin-shell-bar sticky top-0 z-30">
         <div className="container-wide py-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <Link href="/admin/orders" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <Link href="/admin/orders" className="p-2 hover:bg-surface-raised rounded-full transition-colors">
                 <ArrowLeft className="w-6 h-6 text-text-light" />
               </Link>
               <div>
@@ -198,7 +198,7 @@ export default function OrderDetailPage() {
       <div className="container-wide py-8 space-y-6">
         {/* Customer & Shipping */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+          <div className="admin-panel p-6">
             <h2 className="font-bold text-text mb-4 flex items-center gap-2">
               <Mail className="w-4 h-4" />
               Customer
@@ -214,7 +214,7 @@ export default function OrderDetailPage() {
               </p>
             )}
           </div>
-          <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+          <div className="admin-panel p-6">
             <h2 className="font-bold text-text mb-4 flex items-center gap-2">
               <MapPin className="w-4 h-4" />
               Shipping
@@ -237,17 +237,17 @@ export default function OrderDetailPage() {
         </div>
 
         {/* Line Items */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="admin-panel overflow-hidden">
           <h2 className="font-bold text-text p-6 pb-0">Order Items</h2>
           <div className="p-6 space-y-4">
             {order.items.map((item) => (
               <div
                 key={item.id}
                 className={`flex items-center gap-4 p-4 rounded-xl border ${
-                  item.cancelled ? 'bg-gray-50 border-gray-100 opacity-60' : 'bg-white border-gray-100'
+                  item.cancelled ? 'bg-surface-raised border-border opacity-60' : 'bg-surface border-border'
                 }`}
               >
-                <div className="w-16 h-16 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0">
+                <div className="w-16 h-16 bg-surface-raised rounded-lg overflow-hidden flex-shrink-0">
                   {item.product_image ? (
                     <img src={item.product_image} alt="" className="w-full h-full object-cover" />
                   ) : (
@@ -276,7 +276,7 @@ export default function OrderDetailPage() {
         </div>
 
         {/* Totals */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm max-w-md ml-auto">
+        <div className="admin-panel p-6 max-w-md ml-auto">
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-text-muted">Subtotal</span>
@@ -298,7 +298,7 @@ export default function OrderDetailPage() {
                 <span className="font-medium text-forest-accent">-R{Number(order.discount).toFixed(2)}</span>
               </div>
             )}
-            <div className="flex justify-between pt-2 border-t border-gray-200">
+            <div className="flex justify-between pt-2 border-t border-border">
               <span className="font-bold text-text">Total</span>
               <span className="font-bold text-text text-lg">R{Number(order.total).toFixed(2)}</span>
             </div>

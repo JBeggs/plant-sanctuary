@@ -94,7 +94,7 @@ export function CookieConsentBanner() {
         <button
           type="button"
           onClick={acceptCookies}
-          className="mt-4 w-full rounded-full bg-gray-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:shrink-0"
+          className="mt-4 w-full rounded-full bg-forest-primary px-5 py-3 text-sm font-semibold text-text-inverse transition hover:bg-forest-primary-dark focus:outline-none focus:ring-2 focus:ring-forest-primary focus:ring-offset-2 sm:mt-0 sm:w-auto sm:shrink-0"
         >
           Accept cookies
         </button>

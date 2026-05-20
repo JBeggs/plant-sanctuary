@@ -64,7 +64,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="min-h-screen bg-forest-background pb-20">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200 sticky top-[73px] z-30">
+      <div className="bg-surface border-b border-border sticky top-[73px] z-30">
         <div className="container-wide py-4">
           <div className="flex items-center justify-between">
             <Link href="/products" className="flex items-center text-text-muted hover:text-forest-primary transition-colors font-medium">
@@ -106,7 +106,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     )}
                   </div>
                   {hasDiscount && (
-                    <span className="bg-forest-accent text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                    <span className="bg-forest-accent text-text-inverse px-3 py-1 rounded-full text-sm font-bold animate-pulse">
                       SAVE {discountPercent}%
                     </span>
                   )}
@@ -120,7 +120,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Add to Cart Section */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+              <div className="bg-surface p-6 rounded-2xl shadow-sm border border-border space-y-6">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
                     <p className="text-xs uppercase font-bold tracking-widest text-text-muted">Availability</p>
@@ -169,7 +169,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                 {/* Specs Grid - Only show if data exists */}
                 {(product.weight || (Number(product.dimension_length) > 0 || Number(product.dimension_width) > 0 || Number(product.dimension_height) > 0)) && (
-                  <div className="grid grid-cols-2 gap-4 pt-6 border-t border-gray-100">
+                  <div className="grid grid-cols-2 gap-4 pt-6 border-t border-border">
                     {product.weight && (
                       <div className="space-y-1">
                         <p className="text-[10px] uppercase font-bold text-text-muted tracking-widest">Weight</p>
@@ -189,8 +189,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Trust Badges / Process Explanation */}
-              <div className="pt-8 border-t border-gray-100">
-                <div className="bg-white rounded-2xl p-6 border border-forest-primary/10 shadow-sm space-y-4">
+              <div className="pt-8 border-t border-border">
+                <div className="bg-surface rounded-2xl p-6 border border-forest-primary/10 shadow-sm space-y-4">
                   <h3 className="text-sm font-bold uppercase tracking-widest text-text flex items-center gap-2">
                     <Phone className="w-4 h-4 text-forest-primary" />
                     How to Purchase
@@ -214,7 +214,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     )}
                   </div>
                   
-                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-50">
+                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
                     <div className="text-center group">
                       <div className="w-10 h-10 mx-auto mb-2 bg-forest-background rounded-full flex items-center justify-center group-hover:text-forest-primary transition-colors">
                         <Phone className="w-5 h-5" />

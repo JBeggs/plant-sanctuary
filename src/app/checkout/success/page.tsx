@@ -30,7 +30,7 @@ function SuccessContent() {
           {isHighValue ? (
             <div className="bg-forest-primary/5 border border-forest-primary/10 rounded-2xl p-6 md:p-8 space-y-6 text-left">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                <div className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
                   <Phone className="w-5 h-5 text-forest-primary" />
                 </div>
                 <div>
@@ -42,7 +42,7 @@ function SuccessContent() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                <div className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
                   <FileText className="w-5 h-5 text-forest-primary" />
                 </div>
                 <div>
@@ -79,8 +79,8 @@ export default function CheckoutSuccessPage() {
     <Suspense fallback={
       <div className="min-h-screen bg-forest-background flex items-center justify-center">
         <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="w-16 h-16 bg-gray-200 rounded-full" />
-          <div className="h-8 bg-gray-200 rounded w-48" />
+          <div className="w-16 h-16 skeleton rounded-full" />
+          <div className="h-8 skeleton rounded w-48" />
         </div>
       </div>
     }>

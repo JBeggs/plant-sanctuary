@@ -84,14 +84,14 @@ function CoverageDisplay({ data }: { data: Record<string, unknown> | null }) {
         return (
           <div
             key={label}
-            className="rounded-xl bg-white/50 border border-gray-200 p-4 backdrop-blur-sm"
+            className="rounded-xl bg-surface/50 border border-border p-4 backdrop-blur-sm"
           >
             <p className="text-sm text-text-light mb-1">{label}</p>
             <p className="text-2xl font-bold text-text">{pct.toFixed(1)}%</p>
             <p className="text-xs text-text-muted mt-1">
               {covered > 0 || total > 0 ? `${covered} / ${total}` : '—'}
             </p>
-            <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="mt-2 h-2 skeleton rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-500"
                 style={{
@@ -138,7 +138,7 @@ export default function TestingPage() {
               <span className="text-2xl">📊</span> Coverage (Last Run)
             </h2>
             {coverageLoading ? (
-              <div className="rounded-xl bg-white/50 border border-gray-200 p-6 text-text-light">
+              <div className="rounded-xl bg-surface/50 border border-border p-6 text-text-light">
                 Loading coverage…
               </div>
             ) : (
@@ -154,7 +154,7 @@ export default function TestingPage() {
               {TEST_FLOW_STEPS.map((step, i) => (
                 <div
                   key={step.id}
-                  className="rounded-2xl bg-white/50 border border-gray-200 p-6 backdrop-blur-sm hover:bg-white/60 transition-colors"
+                  className="rounded-2xl bg-surface/50 border border-border p-6 backdrop-blur-sm hover:bg-surface/60 transition-colors"
                 >
                   <div className="flex items-start gap-4">
                     <span className="flex-shrink-0 w-10 h-10 rounded-full bg-forest-primary/20 flex items-center justify-center text-text font-bold">
@@ -179,7 +179,7 @@ export default function TestingPage() {
             </div>
           </section>
 
-          <section className="mt-12 rounded-2xl bg-white/50 border border-gray-200 p-6 backdrop-blur-sm">
+          <section className="mt-12 rounded-2xl bg-surface/50 border border-border p-6 backdrop-blur-sm">
             <h2 className="text-lg font-semibold text-text mb-4">Commands</h2>
             <div className="space-y-2 font-mono text-sm">
               <p className="text-text">

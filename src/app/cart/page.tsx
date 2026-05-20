@@ -77,10 +77,10 @@ export default function CartPage() {
       <div className="min-h-screen bg-forest-background py-12">
         <div className="container-wide">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-48 mb-8" />
+            <div className="h-8 skeleton rounded w-48 mb-8" />
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-24 bg-gray-200 rounded" />
+                <div key={i} className="h-24 skeleton rounded" />
               ))}
             </div>
           </div>

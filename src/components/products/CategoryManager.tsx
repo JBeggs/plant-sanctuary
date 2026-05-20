@@ -74,8 +74,8 @@ export default function CategoryManager({ onClose }: CategoryManagerProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+      <div className="bg-surface rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="p-6 border-b border-border flex items-center justify-between">
           <h2 className="text-xl font-bold font-playfair text-text">Manage Categories</h2>
           <button onClick={onClose} className="text-text-muted hover:text-text transition-colors">
             <X className="w-6 h-6" />
@@ -93,7 +93,7 @@ export default function CategoryManager({ onClose }: CategoryManagerProps) {
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 placeholder="Category name..."
-                className="form-input flex-1 py-2 px-3 bg-gray-50 border-gray-200 focus:bg-white focus:ring-forest-primary/10"
+                className="form-input flex-1 py-2 px-3 bg-surface-raised border-border focus:bg-surface focus:ring-forest-primary/10"
                 disabled={isAdding}
               />
               <button
@@ -117,7 +117,7 @@ export default function CategoryManager({ onClose }: CategoryManagerProps) {
             ) : categories.length > 0 ? (
               <div className="space-y-2">
                 {categories.map((category) => (
-                  <div key={category.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 group hover:border-forest-primary/20 transition-all">
+                  <div key={category.id} className="flex items-center justify-between p-3 bg-surface-raised rounded-lg border border-border group hover:border-forest-primary/20 transition-all">
                     <span className="font-medium text-text">{category.name}</span>
                     <button
                       onClick={() => handleDeleteCategory(category.id)}
@@ -135,7 +135,7 @@ export default function CategoryManager({ onClose }: CategoryManagerProps) {
           </div>
         </div>
 
-        <div className="p-6 border-t border-gray-100 bg-gray-50 text-right">
+        <div className="p-6 border-t border-border bg-surface-raised text-right">
           <button onClick={onClose} className="btn btn-secondary px-6">
             Close
           </button>

@@ -267,10 +267,10 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
 
   return (
     <div className={inline ? "w-full flex flex-col min-h-0" : "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto"}>
-      <div className={inline ? "w-full flex flex-col" : "bg-white rounded-xl shadow-2xl w-full max-w-4xl my-8 flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200 h-[90vh]"}>
+      <div className={inline ? "w-full flex flex-col" : "bg-surface rounded-xl shadow-2xl w-full max-w-4xl my-8 flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200 h-[90vh]"}>
         {/* Header - Only show if not inline */}
         {!inline && (
-          <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white z-10">
+          <div className="p-6 border-b border-border flex items-center justify-between bg-surface z-10">
             <div>
               <h2 className="text-2xl font-bold font-playfair text-text">
                 {product ? 'Edit Product' : 'Add New Product'}
@@ -279,14 +279,14 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                 {formData.name || 'Untitled Product'}
               </p>
             </div>
-            <button onClick={onClose} className="text-text-muted hover:text-text transition-colors p-2 hover:bg-gray-100 rounded-full">
+            <button onClick={onClose} className="text-text-muted hover:text-text transition-colors p-2 hover:bg-surface-raised rounded-full">
               <X className="w-6 h-6" />
             </button>
           </div>
         )}
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-100 bg-gray-50/50 overflow-x-auto no-scrollbar scroll-smooth sticky top-0 z-20">
+        <div className="flex border-b border-border bg-surface-raised/50 overflow-x-auto no-scrollbar scroll-smooth sticky top-0 z-20">
           <div className="flex min-w-full">
             {tabs.map((tab) => (
               <button
@@ -295,8 +295,8 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                 onClick={() => setActiveTab(tab.id as TabType)}
                 className={`flex flex-1 items-center justify-center gap-2 px-4 sm:px-6 py-4 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'border-forest-primary text-forest-primary bg-white'
-                    : 'border-transparent text-text-muted hover:text-text hover:bg-gray-100'
+                    ? 'border-forest-primary text-forest-primary bg-surface'
+                    : 'border-transparent text-text-muted hover:text-text hover:bg-surface-raised'
                 }`}
               >
                 <tab.icon className="w-4 h-4 flex-shrink-0" />
@@ -312,12 +312,12 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
           {activeTab === 'general' && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
               {/* Status - prominent at top so draft products can be published */}
-              <div className="flex flex-wrap items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+              <div className="flex flex-wrap items-center gap-4 p-4 bg-surface-raised rounded-xl border border-border">
                 <span className="text-xs uppercase tracking-wider font-bold text-text-light">Publish Status:</span>
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                  className="pl-4 pr-10 py-2.5 bg-white border-2 border-gray-200 rounded-lg text-sm font-bold focus:ring-4 focus:ring-forest-primary/20 focus:border-forest-primary outline-none"
+                  className="pl-4 pr-10 py-2.5 bg-surface border-2 border-border rounded-lg text-sm font-bold focus:ring-4 focus:ring-forest-primary/20 focus:border-forest-primary outline-none"
                 >
                   <option value="draft">Draft (hidden from store)</option>
                   <option value="active">Active (visible on store)</option>
@@ -345,8 +345,8 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                         return rest
                       })
                     }}
-                    className={`w-full pl-4 pr-4 py-3 bg-gray-50 border rounded-md focus:bg-white focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none ${
-                      errors.name ? 'border-red-500 ring-4 ring-red-500/10' : 'border-gray-200'
+                    className={`w-full pl-4 pr-4 py-3 bg-surface-raised border rounded-md focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none ${
+                      errors.name ? 'border-red-500 ring-4 ring-red-500/10' : 'border-border'
                     }`}
                     placeholder="e.g. Vintage Leather Satchel"
                     required
@@ -368,8 +368,8 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                         return rest
                       })
                     }}
-                    className={`w-full pl-4 pr-4 py-3 bg-gray-50 border rounded-md focus:bg-white focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none ${
-                      errors.category_id ? 'border-red-500 ring-4 ring-red-500/10' : 'border-gray-200'
+                    className={`w-full pl-4 pr-4 py-3 bg-surface-raised border rounded-md focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none ${
+                      errors.category_id ? 'border-red-500 ring-4 ring-red-500/10' : 'border-border'
                     }`}
                     disabled={fetchingCategories}
                   >
@@ -390,7 +390,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                   type="text"
                   value={formData.short_description}
                   onChange={(e) => setFormData({ ...formData, short_description: e.target.value })}
-                  className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none"
+                  className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none"
                   placeholder="Brief summary for listings (max 150 chars)"
                   maxLength={150}
                 />
@@ -403,7 +403,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none min-h-[150px]"
+                  className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none min-h-[150px]"
                   placeholder="Detailed product information..."
                   rows={5}
                 />
@@ -426,8 +426,8 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                         return rest
                       })
                     }}
-                    className={`w-full pl-4 pr-4 py-3 bg-gray-50 border rounded-md focus:bg-white focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none font-mono ${
-                      errors.price ? 'border-red-500 ring-4 ring-red-500/10' : 'border-gray-200'
+                    className={`w-full pl-4 pr-4 py-3 bg-surface-raised border rounded-md focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none font-mono ${
+                      errors.price ? 'border-red-500 ring-4 ring-red-500/10' : 'border-border'
                     }`}
                     required
                   />
@@ -446,7 +446,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                       const val = e.target.value === '' ? 0 : parseFloat(e.target.value)
                       setFormData({ ...formData, compare_at_price: isNaN(val) ? 0 : val })
                     }}
-                    className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none font-mono text-forest-accent"
+                    className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none font-mono text-forest-accent"
                   />
                 </div>
 
@@ -462,21 +462,21 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                       const val = e.target.value === '' ? 0 : parseFloat(e.target.value)
                       setFormData({ ...formData, cost_price: isNaN(val) ? 0 : val })
                     }}
-                    className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none font-mono text-text-muted"
+                    className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface focus:ring-4 focus:ring-forest-primary/10 transition-all outline-none font-mono text-text-muted"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-6 pt-4 border-t border-gray-100">
+              <div className="flex flex-wrap gap-6 pt-4 border-t border-border">
                 <label className="flex items-center gap-3 cursor-pointer group">
                   <div className="relative flex items-center">
                     <input
                       type="checkbox"
                       checked={formData.featured}
                       onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 transition-all checked:bg-forest-primary checked:border-forest-primary"
+                      className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-border transition-all checked:bg-forest-primary checked:border-forest-primary"
                     />
-                    <Save className="absolute h-3.5 w-3.5 text-white opacity-0 peer-checked:opacity-100 left-0.5 pointer-events-none" />
+                    <Save className="absolute h-3.5 w-3.5 text-text-inverse opacity-0 peer-checked:opacity-100 left-0.5 pointer-events-none" />
                   </div>
                   <span className="text-sm font-bold text-text group-hover:text-forest-primary transition-colors">
                     Featured Item
@@ -486,7 +486,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
               </div>
 
               {/* Tag Management */}
-              <div className="space-y-3 pt-4 border-t border-gray-100">
+              <div className="space-y-3 pt-4 border-t border-border">
                 <label className="form-label text-xs uppercase tracking-wider font-bold text-text-light block">
                   Tags
                 </label>
@@ -495,7 +495,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     <span 
                       key={tag} 
                       className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                        tag === 'vintage' ? 'bg-forest-primary text-white' : 'bg-gray-100 text-text-light'
+                        tag === 'vintage' ? 'bg-forest-primary text-text-inverse' : 'bg-surface-raised text-text-light'
                       }`}
                     >
                       {tag}
@@ -516,7 +516,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
                     onKeyDown={handleAddTag}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none text-sm"
+                    className="w-full pl-10 pr-4 py-2 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none text-sm"
                     placeholder="Add a tag and press Enter..."
                   />
                 </div>
@@ -535,7 +535,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     type="text"
                     value={formData.sku}
                     onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-                    className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none font-mono"
+                    className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none font-mono"
                     placeholder="e.g. VIN-LDR-001"
                   />
                 </div>
@@ -548,7 +548,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     type="text"
                     value={formData.barcode}
                     onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
-                    className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none font-mono"
+                    className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none font-mono"
                     placeholder="e.g. 123456789012"
                   />
                 </div>
@@ -566,7 +566,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                       const val = e.target.value === '' ? 0 : parseInt(e.target.value)
                       setFormData({ ...formData, quantity: isNaN(val) ? 0 : val })
                     }}
-                    className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none font-mono"
+                    className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none font-mono"
                   />
                 </div>
 
@@ -577,9 +577,9 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                         type="checkbox"
                         checked={formData.track_inventory}
                         onChange={(e) => setFormData({ ...formData, track_inventory: e.target.checked })}
-                        className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 transition-all checked:bg-forest-primary checked:border-forest-primary"
+                        className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-border transition-all checked:bg-forest-primary checked:border-forest-primary"
                       />
-                      <Save className="absolute h-3.5 w-3.5 text-white opacity-0 peer-checked:opacity-100 left-0.5 pointer-events-none" />
+                      <Save className="absolute h-3.5 w-3.5 text-text-inverse opacity-0 peer-checked:opacity-100 left-0.5 pointer-events-none" />
                     </div>
                     <span className="text-sm font-bold text-text group-hover:text-forest-primary transition-colors">
                       Track Inventory Levels
@@ -592,9 +592,9 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                         type="checkbox"
                         checked={formData.allow_backorder}
                         onChange={(e) => setFormData({ ...formData, allow_backorder: e.target.checked })}
-                        className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 transition-all checked:bg-forest-primary checked:border-forest-primary"
+                        className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-border transition-all checked:bg-forest-primary checked:border-forest-primary"
                       />
-                      <Save className="absolute h-3.5 w-3.5 text-white opacity-0 peer-checked:opacity-100 left-0.5 pointer-events-none" />
+                      <Save className="absolute h-3.5 w-3.5 text-text-inverse opacity-0 peer-checked:opacity-100 left-0.5 pointer-events-none" />
                     </div>
                     <span className="text-sm font-bold text-text group-hover:text-forest-primary transition-colors">
                       Allow Backorders (Sell when out of stock)
@@ -618,12 +618,12 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                       step="0.01"
                       value={formData.weight}
                       onChange={(e) => setFormData({ ...formData, weight: parseFloat(e.target.value) })}
-                      className="flex-1 pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none font-mono"
+                      className="flex-1 pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none font-mono"
                     />
                     <select
                       value={formData.weight_unit}
                       onChange={(e) => setFormData({ ...formData, weight_unit: e.target.value })}
-                      className="w-24 px-3 py-3 bg-white border border-gray-200 rounded-md font-bold outline-none"
+                      className="w-24 px-3 py-3 bg-surface border border-border rounded-md font-bold outline-none"
                     >
                       <option value="g">g</option>
                       <option value="kg">kg</option>
@@ -645,7 +645,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                       step="0.1"
                       value={formData.dimension_length}
                       onChange={(e) => setFormData({ ...formData, dimension_length: parseFloat(e.target.value) })}
-                      className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white outline-none font-mono"
+                      className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface outline-none font-mono"
                     />
                   </div>
                   <div className="space-y-1">
@@ -655,7 +655,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                       step="0.1"
                       value={formData.dimension_width}
                       onChange={(e) => setFormData({ ...formData, dimension_width: parseFloat(e.target.value) })}
-                      className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white outline-none font-mono"
+                      className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface outline-none font-mono"
                     />
                   </div>
                   <div className="space-y-1">
@@ -665,7 +665,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                       step="0.1"
                       value={formData.dimension_height}
                       onChange={(e) => setFormData({ ...formData, dimension_height: parseFloat(e.target.value) })}
-                      className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white outline-none font-mono"
+                      className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface outline-none font-mono"
                     />
                   </div>
                 </div>
@@ -683,7 +683,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                   type="text"
                   value={formData.seo_title}
                   onChange={(e) => setFormData({ ...formData, seo_title: e.target.value })}
-                  className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none"
+                  className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none"
                   placeholder="Search engine title (max 60 chars)"
                   maxLength={60}
                 />
@@ -700,7 +700,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                 <textarea
                   value={formData.seo_description}
                   onChange={(e) => setFormData({ ...formData, seo_description: e.target.value })}
-                  className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none"
+                  className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none"
                   placeholder="Brief summary for search results (max 160 chars)"
                   rows={3}
                   maxLength={160}
@@ -719,7 +719,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     type="text"
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                    className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none font-mono text-sm"
+                    className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none font-mono text-sm"
                     placeholder="vintage-leather-satchel"
                   />
                 </div>
@@ -732,7 +732,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     type="url"
                     value={formData.canonical_url}
                     onChange={(e) => setFormData({ ...formData, canonical_url: e.target.value })}
-                    className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none font-mono text-sm"
+                    className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none font-mono text-sm"
                     placeholder="https://example.com/products/..."
                   />
                 </div>
@@ -746,7 +746,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                   type="text"
                   value={formData.seo_keywords}
                   onChange={(e) => setFormData({ ...formData, seo_keywords: e.target.value })}
-                  className="w-full pl-4 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md focus:bg-white transition-all outline-none"
+                  className="w-full pl-4 pr-4 py-3 bg-surface-raised border border-border rounded-md focus:bg-surface transition-all outline-none"
                   placeholder="vintage, leather, satchel, handmade (comma separated)"
                 />
               </div>
@@ -761,8 +761,8 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                   <ImageIcon className="w-4 h-4" />
                   Main Featured Image
                 </label>
-                <div className="flex items-start gap-6 bg-gray-50 p-6 rounded-xl border border-gray-100">
-                  <div className="w-48 h-48 bg-white rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden shadow-inner relative group">
+                <div className="flex items-start gap-6 bg-surface-raised p-6 rounded-xl border border-border">
+                  <div className="w-48 h-48 bg-surface rounded-lg border-2 border-dashed border-border flex items-center justify-center overflow-hidden shadow-inner relative group">
                     {featuredImage ? (
                       <>
                         <img src={featuredImage.file_url || (featuredImage as any).url} alt="Featured" className="w-full h-full object-cover" />
@@ -773,7 +773,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                               setFeaturedImage(null)
                               setFormData(prev => ({ ...prev, featured_image_id: '' }))
                             }}
-                            className="bg-white p-2 rounded-full text-forest-accent hover:scale-110 transition-transform"
+                            className="bg-surface p-2 rounded-full text-forest-accent hover:scale-110 transition-transform"
                           >
                             <Trash2 className="w-5 h-5" />
                           </button>
@@ -819,20 +819,20 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     <ImageIcon className="w-4 h-4 text-text-muted" />
                     Gallery Images
                   </label>
-                  <span className="text-[10px] font-bold text-text-muted uppercase bg-gray-100 px-2 py-1 rounded">
+                  <span className="text-[10px] font-bold text-text-muted uppercase bg-surface-raised px-2 py-1 rounded">
                     {additionalImages.length} Images Added
                   </span>
                 </div>
                 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {additionalImages.map((media) => (
-                    <div key={media.id} className="aspect-square bg-gray-50 rounded-lg border border-gray-200 overflow-hidden relative group shadow-sm">
+                    <div key={media.id} className="aspect-square bg-surface-raised rounded-lg border border-border overflow-hidden relative group shadow-sm">
                       <img src={media.file_url || (media as any).url} alt="Gallery" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <button
                           type="button"
                           onClick={() => removeAdditionalImage(media.id)}
-                          className="bg-white p-1.5 rounded-full text-forest-accent hover:scale-110 transition-transform"
+                          className="bg-surface p-1.5 rounded-full text-forest-accent hover:scale-110 transition-transform"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -840,7 +840,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
                     </div>
                   ))}
                   
-                  <div className="aspect-square bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center relative group hover:border-forest-primary/50 transition-colors">
+                  <div className="aspect-square bg-surface-raised rounded-lg border-2 border-dashed border-border flex items-center justify-center relative group hover:border-forest-primary/50 transition-colors">
                     <input
                       type="file"
                       multiple
@@ -868,7 +868,7 @@ export default function ProductForm({ product, onClose, onSuccess, inline = fals
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-gray-100 bg-gray-50 flex flex-col gap-4 sticky bottom-0 z-10">
+        <div className="p-6 border-t border-border bg-surface-raised flex flex-col gap-4 sticky bottom-0 z-10">
           {validationError && (
             <div className="bg-red-50 border-2 border-red-200 text-red-700 p-3 rounded-lg flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
               <AlertCircle className="w-5 h-5 flex-shrink-0" />

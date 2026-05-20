@@ -301,6 +301,22 @@ input:-webkit-autofill:active {
   background: var(--hero-overlay-gradient);
 }
 
+/* Hero CTA chips on photo overlays (high contrast on any theme) */
+.btn-hero-chip {
+  @apply inline-flex items-center justify-center bg-white text-forest-primary hover:bg-surface-raised transition-colors;
+}
+
+/* Admin shell */
+.admin-shell-bar {
+  @apply bg-surface border-b border-border sticky top-0 z-30;
+}
+.admin-panel {
+  @apply bg-surface border border-border rounded-xl shadow-sm;
+}
+.admin-toolbar {
+  @apply bg-surface-raised border-t border-border;
+}
+
 /* Profile page */
 .profile-form-grid {
   @apply grid grid-cols-1 sm:grid-cols-2 gap-4;

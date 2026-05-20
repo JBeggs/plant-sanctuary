@@ -18,12 +18,12 @@ export default function AdminActions() {
   if (!isAuthorized) return null
 
   return (
-    <div className="bg-white border-b border-gray-200 py-4 mb-6 sticky top-[73px] z-40 shadow-sm">
+    <div className="admin-shell-bar py-4 mb-6 sticky top-[73px] z-40 shadow-sm">
       <div className="container-wide">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1 md:pb-0">
             <h2 className="text-[10px] md:text-sm font-bold uppercase tracking-wider text-text-light whitespace-nowrap">Store Management</h2>
-            <div className="hidden md:block h-4 w-px bg-gray-300 mx-2"></div>
+            <div className="hidden md:block h-4 w-px bg-border mx-2"></div>
             <Link
               href="/admin/inventory"
               className="btn btn-secondary btn-sm flex items-center gap-2 whitespace-nowrap py-1.5 px-3"

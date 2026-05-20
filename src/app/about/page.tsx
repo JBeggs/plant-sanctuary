@@ -74,7 +74,7 @@ export default async function AboutPage() {
 
                 <div className="card p-6">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                    <Leaf className="w-6 h-6 text-green-600" />
+                    <Leaf className="w-6 h-6 text-forest-primary" />
                   </div>
                   <h3 className="font-semibold text-text mb-2">Sustainable Shopping</h3>
                   <p className="text-text-muted text-sm">

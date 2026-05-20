@@ -50,14 +50,14 @@ export default function PaginationNav({
         {prevPage ? (
           <Link
             href={buildUrl(basePath, searchParams, prevPage)}
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-200 bg-white text-text hover:bg-gray-50 hover:border-forest-primary/30 transition-colors"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-border bg-surface text-text hover:bg-surface-raised hover:border-forest-primary/30 transition-colors"
             aria-label="Previous page"
           >
             <ChevronLeft className="w-5 h-5" />
           </Link>
         ) : (
           <span
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-100 bg-gray-50 text-text-muted cursor-not-allowed"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-border bg-surface-raised text-text-muted cursor-not-allowed"
             aria-disabled
           >
             <ChevronLeft className="w-5 h-5" />
@@ -83,8 +83,8 @@ export default function PaginationNav({
                 href={buildUrl(basePath, searchParams, p)}
                 className={`min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-forest-primary text-white border border-forest-primary'
-                    : 'border border-gray-200 bg-white text-text hover:bg-gray-50 hover:border-forest-primary/30'
+                    ? 'bg-forest-primary text-text-inverse border border-forest-primary'
+                    : 'border border-border bg-surface text-text hover:bg-surface-raised hover:border-forest-primary/30'
                 }`}
                 aria-label={`Page ${p}`}
                 aria-current={isActive ? 'page' : undefined}
@@ -98,14 +98,14 @@ export default function PaginationNav({
         {nextPage ? (
           <Link
             href={buildUrl(basePath, searchParams, nextPage)}
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-200 bg-white text-text hover:bg-gray-50 hover:border-forest-primary/30 transition-colors"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-border bg-surface text-text hover:bg-surface-raised hover:border-forest-primary/30 transition-colors"
             aria-label="Next page"
           >
             <ChevronRight className="w-5 h-5" />
           </Link>
         ) : (
           <span
-            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-100 bg-gray-50 text-text-muted cursor-not-allowed"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-border bg-surface-raised text-text-muted cursor-not-allowed"
             aria-disabled
           >
             <ChevronRight className="w-5 h-5" />
