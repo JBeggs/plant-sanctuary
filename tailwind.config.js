@@ -43,6 +43,10 @@ module.exports = {
           DEFAULT: rgbVar('--color-on-brand'),
           muted: rgbVar('--color-on-brand-muted'),
         },
+        'brand-band': {
+          DEFAULT: rgbVar('--color-brand-band'),
+          dark: rgbVar('--color-brand-band-dark'),
+        },
         border: {
           DEFAULT: rgbVar('--color-border'),
         },

@@ -15,7 +15,7 @@ export default function FooterClient({ company, menuItems }: FooterClientProps) 
   const { contact, social } = company
 
   return (
-    <footer className="bg-forest-primary text-on-brand">
+    <footer className="bg-brand-band text-on-brand">
       <div className="container-wide">
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
@@ -106,7 +106,7 @@ export default function FooterClient({ company, menuItems }: FooterClientProps) 
           </div>
         </div>
 
-        <div className="py-6 border-t border-forest-primary-dark/50">
+        <div className="py-6 border-t border-brand-band-dark/50">
           <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
             <ThemeToggle variant="full" label="Store theme" />
             <p className="text-on-brand-muted text-sm">

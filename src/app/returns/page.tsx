@@ -4,7 +4,7 @@ export default function ReturnsPage() {
   return (
     <div className="min-h-screen bg-forest-background">
       {/* Header */}
-      <section className="py-12 bg-forest-primary text-white">
+      <section className="py-12 bg-brand-band text-on-brand">
         <div className="container-wide">
           <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
             Returns & Exchanges

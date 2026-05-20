@@ -272,7 +272,7 @@ export default async function HomePage() {
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-forest-primary to-forest-primary-dark text-white">
+      <section className="py-16 bg-gradient-to-r from-brand-band to-brand-band-dark text-on-brand">
         <div className="container-wide text-center">
           <h2 className="text-3xl md:text-4xl font-bold font-playfair mb-4">
             Join Our Community

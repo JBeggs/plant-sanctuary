@@ -113,7 +113,7 @@ export default async function RootLayout({
                   <main className="flex-1">
                     {children}
                   </main>
-                  <Suspense fallback={<div className="h-64 bg-forest-primary" />}>
+                  <Suspense fallback={<div className="h-64 bg-brand-band" />}>
                     <Footer />
                   </Suspense>
                 </div>

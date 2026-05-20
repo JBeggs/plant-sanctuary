@@ -17,7 +17,7 @@ export async function Header() {
 
   return (
     <header className="bg-surface border-b border-border sticky top-0 z-50">
-      <div className="bg-forest-primary text-on-brand">
+      <div className="bg-brand-band text-on-brand">
         <div className="container-wide">
           <div className="flex items-center justify-between py-2 text-sm gap-4">
             <div className="flex items-center space-x-4 min-w-0">

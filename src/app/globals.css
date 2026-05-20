@@ -28,6 +28,9 @@
   --color-on-brand: 220 252 231;
   --color-on-brand-muted: 187 247 208;
 
+  --color-brand-band: 34 139 34;
+  --color-brand-band-dark: 27 107 27;
+
   --color-surface: 255 255 255;
   --color-surface-raised: 243 244 246;
   --color-border: 229 231 235;
@@ -41,68 +44,74 @@
 }
 
 :root[data-theme="dark-green"] {
-  --color-forest-primary: 88 200 120;
-  --color-forest-primary-dark: 58 168 92;
-  --color-forest-background: 15 35 22;
-  --color-forest-accent: 196 148 88;
-  --color-forest-accent-dark: 160 118 64;
+  --color-forest-primary: 72 130 95;
+  --color-forest-primary-dark: 58 108 80;
+  --color-forest-background: 8 18 12;
+  --color-forest-accent: 160 130 88;
+  --color-forest-accent-dark: 130 104 68;
 
-  --color-sanctuary-primary: 72 175 105;
-  --color-sanctuary-primary-dark: 52 140 82;
-  --color-sanctuary-background: 15 35 22;
-  --color-sanctuary-accent: 196 148 88;
-  --color-sanctuary-accent-dark: 160 118 64;
+  --color-sanctuary-primary: 72 130 95;
+  --color-sanctuary-primary-dark: 58 108 80;
+  --color-sanctuary-background: 8 18 12;
+  --color-sanctuary-accent: 160 130 88;
+  --color-sanctuary-accent-dark: 130 104 68;
 
-  --color-text: 230 240 235;
-  --color-text-light: 200 215 205;
-  --color-text-muted: 160 185 170;
-  --color-text-inverse: 15 35 22;
+  --color-text: 230 235 228;
+  --color-text-light: 195 202 192;
+  --color-text-muted: 155 165 158;
+  --color-text-inverse: 8 18 12;
 
-  --color-on-brand: 220 252 231;
-  --color-on-brand-muted: 187 247 208;
+  --color-on-brand: 235 238 234;
+  --color-on-brand-muted: 175 182 172;
 
-  --color-surface: 22 48 32;
-  --color-surface-raised: 30 58 40;
-  --color-border: 45 75 55;
+  --color-brand-band: 10 20 14;
+  --color-brand-band-dark: 8 16 11;
+
+  --color-surface: 14 28 20;
+  --color-surface-raised: 18 34 26;
+  --color-border: 32 52 40;
 
   --hero-overlay-gradient: linear-gradient(
     to bottom,
-    rgb(8 22 14 / 0.75) 0%,
-    rgb(22 48 32 / 0.85) 50%,
-    rgb(8 22 14 / 0.95) 100%
+    rgb(6 14 10 / 0.88) 0%,
+    rgb(10 20 14 / 0.92) 50%,
+    rgb(6 14 10 / 0.97) 100%
   );
 }
 
 :root[data-theme="dark"] {
-  --color-forest-primary: 72 175 105;
-  --color-forest-primary-dark: 52 140 82;
-  --color-forest-background: 17 17 17;
-  --color-forest-accent: 196 148 88;
-  --color-forest-accent-dark: 160 118 64;
+  --color-forest-primary: 68 115 85;
+  --color-forest-primary-dark: 52 92 68;
+  --color-forest-background: 10 10 10;
+  --color-forest-accent: 150 125 82;
+  --color-forest-accent-dark: 120 98 64;
 
-  --color-sanctuary-primary: 72 175 105;
-  --color-sanctuary-primary-dark: 52 140 82;
-  --color-sanctuary-background: 17 17 17;
-  --color-sanctuary-accent: 196 148 88;
-  --color-sanctuary-accent-dark: 160 118 64;
+  --color-sanctuary-primary: 68 115 85;
+  --color-sanctuary-primary-dark: 52 92 68;
+  --color-sanctuary-background: 10 10 10;
+  --color-sanctuary-accent: 150 125 82;
+  --color-sanctuary-accent-dark: 120 98 64;
 
-  --color-text: 245 245 245;
-  --color-text-light: 200 200 200;
-  --color-text-muted: 160 160 160;
-  --color-text-inverse: 17 17 17;
+  --color-text: 240 240 240;
+  --color-text-light: 195 195 195;
+  --color-text-muted: 155 155 155;
+  --color-text-inverse: 10 10 10;
 
-  --color-on-brand: 230 245 235;
-  --color-on-brand-muted: 180 200 190;
+  --color-on-brand: 240 240 240;
+  --color-on-brand-muted: 165 165 165;
 
-  --color-surface: 28 28 28;
-  --color-surface-raised: 38 38 38;
-  --color-border: 55 55 55;
+  --color-brand-band: 12 12 12;
+  --color-brand-band-dark: 8 8 8;
+
+  --color-surface: 18 18 18;
+  --color-surface-raised: 24 24 24;
+  --color-border: 42 42 42;
 
   --hero-overlay-gradient: linear-gradient(
     to bottom,
-    rgb(10 10 10 / 0.8) 0%,
-    rgb(28 28 28 / 0.88) 50%,
-    rgb(10 10 10 / 0.95) 100%
+    rgb(8 8 8 / 0.9) 0%,
+    rgb(14 14 14 / 0.94) 50%,
+    rgb(8 8 8 / 0.98) 100%
   );
 }
 

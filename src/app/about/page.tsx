@@ -102,7 +102,7 @@ export default async function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-forest-primary text-on-brand">
+      <section className="py-16 bg-brand-band text-on-brand">
         <div className="container-wide text-center">
           <h2 className="text-3xl font-bold font-playfair mb-4">
             Ready to Explore?
