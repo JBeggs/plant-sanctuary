@@ -10,6 +10,7 @@ import { newsApi } from '@/lib/api'
 import { ensureAbsoluteImageUrl } from '@/lib/image-utils'
 import { HEROABLE_PAGES } from '@/lib/hero-pages'
 import PageHeroEditor from '@/components/hero/PageHeroEditor'
+import ArticleDisplaySettingsForm from '@/components/admin/ArticleDisplaySettingsForm'
 import type { PageHero } from '@/lib/page-hero'
 
 type ApiImage = { file_url?: string | null; url?: string | null } | null | undefined
@@ -137,6 +138,7 @@ export default function BrandingClient() {
           </div>
         ) : (
           <div className="space-y-6">
+            <ArticleDisplaySettingsForm />
             {HEROABLE_PAGES.map((page) => (
               <PageHeroEditor
                 key={page.slug}

@@ -1,12 +1,16 @@
 import Link from 'next/link'
 import { serverEcommerceApi, serverNewsApi } from '@/lib/api-server'
+import {
+  filterArticlesByDisplaySettings,
+  getArticleDisplaySettings,
+} from '@/lib/article-display-settings'
 import { getCompany } from '@/lib/company'
 import { Product, Article } from '@/lib/types'
 import { ArrowRight, Leaf, Home, Sprout } from 'lucide-react'
 import PageHero from '@/components/hero/PageHero'
 import DefaultHomeHero from '@/components/home/DefaultHomeHero'
 
-async function getHomeData() {
+async function getHomeData(displaySettings: Awaited<ReturnType<typeof getArticleDisplaySettings>>) {
   try {
     /**
      * One bad fetch should NOT zero every shelf.
@@ -44,13 +48,16 @@ async function getHomeData() {
     const indoorProducts = Array.isArray(indoorData) ? indoorData : (indoorData as any)?.data || (indoorData as any)?.results || []
     const succulentsProducts = Array.isArray(succulentsData) ? succulentsData : (succulentsData as any)?.data || (succulentsData as any)?.results || []
     const articles = Array.isArray(articlesData) ? articlesData : (articlesData as any)?.data || (articlesData as any)?.results || []
+    const latestArticles = displaySettings.homeEnabled
+      ? filterArticlesByDisplaySettings(articles as Article[], displaySettings, 'home')
+      : []
 
     return {
       featuredProducts: products.filter((p: Product) => p.featured).slice(0, 8),
       allProducts: products.slice(0, 8),
       indoorProducts: indoorProducts.filter((p: Product) => p.status !== 'archived').slice(0, 6),
       succulentsProducts: succulentsProducts.filter((p: Product) => p.status !== 'archived').slice(0, 6),
-      latestArticles: articles.slice(0, 3),
+      latestArticles,
     }
   } catch (error) {
     console.error('Error fetching home data:', error)
@@ -65,7 +72,8 @@ async function getHomeData() {
 }
 
 export default async function HomePage() {
-  const [company, homeData] = await Promise.all([getCompany(), getHomeData()])
+  const [company, displaySettings] = await Promise.all([getCompany(), getArticleDisplaySettings()])
+  const homeData = await getHomeData(displaySettings)
   const { featuredProducts, allProducts, indoorProducts, succulentsProducts, latestArticles } = homeData
   const displayProducts = featuredProducts.length > 0 ? featuredProducts : allProducts
 

@@ -1,5 +1,9 @@
 import Link from 'next/link'
 import { serverNewsApi } from '@/lib/api-server'
+import {
+  filterArticlesByDisplaySettings,
+  getArticleDisplaySettings,
+} from '@/lib/article-display-settings'
 import { Article } from '@/lib/types'
 import { Calendar, User, ArrowRight } from 'lucide-react'
 import PageHero from '@/components/hero/PageHero'
@@ -15,7 +19,15 @@ async function getArticles() {
 }
 
 export default async function ArticlesPage() {
-  const articles = await getArticles()
+  const [rawArticles, displaySettings] = await Promise.all([
+    getArticles(),
+    getArticleDisplaySettings(),
+  ])
+  const articles = filterArticlesByDisplaySettings(
+    rawArticles as Article[],
+    displaySettings,
+    'articles',
+  )
 
   return (
     <div className="min-h-screen bg-forest-background">
