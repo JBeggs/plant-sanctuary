@@ -834,6 +834,22 @@ export const newsApi = {
     delete: (id: string) => apiClient.delete(`/news/site-settings/${id}/`),
   },
 
+  pageHeroes: {
+    list: () => apiClient.get('/news/page-heroes/'),
+    listForPage: (pageSlug: string) =>
+      apiClient.get(`/news/page-heroes/?page_slug=${encodeURIComponent(pageSlug)}`),
+    create: (data: {
+      page_slug: string
+      image_id?: string | null
+      title?: string
+      subtitle?: string
+      enabled?: boolean
+    }) => apiClient.post('/news/page-heroes/', data),
+    update: (id: string, data: Record<string, unknown>) =>
+      apiClient.patch(`/news/page-heroes/${id}/`, data),
+    delete: (id: string) => apiClient.delete(`/news/page-heroes/${id}/`),
+  },
+
   profile: {
     get: () => apiClient.get('/news/profiles/me/'),
     update: (data: any) => apiClient.put('/news/profiles/me/', data),
@@ -916,6 +932,16 @@ export const ecommerceApi = {
   companies: {
     get: (id: string) => apiClient.get(`/v1/companies/${id}/`),
     update: (id: string, data: any) => apiClient.patch(`/v1/companies/${id}/`, data),
+  },
+
+  countries: {
+    list: () => apiClient.get('/v1/countries/'),
+  },
+
+  integrationSettings: {
+    getMe: () => apiClient.get('/v1/integration-settings/me/'),
+    update: (id: string, data: Record<string, unknown>) =>
+      apiClient.put(`/v1/integration-settings/${id}/`, data),
   },
 
   // Yoco payment integration

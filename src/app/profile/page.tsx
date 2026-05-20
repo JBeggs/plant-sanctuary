@@ -5,41 +5,45 @@ import { useAuth } from '@/contexts/AuthContext'
 import { ecommerceApi, newsApi, getApiErrorMessage } from '@/lib/api'
 import { Order, Profile } from '@/lib/types'
 import { useToast } from '@/contexts/ToastContext'
-import { Package, User, Mail, Calendar, MapPin, ChevronRight, Loader2, Save, Phone, Building2, Clock, Settings } from 'lucide-react'
+import {
+  Package,
+  User,
+  Mail,
+  Calendar,
+  ChevronRight,
+  Loader2,
+  Save,
+  Building2,
+  Settings,
+  UserCircle,
+  ShoppingBag,
+  Globe,
+  Zap,
+} from 'lucide-react'
 import Link from 'next/link'
+import ProfileOwnerTabs from './ProfileOwnerTabs'
+
+type OwnerTabId = 'business' | 'site' | 'integrations'
 
 export default function ProfilePage() {
   const { user, profile, companyId, refreshProfile, loading: authLoading } = useAuth()
+  const isBusinessOwner = profile?.role === 'business_owner' && !!companyId
+  type TabId = 'personal' | 'orders' | OwnerTabId
+  const [activeTab, setActiveTab] = useState<TabId>(isBusinessOwner ? 'business' : 'personal')
   const [orders, setOrders] = useState<Order[]>([])
   const [loadingOrders, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
-  const [company, setCompany] = useState<Record<string, any> | null>(null)
-  const [companyForm, setCompanyForm] = useState({
-    logo: '',
-    name: '',
-    phone: '',
-    website: '',
-    address_street: '',
-    address_city: '',
-    address_province: '',
-    address_postal_code: '',
-    address_country: 'ZA',
-    description: '',
-    seo_title: '',
-    seo_description: '',
-    seo_keywords: '',
-    google_analytics_id: '',
-    facebook_pixel_id: '',
-    legal_name: '',
-    registration_number: '',
-    tax_number: '',
-    business_hours: {} as Record<string, string>,
-  })
-  const [updatingCompany, setUpdatingCompany] = useState(false)
-  const [siteSettings, setSiteSettings] = useState<Record<string, { id: string; value: string; type: string }>>({})
-  const [siteSettingsValues, setSiteSettingsValues] = useState<Record<string, string>>({})
-  const [updatingSiteSettings, setUpdatingSiteSettings] = useState(false)
   const { showSuccess, showError } = useToast()
+
+  const tabs = (
+    [
+      { id: 'personal' as const, label: 'Personal', icon: <UserCircle className="w-4 h-4" />, show: true },
+      { id: 'orders' as const, label: 'Orders', icon: <ShoppingBag className="w-4 h-4" />, show: !isBusinessOwner },
+      { id: 'business' as const, label: 'Business', icon: <Building2 className="w-4 h-4" />, show: isBusinessOwner },
+      { id: 'site' as const, label: 'Site Settings', icon: <Globe className="w-4 h-4" />, show: isBusinessOwner },
+      { id: 'integrations' as const, label: 'Integrations', icon: <Zap className="w-4 h-4" />, show: isBusinessOwner },
+    ] satisfies { id: TabId; label: string; icon: React.ReactNode; show: boolean }[]
+  ).filter((t) => t.show)
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -47,7 +51,12 @@ export default function ProfilePage() {
     avatar_url: '',
   })
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
-  const [uploadingLogo, setUploadingLogo] = useState(false)
+
+  useEffect(() => {
+    if (activeTab === 'orders' && isBusinessOwner) {
+      setActiveTab('business')
+    }
+  }, [isBusinessOwner, activeTab])
 
   useEffect(() => {
     if (user) {
@@ -63,65 +72,6 @@ export default function ProfilePage() {
       fetchOrders()
     }
   }, [profile, user])
-
-  useEffect(() => {
-    if (companyId) {
-      newsApi.siteSettings.list().then((data: any) => {
-        const arr = Array.isArray(data) ? data : (data?.results || [])
-        const byKey: Record<string, { id: string; value: string; type: string }> = {}
-        const vals: Record<string, string> = {}
-        arr.forEach((s: any) => {
-          byKey[s.key] = { id: s.id, value: s.value ?? '', type: s.type || 'string' }
-          vals[s.key] = s.value ?? ''
-        })
-        setSiteSettings(byKey)
-        setSiteSettingsValues(vals)
-      }).catch(() => {})
-    }
-  }, [companyId])
-
-  useEffect(() => {
-    if (companyId) {
-      ecommerceApi.companies.get(companyId).then((c: any) => {
-        setCompany(c)
-        setCompanyForm({
-          logo: c?.logo?.file_url || c?.logo_url || '',
-          name: c?.name || '',
-          phone: c?.phone || '',
-          website: c?.website || '',
-          address_street: c?.address_street || '',
-          address_city: c?.address_city || '',
-          address_province: c?.address_province || '',
-          address_postal_code: c?.address_postal_code || '',
-          address_country: c?.address_country || 'ZA',
-          description: c?.description || '',
-          seo_title: c?.seo_title || '',
-          seo_description: c?.seo_description || '',
-          seo_keywords: c?.seo_keywords || '',
-          google_analytics_id: c?.google_analytics_id || '',
-          facebook_pixel_id: c?.facebook_pixel_id || '',
-          legal_name: c?.legal_name || '',
-          registration_number: c?.registration_number || '',
-          tax_number: c?.tax_number || '',
-          business_hours: (() => {
-            const h = c?.business_hours
-            if (!h || typeof h !== 'object') return {}
-            const out: Record<string, string> = {}
-            for (const [day, val] of Object.entries(h)) {
-              if (typeof val === 'string') out[day] = val
-              else if (val && typeof val === 'object' && !Array.isArray(val)) {
-                const o = val as { open?: string; close?: string; closed?: boolean }
-                if (o.closed) out[day] = 'Closed'
-                else if (o.open && o.close) out[day] = `${o.open} - ${o.close}`
-                else out[day] = ''
-              } else out[day] = ''
-            }
-            return out
-          })(),
-        })
-      }).catch(() => {})
-    }
-  }, [companyId])
 
   const fetchOrders = async () => {
     try {
@@ -151,54 +101,6 @@ export default function ProfilePage() {
     }
   }
 
-  const handleUpdateCompany = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!companyId) return
-    setUpdatingCompany(true)
-    try {
-      const updated = await ecommerceApi.companies.update(companyId, {
-        name: companyForm.name.trim(),
-        phone: companyForm.phone || '',
-        website: companyForm.website || '',
-        address_street: companyForm.address_street || '',
-        address_city: companyForm.address_city || '',
-        address_province: companyForm.address_province || '',
-        address_postal_code: companyForm.address_postal_code || '',
-        address_country: companyForm.address_country || 'ZA',
-        description: companyForm.description || '',
-        seo_title: companyForm.seo_title || undefined,
-        seo_description: companyForm.seo_description || undefined,
-        seo_keywords: companyForm.seo_keywords || undefined,
-        google_analytics_id: companyForm.google_analytics_id || undefined,
-        facebook_pixel_id: companyForm.facebook_pixel_id || undefined,
-        legal_name: companyForm.legal_name || '',
-        registration_number: companyForm.registration_number || '',
-        tax_number: companyForm.tax_number || '',
-        business_hours: (() => {
-          const parsed: Record<string, any> = {}
-          for (const [day, timeString] of Object.entries(companyForm.business_hours || {})) {
-            if (!timeString || timeString.toLowerCase() === 'closed') parsed[day] = { closed: true }
-            else if (timeString.includes(' - ')) {
-              const [open, close] = timeString.split(' - ')
-              parsed[day] = { open: open.trim(), close: close.trim() }
-            } else parsed[day] = timeString
-          }
-          return parsed
-        })(),
-      })
-      const data = (updated as any)?.data ?? updated
-      setCompany(data)
-      if (data && typeof (data as any).name === 'string') {
-        setCompanyForm((f) => ({ ...f, name: (data as any).name }))
-      }
-      showSuccess('Business profile updated')
-    } catch (error: any) {
-      showError(getApiErrorMessage(error, 'Failed to update business profile'))
-    } finally {
-      setUpdatingCompany(false)
-    }
-  }
-
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!profile) return // Customers have no News Profile; patch would 404
     const file = e.target.files?.[0]
@@ -220,32 +122,6 @@ export default function ProfilePage() {
       showError(getApiErrorMessage(error, 'Failed to upload profile picture'))
     } finally {
       setUploadingAvatar(false)
-      e.target.value = ''
-    }
-  }
-
-  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file || !file.type.startsWith('image/')) {
-      showError('Please select an image file')
-      return
-    }
-    if (!companyId) return
-    setUploadingLogo(true)
-    try {
-      const uploaded: any = await newsApi.media.upload(file, { media_type: 'image' })
-      const url = uploaded?.file_url
-      const id = uploaded?.id
-      if (id) {
-        await ecommerceApi.companies.update(companyId, { logo_id: id })
-        setCompanyForm((f) => ({ ...f, logo: url || '' }))
-        setCompany((c) => (c ? { ...c, logo: url ? { id, file_url: url } : null, logo_url: url || '' } : null))
-        showSuccess('Logo updated')
-      }
-    } catch (error: any) {
-      showError(getApiErrorMessage(error, 'Failed to upload logo'))
-    } finally {
-      setUploadingLogo(false)
       e.target.value = ''
     }
   }
@@ -278,6 +154,24 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-forest-background py-12">
       <div className="container-wide">
+        <div className="flex flex-wrap gap-2 mb-8 border-b border-gray-200 pb-4">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              className={
+                'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-colors ' +
+                (activeTab === tab.id
+                  ? 'bg-forest-primary text-white'
+                  : 'bg-white text-text-muted hover:text-forest-primary border border-gray-200')
+              }
+            >
+              {tab.icon}
+              {tab.label}
+            </button>
+          ))}
+        </div>
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Sidebar: Profile Info */}
           <div className="lg:col-span-1 space-y-6">
@@ -347,296 +241,15 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {companyId && company && (
-                <>
-                  <div className="mt-8 pt-6 border-t border-gray-100">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted mb-4 flex items-center gap-2">
-                      <Building2 className="w-4 h-4" />
-                      Business Profile
-                    </h3>
-                    <form onSubmit={handleUpdateCompany} className="space-y-4">
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Company Name</label>
-                        <input
-                          type="text"
-                          value={companyForm.name}
-                          onChange={(e) => setCompanyForm({ ...companyForm, name: e.target.value })}
-                          className="form-input"
-                          placeholder="Your store name"
-                          required
-                        />
-                        <p className="text-xs text-text-muted">Shown in the website header, footer, browser metadata, and fallback logo monogram.</p>
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Company Logo</label>
-                        <div className="flex items-center gap-4">
-                          {companyForm.logo && (
-                            <img src={companyForm.logo} alt="Logo" className="w-16 h-16 rounded object-contain border border-gray-200" />
-                          )}
-                          <label className="btn btn-secondary cursor-pointer flex items-center gap-2">
-                            {uploadingLogo ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upload'}
-                            <input type="file" accept="image/*" className="sr-only" onChange={handleLogoUpload} disabled={uploadingLogo} />
-                          </label>
-                        </div>
-                        <p className="text-xs text-text-muted mt-1">Click to upload an image</p>
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Phone</label>
-                        <input
-                          type="tel"
-                          value={companyForm.phone}
-                          onChange={(e) => setCompanyForm({ ...companyForm, phone: e.target.value })}
-                          className="form-input"
-                          placeholder="+27 11 123 4567"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Website</label>
-                        <input
-                          type="url"
-                          value={companyForm.website}
-                          onChange={(e) => setCompanyForm({ ...companyForm, website: e.target.value })}
-                          className="form-input"
-                          placeholder="https://example.com"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted flex items-center gap-1"><MapPin className="w-3 h-3" />Address</label>
-                        <textarea
-                          value={companyForm.address_street}
-                          onChange={(e) => setCompanyForm({ ...companyForm, address_street: e.target.value })}
-                          className="form-input min-h-[60px] resize-none"
-                          placeholder="Street address"
-                        />
-                        <div className="grid grid-cols-2 gap-2 mt-1">
-                          <input
-                            type="text"
-                            value={companyForm.address_city}
-                            onChange={(e) => setCompanyForm({ ...companyForm, address_city: e.target.value })}
-                            className="form-input"
-                            placeholder="City"
-                          />
-                          <input
-                            type="text"
-                            value={companyForm.address_province}
-                            onChange={(e) => setCompanyForm({ ...companyForm, address_province: e.target.value })}
-                            className="form-input"
-                            placeholder="Province"
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 mt-1">
-                          <input
-                            type="text"
-                            value={companyForm.address_postal_code}
-                            onChange={(e) => setCompanyForm({ ...companyForm, address_postal_code: e.target.value })}
-                            className="form-input"
-                            placeholder="Postal code"
-                          />
-                          <input
-                            type="text"
-                            value={companyForm.address_country}
-                            onChange={(e) => setCompanyForm({ ...companyForm, address_country: e.target.value })}
-                            className="form-input"
-                            placeholder="Country (e.g. ZA)"
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Description</label>
-                        <textarea
-                          value={companyForm.description}
-                          onChange={(e) => setCompanyForm({ ...companyForm, description: e.target.value })}
-                          className="form-input min-h-[60px] resize-none"
-                          placeholder="About your business..."
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Legal name</label>
-                        <input
-                          type="text"
-                          value={companyForm.legal_name}
-                          onChange={(e) => setCompanyForm({ ...companyForm, legal_name: e.target.value })}
-                          className="form-input"
-                          placeholder="Registered business name"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Reg. number</label>
-                          <input
-                            type="text"
-                            value={companyForm.registration_number}
-                            onChange={(e) => setCompanyForm({ ...companyForm, registration_number: e.target.value })}
-                            className="form-input"
-                            placeholder="Registration no."
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Tax number</label>
-                          <input
-                            type="text"
-                            value={companyForm.tax_number}
-                            onChange={(e) => setCompanyForm({ ...companyForm, tax_number: e.target.value })}
-                            className="form-input"
-                            placeholder="Tax/VAT no."
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-text-muted flex items-center gap-1"><Clock className="w-3 h-3" />Business Hours</label>
-                        <p className="text-xs text-text-muted mb-2">e.g. 9am - 5pm or Closed</p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => (
-                            <div key={day} className="flex items-center gap-2">
-                              <span className="text-xs font-medium text-text-muted w-24 capitalize">{day}</span>
-                              <input
-                                type="text"
-                                value={companyForm.business_hours?.[day] || ''}
-                                onChange={(e) => setCompanyForm({
-                                  ...companyForm,
-                                  business_hours: { ...companyForm.business_hours, [day]: e.target.value },
-                                })}
-                                className="form-input flex-1"
-                                placeholder="9am - 5pm"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="space-y-4 pt-4 border-t border-gray-100">
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-text-muted">SEO</h4>
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">SEO Title</label>
-                          <input
-                            type="text"
-                            value={companyForm.seo_title}
-                            onChange={(e) => setCompanyForm({ ...companyForm, seo_title: e.target.value })}
-                            className="form-input"
-                            placeholder="Page title for search engines"
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">SEO Description</label>
-                          <textarea
-                            value={companyForm.seo_description}
-                            onChange={(e) => setCompanyForm({ ...companyForm, seo_description: e.target.value })}
-                            className="form-input min-h-[60px] resize-none"
-                            placeholder="Meta description for search results"
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">SEO Keywords</label>
-                          <input
-                            type="text"
-                            value={companyForm.seo_keywords}
-                            onChange={(e) => setCompanyForm({ ...companyForm, seo_keywords: e.target.value })}
-                            className="form-input"
-                            placeholder="keyword1, keyword2, keyword3"
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-4 pt-4 border-t border-gray-100">
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-text-muted">Analytics</h4>
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Google Analytics ID</label>
-                          <input
-                            type="text"
-                            value={companyForm.google_analytics_id}
-                            onChange={(e) => setCompanyForm({ ...companyForm, google_analytics_id: e.target.value })}
-                            className="form-input"
-                            placeholder="G-XXXXXXXXXX"
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Facebook Pixel ID</label>
-                          <input
-                            type="text"
-                            value={companyForm.facebook_pixel_id}
-                            onChange={(e) => setCompanyForm({ ...companyForm, facebook_pixel_id: e.target.value })}
-                            className="form-input"
-                            placeholder="Facebook Pixel ID"
-                          />
-                        </div>
-                      </div>
-                      <button
-                        type="submit"
-                        disabled={updatingCompany}
-                        className="btn btn-secondary w-full flex items-center justify-center gap-2"
-                      >
-                        {updatingCompany ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                        Save Business Profile
-                      </button>
-                    </form>
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t border-gray-100">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted mb-4 flex items-center gap-2">
-                      <Settings className="w-4 h-4" />
-                      Site Settings
-                    </h3>
-                    <p className="text-xs text-text-muted mb-4">Social links shown in footer. Contact info comes from Business Profile above.</p>
-                    <form onSubmit={async (e) => {
-                      e.preventDefault()
-                      setUpdatingSiteSettings(true)
-                      try {
-                        const keys = ['social_facebook', 'social_twitter', 'social_instagram']
-                        for (const key of keys) {
-                          const val = siteSettingsValues[key] ?? ''
-                          const existing = siteSettings[key]
-                          if (existing) {
-                            if (existing.value !== val) {
-                              await newsApi.siteSettings.update(existing.id, { key, value: val, type: 'string', is_public: true })
-                            }
-                          } else if (val) {
-                            await newsApi.siteSettings.create({ key, value: val, type: 'string', is_public: true })
-                          }
-                        }
-                        const data: any = await newsApi.siteSettings.list()
-                        const arr = Array.isArray(data) ? data : (data?.results || [])
-                        const byKey: Record<string, { id: string; value: string; type: string }> = {}
-                        const vals: Record<string, string> = {}
-                        arr.forEach((s: any) => {
-                          byKey[s.key] = { id: s.id, value: s.value ?? '', type: s.type || 'string' }
-                          vals[s.key] = s.value ?? ''
-                        })
-                        setSiteSettings(byKey)
-                        setSiteSettingsValues(vals)
-                        showSuccess('Site settings updated')
-                      } catch (err: any) {
-                        showError(getApiErrorMessage(err, 'Failed to update site settings'))
-                      } finally {
-                        setUpdatingSiteSettings(false)
-                      }
-                    }} className="space-y-4">
-                      {[
-                        { key: 'social_facebook', label: 'Facebook URL' },
-                        { key: 'social_twitter', label: 'Twitter/X URL' },
-                        { key: 'social_instagram', label: 'Instagram URL' },
-                      ].map(({ key, label }) => (
-                        <div key={key} className="space-y-1">
-                          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">{label}</label>
-                          <input
-                            type="url"
-                            value={siteSettingsValues[key] ?? ''}
-                            onChange={(e) => setSiteSettingsValues((v) => ({ ...v, [key]: e.target.value }))}
-                            className="form-input"
-                            placeholder={`https://${key.replace('social_', '')}.com/...`}
-                          />
-                        </div>
-                      ))}
-                      <button type="submit" disabled={updatingSiteSettings} className="btn btn-secondary w-full flex items-center justify-center gap-2">
-                        {updatingSiteSettings ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                        Save Site Settings
-                      </button>
-                    </form>
-                  </div>
-                </>
-              )}
             </div>
           </div>
 
-          {/* Main Content: Orders */}
           <div className="lg:col-span-2 space-y-6">
+            {isBusinessOwner && (activeTab === 'business' || activeTab === 'site' || activeTab === 'integrations') && companyId ? (
+              <ProfileOwnerTabs activeTab={activeTab} companyId={companyId} />
+            ) : null}
+
+            {(!isBusinessOwner || activeTab === 'orders') && (
             <div className="card p-6">
               <h2 className="text-xl font-bold font-playfair text-text mb-6 flex items-center gap-2">
                 <Package className="w-6 h-6 text-forest-primary" />
@@ -686,6 +299,7 @@ export default function ProfilePage() {
                 </div>
               )}
             </div>
+            )}
           </div>
         </div>
       </div>

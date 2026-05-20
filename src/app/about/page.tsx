@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { serverNewsApi } from '@/lib/api-server'
 import { Clock, Sparkles, Heart, Leaf } from 'lucide-react'
+import PageHero from '@/components/hero/PageHero'
 
 async function getAboutContent() {
   try {
@@ -19,19 +20,7 @@ export default async function AboutPage() {
 
   return (
     <div className="min-h-screen bg-forest-background">
-      {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-forest-primary to-forest-primary-dark text-white">
-        <div className="container-wide">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold font-playfair mb-6">
-              Our Story
-            </h1>
-            <p className="text-xl text-green-100">
-              Where the charm of yesterday meets the convenience of today
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero pageSlug="about" fallback={null} />
 
       {/* Main Content */}
       <section className="py-16">

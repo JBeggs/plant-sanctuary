@@ -3,7 +3,7 @@
  * Uses mocked fetch; aligns with Django API response shapes
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { authApi, apiClient } from './api';
+import { authApi, apiClient, newsApi } from './api';
 
 const API_BASE = 'http://localhost:8000/api';
 const COMPANY_SLUG = 'plant-sanctuary';
@@ -227,5 +227,37 @@ describe('apiClient', () => {
         })
       );
     });
+  });
+});
+
+describe('newsApi.pageHeroes', () => {
+  beforeEach(() => {
+    authApi.logout();
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
+
+  it('list GETs /news/page-heroes/', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(createMockResponse({ results: [] }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await newsApi.pageHeroes.list();
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${API_BASE}/news/page-heroes/`,
+      expect.objectContaining({ method: 'GET' }),
+    );
+  });
+
+  it('listForPage encodes page_slug query', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(createMockResponse([]));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await newsApi.pageHeroes.listForPage('home');
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${API_BASE}/news/page-heroes/?page_slug=home`,
+      expect.objectContaining({ method: 'GET' }),
+    );
   });
 });

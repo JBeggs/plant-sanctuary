@@ -1,38 +1,36 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react'
+import { BrandLogo } from './BrandLogo'
+import type { Company } from '@/lib/company-shared'
 
 interface FooterClientProps {
-  siteName: string
-  description: string
-  contact: {
-    address: string
-    phone: string
-    email: string
-  }
-  social: {
-    facebook: string
-    twitter: string
-    instagram: string
-  }
+  company: Company
   menuItems: Array<{ title: string; href: string }>
 }
 
-export default function FooterClient({ siteName, description, contact, social, menuItems }: FooterClientProps) {
+export default function FooterClient({ company, menuItems }: FooterClientProps) {
+  const { contact, social } = company
+
   return (
     <footer className="bg-forest-primary text-white">
       <div className="container-wide">
-        {/* Main Footer Content */}
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About Section */}
           <div>
             <Link href="/" className="flex items-center space-x-2 mb-4 group">
-              <Image src="/logo.webp" alt="" width={40} height={40} className="rounded-lg object-cover flex-shrink-0" />
-              <span className="font-bold font-playfair text-lg group-hover:text-forest-accent transition-colors">{siteName}</span>
+              <BrandLogo
+                logoUrl={company.logoUrl}
+                companyName={company.name}
+                width={40}
+                height={40}
+                className="rounded-lg object-cover flex-shrink-0"
+              />
+              <span className="font-bold font-playfair text-lg group-hover:text-forest-accent transition-colors">
+                {company.name}
+              </span>
             </Link>
-            <p className="text-green-100 mb-4">{description}</p>
+            <p className="text-green-100 mb-4">{company.description}</p>
             <div className="flex space-x-4">
               {social.facebook && (
                 <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="text-green-200 hover:text-forest-accent transition-colors">
@@ -52,7 +50,6 @@ export default function FooterClient({ siteName, description, contact, social, m
             </div>
           </div>
 
-          {/* Shop Links */}
           <div>
             <h3 className="font-semibold font-playfair text-lg mb-4">Shop</h3>
             <ul className="space-y-2">
@@ -67,7 +64,6 @@ export default function FooterClient({ siteName, description, contact, social, m
             </ul>
           </div>
 
-          {/* Customer Service */}
           <div>
             <h3 className="font-semibold font-playfair text-lg mb-4">Customer Service</h3>
             <ul className="space-y-2">
@@ -79,7 +75,6 @@ export default function FooterClient({ siteName, description, contact, social, m
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h3 className="font-semibold font-playfair text-lg mb-4">Contact</h3>
             <div className="space-y-3">
@@ -102,8 +97,7 @@ export default function FooterClient({ siteName, description, contact, social, m
                 </div>
               )}
             </div>
-            
-            {/* Payment Methods */}
+
             <div className="mt-6">
               <h4 className="font-semibold text-sm mb-2">Secure Payments</h4>
               <p className="text-green-200 text-sm">Powered by Yoco</p>
@@ -111,11 +105,10 @@ export default function FooterClient({ siteName, description, contact, social, m
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="py-6 border-t border-green-700">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-green-200 text-sm">
-              © {new Date().getFullYear()} {siteName}. All rights reserved.
+              © {new Date().getFullYear()} {company.name}. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="/privacy" className="text-green-200 hover:text-forest-accent text-sm transition-colors">Privacy Policy</Link>

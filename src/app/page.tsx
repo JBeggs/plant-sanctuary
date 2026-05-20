@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import { serverEcommerceApi, serverNewsApi } from '@/lib/api-server'
+import { getCompany } from '@/lib/company'
 import { Product, Article } from '@/lib/types'
-import { ArrowRight, Leaf, BookOpen, Home, Sprout } from 'lucide-react'
+import { ArrowRight, Leaf, Home, Sprout } from 'lucide-react'
+import PageHero from '@/components/hero/PageHero'
+import DefaultHomeHero from '@/components/home/DefaultHomeHero'
 
 async function getHomeData() {
   try {
@@ -62,43 +65,13 @@ async function getHomeData() {
 }
 
 export default async function HomePage() {
-  const { featuredProducts, allProducts, indoorProducts, succulentsProducts, latestArticles } = await getHomeData()
+  const [company, homeData] = await Promise.all([getCompany(), getHomeData()])
+  const { featuredProducts, allProducts, indoorProducts, succulentsProducts, latestArticles } = homeData
   const displayProducts = featuredProducts.length > 0 ? featuredProducts : allProducts
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-forest-primary to-forest-primary-dark text-white py-20">
-        <div className="container-wide">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-playfair mb-6">
-              Bring Nature Home
-            </h1>
-            <p className="text-xl text-green-100 mb-8">
-              Discover beautiful plants and expert care guides. 
-              Every plant deserves a sanctuary—create yours today.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/products" className="btn bg-forest-accent text-white hover:bg-forest-accent-dark">
-                <Leaf className="w-5 h-5 mr-2" />
-                Shop Plants
-              </Link>
-              <Link href="/products?tags=indoor" className="btn bg-white text-forest-primary hover:bg-gray-100">
-                <Home className="w-5 h-5 mr-2" />
-                Indoor
-              </Link>
-              <Link href="/products?tags=succulents" className="btn bg-white text-forest-primary hover:bg-gray-100">
-                <Sprout className="w-5 h-5 mr-2" />
-                Succulents
-              </Link>
-              <Link href="/articles" className="btn bg-white text-forest-primary hover:bg-gray-100">
-                <BookOpen className="w-5 h-5 mr-2" />
-                Care Guides
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero pageSlug="home" fallback={<DefaultHomeHero company={company} />} />
 
       {/* Featured Plants Section */}
       {displayProducts.length > 0 && (

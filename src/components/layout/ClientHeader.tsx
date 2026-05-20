@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ShoppingCart, LogOut } from 'lucide-react'
+import { ShoppingCart, LogOut, Palette, ClipboardList } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCart } from '@/contexts/CartContext'
 import { useMounted } from '@/hooks/useMounted'
@@ -11,6 +11,7 @@ export default function ClientHeader() {
   const { user, profile, signOut, loading: authLoading } = useAuth()
   const { itemCount } = useCart()
   const mounted = useMounted()
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'business_owner'
 
   if (!mounted || authLoading) {
     return (
@@ -37,7 +38,23 @@ export default function ClientHeader() {
         </Link>
       )}
 
-          {user ? (
+          {user && isAdmin ? (
+        <div className="hidden lg:flex items-center gap-4 mr-2">
+          <Link href="/admin/inventory" className="text-sm font-medium text-text hover:text-forest-primary transition-colors">
+            Inventory
+          </Link>
+          <Link href="/admin/branding" className="text-sm font-medium text-text hover:text-forest-primary transition-colors flex items-center gap-1">
+            <Palette className="w-4 h-4" />
+            Branding
+          </Link>
+          <Link href="/admin/orders" className="text-sm font-medium text-text hover:text-forest-primary transition-colors flex items-center gap-1">
+            <ClipboardList className="w-4 h-4" />
+            Orders
+          </Link>
+        </div>
+      ) : null}
+
+      {user ? (
         <div className="flex items-center space-x-3" data-cy="header-user">
           <Link
             href="/profile"

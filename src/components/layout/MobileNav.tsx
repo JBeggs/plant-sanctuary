@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, X, ShoppingCart, User } from 'lucide-react'
+import { Menu, X, ShoppingCart, User, Package, Palette, ClipboardList } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useMounted } from '@/hooks/useMounted'
 import { getProfileDisplayName, ProfileNavAvatar } from '@/components/layout/ProfileNavAvatar'
@@ -16,6 +16,7 @@ export function MobileNav({ menuItems }: MobileNavProps) {
   const { user, profile, signOut } = useAuth()
   const displayName = getProfileDisplayName(profile, user)
   const mounted = useMounted()
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'business_owner'
 
   return (
     <div className="md:hidden">
@@ -63,6 +64,23 @@ export function MobileNav({ menuItems }: MobileNavProps) {
                   {item.title}
                 </Link>
               ))}
+              {mounted && isAdmin ? (
+                <div className="border-t border-gray-200 pt-4 space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">Admin</p>
+                  <Link href="/admin/inventory" className="nav-link flex items-center gap-2 py-2" onClick={() => setIsOpen(false)}>
+                    <Package className="w-5 h-5 shrink-0" />
+                    Inventory
+                  </Link>
+                  <Link href="/admin/branding" className="nav-link flex items-center gap-2 py-2" onClick={() => setIsOpen(false)}>
+                    <Palette className="w-5 h-5 shrink-0" />
+                    Branding &amp; Heroes
+                  </Link>
+                  <Link href="/admin/orders" className="nav-link flex items-center gap-2 py-2" onClick={() => setIsOpen(false)}>
+                    <ClipboardList className="w-5 h-5 shrink-0" />
+                    Orders
+                  </Link>
+                </div>
+              ) : null}
               <div className="border-t border-gray-200 pt-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">
                   Account

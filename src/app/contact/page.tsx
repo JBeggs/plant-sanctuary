@@ -1,4 +1,5 @@
 import { serverNewsApi } from '@/lib/api-server'
+import PageHero from '@/components/hero/PageHero'
 import ContactForm from './ContactForm'
 
 async function getContactData() {
@@ -50,12 +51,7 @@ export default async function ContactPage() {
 
   return (
     <div className="min-h-screen bg-forest-background">
-      <section className="py-12 bg-forest-primary text-white">
-        <div className="container-wide">
-          <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Contact Us</h1>
-          <p className="text-lg text-green-100">We&apos;d love to hear from you</p>
-        </div>
-      </section>
+      <PageHero pageSlug="contact" fallback={null} />
       <section className="py-12">
         <div className="container-wide">
           <ContactForm contact={contact} businessHours={businessHours} />

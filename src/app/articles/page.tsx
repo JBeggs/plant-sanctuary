@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { serverNewsApi } from '@/lib/api-server'
 import { Article } from '@/lib/types'
 import { Calendar, User, ArrowRight } from 'lucide-react'
+import PageHero from '@/components/hero/PageHero'
 
 async function getArticles() {
   try {
@@ -18,17 +19,7 @@ export default async function ArticlesPage() {
 
   return (
     <div className="min-h-screen bg-forest-background">
-      {/* Page Header */}
-      <section className="py-12 bg-forest-primary text-white">
-        <div className="container-wide">
-          <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
-            Stories & Inspiration
-          </h1>
-          <p className="text-lg text-green-100">
-            Tips, guides, and behind-the-scenes from the world of vintage and modern treasures
-          </p>
-        </div>
-      </section>
+      <PageHero pageSlug="articles" fallback={null} />
 
       {/* Articles Grid */}
       <section className="py-12">

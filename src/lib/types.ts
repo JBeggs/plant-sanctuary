@@ -316,3 +316,27 @@ export interface YocoPaymentVerification {
   payment_reference?: string
   error?: string
 }
+
+export interface IntegrationSettings {
+  id: string
+  company?: string
+  yoco_public_key?: string
+  yoco_secret_key?: string
+  yoco_webhook_secret?: string
+  yoco_sandbox_mode?: boolean
+  courier_guy_api_key?: string
+  courier_guy_api_secret?: string
+  courier_guy_account_number?: string
+  courier_guy_sandbox_mode?: boolean
+}
+
+export interface IntegrationSettingsUpdatePayload {
+  yoco_public_key?: string
+  yoco_secret_key?: string
+  yoco_webhook_secret?: string
+  yoco_sandbox_mode?: boolean
+  courier_guy_api_key?: string
+  courier_guy_api_secret?: string
+  courier_guy_account_number?: string
+  courier_guy_sandbox_mode?: boolean
+}

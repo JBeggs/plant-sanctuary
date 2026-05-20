@@ -4,6 +4,7 @@ import { Product } from '@/lib/types'
 import { Leaf, Filter, Search } from 'lucide-react'
 import AdminActions from '@/components/products/AdminActions'
 import ProductCard from '@/components/products/ProductCard'
+import PageHero from '@/components/hero/PageHero'
 
 interface ApiCategory {
   id: string
@@ -61,21 +62,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       {/* Admin Management Actions */}
       <AdminActions />
 
-      {/* Page Header */}
-      <section className="py-12 bg-gradient-to-r from-forest-primary to-forest-primary text-white">
-        <div className="container-wide">
-          <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">
-            {selectedTag ? TAG_LABELS[selectedTag] || selectedTag : selectedCategory ? selectedCategory.name : 'All Products'}
-          </h1>
-          <p className="text-lg opacity-90">
-            {selectedTag
-              ? `Browse our ${TAG_LABELS[selectedTag] || selectedTag} collection`
-              : selectedCategory
-                ? selectedCategory.description || `Browse our ${selectedCategory.name.toLowerCase()} collection`
-                : 'Browse our complete collection by category'}
-          </p>
-        </div>
-      </section>
+      <PageHero pageSlug="products" fallback={null} />
 
       {/* Category & Tag Filters */}
       <section className="py-6 bg-white border-b border-gray-200">
