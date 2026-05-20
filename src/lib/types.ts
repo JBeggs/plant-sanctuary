@@ -12,12 +12,16 @@ export interface Profile {
   email: string
   username?: string
   full_name?: string
+  first_name?: string
+  last_name?: string
+  phone?: string
+  pending_email?: string
   bio?: string
   avatar_url?: string
   role: UserRole
   is_verified: boolean
   social_links: Record<string, string>
-  preferences: Record<string, any>
+  preferences: Record<string, boolean | string | number>
   last_seen_at?: string
   created_at: string
   updated_at: string

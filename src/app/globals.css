@@ -291,3 +291,20 @@ input:-webkit-autofill:active {
 .hero-gradient-overlay {
   background: var(--hero-overlay-gradient);
 }
+
+/* Profile page */
+.profile-form-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
+}
+.profile-section-divider {
+  @apply mt-6 pt-6 border-t border-border;
+}
+.profile-section-subtitle {
+  @apply text-base font-semibold text-text mb-3;
+}
+
+@media (max-width: 640px) {
+  .profile-form-grid {
+    @apply grid-cols-1;
+  }
+}

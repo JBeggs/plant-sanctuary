@@ -18,6 +18,7 @@ interface Profile {
   username?: string
   first_name?: string
   last_name?: string
+  phone?: string
   full_name?: string
   bio?: string
   avatar_url?: string
