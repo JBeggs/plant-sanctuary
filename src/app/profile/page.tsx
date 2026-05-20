@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { ecommerceApi, newsApi } from '@/lib/api'
+import { ecommerceApi, newsApi, getApiErrorMessage } from '@/lib/api'
 import { Order, Profile } from '@/lib/types'
 import { useToast } from '@/contexts/ToastContext'
 import { Package, User, Mail, Calendar, MapPin, ChevronRight, Loader2, Save, Phone, Building2, Clock, Settings } from 'lucide-react'
@@ -145,7 +145,7 @@ export default function ProfilePage() {
       await refreshProfile()
       showSuccess('Profile updated successfully')
     } catch (error: any) {
-      showError(error.message || 'Failed to update profile')
+      showError(getApiErrorMessage(error, 'Failed to update profile'))
     } finally {
       setUpdating(false)
     }
@@ -193,7 +193,7 @@ export default function ProfilePage() {
       }
       showSuccess('Business profile updated')
     } catch (error: any) {
-      showError(error.message || 'Failed to update business profile')
+      showError(getApiErrorMessage(error, 'Failed to update business profile'))
     } finally {
       setUpdatingCompany(false)
     }
@@ -217,7 +217,7 @@ export default function ProfilePage() {
         showSuccess('Profile picture updated')
       }
     } catch (error: any) {
-      showError(error.message || 'Failed to upload profile picture')
+      showError(getApiErrorMessage(error, 'Failed to upload profile picture'))
     } finally {
       setUploadingAvatar(false)
       e.target.value = ''
@@ -243,7 +243,7 @@ export default function ProfilePage() {
         showSuccess('Logo updated')
       }
     } catch (error: any) {
-      showError(error.message || 'Failed to upload logo')
+      showError(getApiErrorMessage(error, 'Failed to upload logo'))
     } finally {
       setUploadingLogo(false)
       e.target.value = ''
@@ -603,7 +603,7 @@ export default function ProfilePage() {
                         setSiteSettingsValues(vals)
                         showSuccess('Site settings updated')
                       } catch (err: any) {
-                        showError(err?.message || 'Failed to update site settings')
+                        showError(getApiErrorMessage(err, 'Failed to update site settings'))
                       } finally {
                         setUpdatingSiteSettings(false)
                       }

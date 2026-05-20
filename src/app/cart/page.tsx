@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ecommerceApi } from '@/lib/api'
+import { ecommerceApi, getApiErrorMessage } from '@/lib/api'
 import { Cart, CartItem } from '@/lib/types'
 import { useToast } from '@/contexts/ToastContext'
 import { useCart } from '@/contexts/CartContext'
@@ -66,7 +66,7 @@ export default function CartPage() {
       showSuccess('Item removed from cart')
       await fetchCart()
     } catch (error: any) {
-      showError(error.message || 'Failed to remove item')
+      showError(getApiErrorMessage(error, 'Failed to remove item'))
     } finally {
       setUpdating(null)
     }

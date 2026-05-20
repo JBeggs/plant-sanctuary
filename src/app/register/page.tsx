@@ -5,11 +5,17 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/contexts/ToastContext'
-import { Mail, Lock, User, ArrowRight } from 'lucide-react'
+import { Mail, Lock, User, ArrowRight, Phone } from 'lucide-react'
+
+function countDigits(value: string) {
+  return value.replace(/\D/g, '').length
+}
 
 export default function RegisterPage() {
-  const [fullName, setFullName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -19,7 +25,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (password !== confirmPassword) {
       showError('Passwords do not match')
       return
@@ -30,13 +36,36 @@ export default function RegisterPage() {
       return
     }
 
+    const fn = firstName.trim()
+    const ln = lastName.trim()
+    if (!fn) {
+      showError('Please enter your first name')
+      return
+    }
+    if (!ln) {
+      showError('Please enter your last name')
+      return
+    }
+
+    const phoneTrim = phone.trim()
+    if (!phoneTrim) {
+      showError('Please enter your cellphone number')
+      return
+    }
+    if (countDigits(phoneTrim) < 8) {
+      showError('Cellphone must include at least 8 digits')
+      return
+    }
+
     setIsLoading(true)
 
     try {
       const { error, verificationRequired, email: verificationEmail } = await signUp(
         email,
         password,
-        fullName,
+        fn,
+        ln,
+        phoneTrim,
       )
 
       if (error) {
@@ -48,7 +77,7 @@ export default function RegisterPage() {
         showSuccess('Account created successfully!')
         router.push('/')
       }
-    } catch (err) {
+    } catch {
       showError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -71,24 +100,73 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label htmlFor="fullName" className="form-label text-sm font-semibold uppercase tracking-wider text-text-light">
-                Full Name
+              <label htmlFor="register-first-name" className="form-label text-sm font-semibold uppercase tracking-wider text-text-light">
+                First name *
               </label>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none transition-colors group-focus-within:text-forest-primary z-20">
                   <User className="w-5 h-5 text-text-muted" />
                 </div>
                 <input
-                  id="fullName"
+                  id="register-first-name"
+                  data-cy="register-first-name"
                   type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  data-cy="register-full-name"
+                  autoComplete="given-name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
-                  placeholder="John Doe"
+                  placeholder="John"
                   required
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="register-last-name" className="form-label text-sm font-semibold uppercase tracking-wider text-text-light">
+                Last name *
+              </label>
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none transition-colors group-focus-within:text-forest-primary z-20">
+                  <User className="w-5 h-5 text-text-muted" />
+                </div>
+                <input
+                  id="register-last-name"
+                  data-cy="register-last-name"
+                  type="text"
+                  autoComplete="family-name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  placeholder="Doe"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="phone" className="form-label text-sm font-semibold uppercase tracking-wider text-text-light">
+                Cellphone *
+              </label>
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none transition-colors group-focus-within:text-forest-primary z-20">
+                  <Phone className="w-5 h-5 text-text-muted" />
+                </div>
+                <input
+                  id="phone"
+                  data-cy="register-phone"
+                  type="tel"
+                  autoComplete="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
+                  placeholder="+27 82 123 4567"
+                  required
+                />
+              </div>
+              <p className="text-xs text-text-muted flex items-center gap-1 ml-1">
+                <span className="w-1 h-1 bg-text-muted rounded-full"></span>
+                Required for delivery (at least 8 digits)
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -101,10 +179,10 @@ export default function RegisterPage() {
                 </div>
                 <input
                   id="email"
+                  data-cy="register-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  data-cy="register-email"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="you@example.com"
                   required
@@ -122,10 +200,10 @@ export default function RegisterPage() {
                 </div>
                 <input
                   id="password"
+                  data-cy="register-password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  data-cy="register-password"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
@@ -148,10 +226,10 @@ export default function RegisterPage() {
                 </div>
                 <input
                   id="confirmPassword"
+                  data-cy="register-password-confirm"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  data-cy="register-password-confirm"
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md hover:border-forest-primary/50 transition-all focus:bg-white focus:ring-4 focus:ring-forest-primary/10 focus:outline-none focus:border-transparent relative z-10"
                   placeholder="••••••••"
                   required
