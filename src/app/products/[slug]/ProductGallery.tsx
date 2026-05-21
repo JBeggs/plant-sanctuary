@@ -3,24 +3,20 @@
 import { useState } from 'react'
 import { Product } from '@/lib/types'
 import { Clock, Sparkles } from 'lucide-react'
+import { getProductBundleImages, getProductGalleryThumbImages } from '@/lib/image-utils'
 
 interface ProductGalleryProps {
   product: Product
 }
 
 export default function ProductGallery({ product }: ProductGalleryProps) {
-  const allImages = [
-    product.featured_image?.file_url || product.image,
-    ...(Array.isArray(product.images) ? product.images.map(img => {
-      if (typeof img === 'string') return img;
-      return img.media?.file_url || (img as any).url || (img as any).image || '';
-    }) : [])
-  ].filter(Boolean) as string[]
-
-  const [activeImage, setActiveImage] = useState(allImages[0] || '')
+  const fullImages = getProductBundleImages(product)
+  const thumbImages = getProductGalleryThumbImages(fullImages, product)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activeImage = fullImages[activeIndex] ?? fullImages[0] ?? ''
   const isVintage = Array.isArray(product.tags) && product.tags.some(t => (typeof t === 'string' ? t : t.name) === 'vintage')
 
-  if (allImages.length === 0) {
+  if (fullImages.length === 0) {
     return (
       <div className="w-full h-96 bg-surface-raised rounded-2xl flex items-center justify-center border border-border">
         {isVintage ? (
@@ -34,12 +30,12 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
   return (
     <div className="space-y-4">
-      {/* Main Image */}
       <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface border border-border shadow-sm group">
         <img
           src={activeImage}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/default.svg' }}
         />
         <div className="absolute top-4 left-4 flex flex-col gap-2">
           <span className={`tag ${isVintage ? 'tag-vintage' : 'tag-new'} shadow-md`}>
@@ -51,23 +47,26 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
         </div>
       </div>
 
-      {/* Thumbnails */}
-      {allImages.length > 1 && (
+      {fullImages.length > 1 && (
         <div className="grid grid-cols-5 gap-3">
-          {allImages.map((img, index) => (
+          {fullImages.map((full, index) => (
             <button
               key={index}
-              onClick={() => setActiveImage(img)}
+              type="button"
+              onClick={() => setActiveIndex(index)}
               className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                activeImage === img 
-                  ? 'border-forest-primary shadow-md scale-95' 
+                activeIndex === index
+                  ? 'border-forest-primary shadow-md scale-95'
                   : 'border-transparent hover:border-border opacity-70 hover:opacity-100'
               }`}
             >
               <img
-                src={img}
+                src={thumbImages[index] || full}
                 alt={`${product.name} thumbnail ${index + 1}`}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/default.svg' }}
               />
             </button>
           ))}

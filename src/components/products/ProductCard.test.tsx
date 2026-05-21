@@ -40,6 +40,28 @@ vi.mock('next/link', () => ({
 vi.mock('@/lib/api', () => ({
   ecommerceApi: { products: { delete: vi.fn() } },
 }));
+vi.mock('@/lib/image-utils', () => ({
+  getProductCardImages: (product: {
+    image?: string
+    featured_image?: { file_url?: string; thumbnail_url?: string }
+    image_thumbnail?: string
+    image_thumbnails?: string[]
+  }) => {
+    const thumbs = Array.isArray(product.image_thumbnails)
+      ? product.image_thumbnails.filter(Boolean)
+      : []
+    if (thumbs.length > 0) return thumbs
+    if (product.image_thumbnail?.trim()) return [product.image_thumbnail.trim()]
+    if (product.featured_image?.thumbnail_url?.trim()) {
+      return [product.featured_image.thumbnail_url.trim()]
+    }
+    if (product.featured_image?.file_url?.trim()) {
+      return [product.featured_image.file_url.trim()]
+    }
+    if (product.image?.trim()) return [product.image.trim()]
+    return ['/images/products/default.svg']
+  },
+}));
 
 const baseProduct: Product = {
   id: 'prod-1',
@@ -72,7 +94,7 @@ describe('ProductCard', () => {
   it('renders product image when provided', () => {
     const product = { ...baseProduct, image: TEST_IMAGE };
     render(<ProductCard product={product} />);
-    const img = screen.getByRole('img', { name: 'Test Plant' });
+    const img = screen.getByAltText('Test Plant');
     expect(img).toHaveAttribute('src', TEST_IMAGE);
   });
 
@@ -82,7 +104,7 @@ describe('ProductCard', () => {
       featured_image: { file_url: TEST_IMAGE } as any,
     };
     render(<ProductCard product={product} />);
-    const img = screen.getByRole('img', { name: 'Test Plant' });
+    const img = screen.getByAltText('Test Plant');
     expect(img).toHaveAttribute('src', TEST_IMAGE);
   });
 

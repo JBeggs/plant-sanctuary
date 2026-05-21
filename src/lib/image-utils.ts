@@ -12,6 +12,7 @@ function getBackendOrigin(): string {
 /** Resolve backend media paths and relative URLs for use in <img src>. */
 export function ensureAbsoluteImageUrl(url: string): string {
   if (!url) return ''
+  if (url.startsWith('data:')) return url
   if (url.startsWith('http://') || url.startsWith('https://')) return url
   if (url.startsWith('/media/')) return getBackendOrigin() + url
   if (url.startsWith('/')) return url
@@ -80,11 +81,60 @@ export function resolveCardImageUrl(full?: string | null, thumbnail?: string | n
   return DEFAULT_PLACEHOLDER
 }
 
-type ProductCardLike = {
+/** Insert `-thumb` before the file extension (matches backend thumb_path_for). */
+export function deriveThumbUrlFromFull(url: string): string {
+  const raw = (url || '').trim()
+  if (!raw) return ''
+  const qIdx = raw.indexOf('?')
+  const base = qIdx >= 0 ? raw.slice(0, qIdx) : raw
+  const query = qIdx >= 0 ? raw.slice(qIdx) : ''
+  const slash = base.lastIndexOf('/')
+  const head = slash >= 0 ? base.slice(0, slash + 1) : ''
+  const name = slash >= 0 ? base.slice(slash + 1) : base
+  const dot = name.lastIndexOf('.')
+  if (dot <= 0) {
+    if (name.endsWith('-thumb')) return raw
+    return `${head}${name}-thumb${query}`
+  }
+  const stem = name.slice(0, dot)
+  const ext = name.slice(dot)
+  if (stem.endsWith('-thumb')) return raw
+  return `${head}${stem}-thumb${ext}${query}`
+}
+
+type ProductLike = {
   image?: string | null
+  images?: Array<string | { url?: string; file_url?: string } | { media?: { url?: string; file_url?: string } }>
+  featured_image?: { file_url?: string | null; thumbnail_url?: string | null } | null
+}
+
+export const MAX_BUNDLE_PRODUCT_IMAGES = 32
+
+export function getProductBundleImages(product: ProductLike | null | undefined): string[] {
+  if (!product) return [DEFAULT_PLACEHOLDER]
+  const seen = new Set<string>()
+  const result: string[] = []
+  const add = (url: string) => {
+    if (url && !seen.has(url)) {
+      seen.add(url)
+      return true
+    }
+    return false
+  }
+  const main =
+    (product.featured_image?.file_url || product.image || '').trim()
+  if (main && add(main)) result.push(ensureAbsoluteImageUrl(main))
+  const rawImages = Array.isArray(product.images) ? product.images : []
+  rawImages.forEach((img) => {
+    const u = extractImageUrl(img)
+    if (u && add(u)) result.push(ensureAbsoluteImageUrl(u))
+  })
+  return result.length > 0 ? result.slice(0, MAX_BUNDLE_PRODUCT_IMAGES) : [DEFAULT_PLACEHOLDER]
+}
+
+type ProductCardLike = ProductLike & {
   image_thumbnail?: string | null
   image_thumbnails?: string[] | null
-  featured_image?: { file_url?: string | null; thumbnail_url?: string | null } | null
 }
 
 export function getProductCardImages(product: ProductCardLike | null | undefined): string[] {
@@ -102,6 +152,34 @@ export function getProductCardImages(product: ProductCardLike | null | undefined
   const featured = product.featured_image?.file_url?.trim() || (product.image || '').trim()
   if (featured) return [ensureAbsoluteImageUrl(featured)]
   return [DEFAULT_PLACEHOLDER]
+}
+
+export function getProductGalleryThumbImages(
+  fullImages: string[],
+  product: ProductCardLike | null | undefined,
+): string[] {
+  if (!fullImages.length) return []
+  const apiThumbs = Array.isArray(product?.image_thumbnails)
+    ? product.image_thumbnails
+        .filter((u): u is string => typeof u === 'string' && !!u.trim())
+        .map((u) => ensureAbsoluteImageUrl(u.trim()))
+    : []
+  const mainThumb = (product?.image_thumbnail || '').trim()
+  const featuredThumb = product?.featured_image?.thumbnail_url?.trim()
+
+  if (apiThumbs.length === fullImages.length) {
+    return apiThumbs
+  }
+
+  return fullImages.map((full, index) => {
+    const fromApi = apiThumbs[index]
+    if (fromApi) return fromApi
+    if (index === 0 && mainThumb) return ensureAbsoluteImageUrl(mainThumb)
+    if (index === 0 && featuredThumb) return ensureAbsoluteImageUrl(featuredThumb)
+    const derived = deriveThumbUrlFromFull(full)
+    if (derived && derived !== full) return ensureAbsoluteImageUrl(derived)
+    return full
+  })
 }
 
 function pickArticleCardImageRaw(article?: {
