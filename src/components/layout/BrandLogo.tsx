@@ -20,7 +20,6 @@ export function BrandLogo({
 }: BrandLogoProps) {
   if (logoUrl) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element -- Django media URLs; avoids optimizer issues
       <img
         src={logoUrl}
         alt=""

@@ -82,7 +82,6 @@ export function ThemeProvider({ children, initialTheme }: ThemeProviderProps) {
     } else {
       applyDom(theme)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const setTheme = useCallback((next: Theme) => {
