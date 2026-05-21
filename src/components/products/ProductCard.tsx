@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { ecommerceApi } from '@/lib/api'
 import { useToast } from '@/contexts/ToastContext'
 import { useRouter } from 'next/navigation'
-import { getProductCardImages } from '@/lib/image-utils'
+import { getProductCardImages, IMAGE_DIM } from '@/lib/image-utils'
 
 interface ProductCardProps {
   product: Product
@@ -50,6 +50,10 @@ export default function ProductCard({ product }: ProductCardProps) {
               <img
                 src={cardImage}
                 alt={product.name}
+                width={IMAGE_DIM.productCard.width}
+                height={IMAGE_DIM.productCard.height}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             ) : (

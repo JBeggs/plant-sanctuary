@@ -1,6 +1,11 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { normaliseLogoUrl } from './image-utils'
 
+/** unstable_cache needs Next incremental cache — pass through in Vitest. */
+vi.mock('next/cache', () => ({
+  unstable_cache: <T extends () => Promise<unknown>>(fn: T) => fn,
+}))
+
 vi.mock('./site-settings', () => ({
   getSiteSettingsMap: vi.fn(),
 }))

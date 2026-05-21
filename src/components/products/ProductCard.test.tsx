@@ -3,11 +3,14 @@
  */
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 
 /** Inline image avoids jsdom network fetches that can exceed the 5s test timeout */
 const TEST_IMAGE =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+const mockGetProductCardImages = vi.fn((): string[] => []);
+
 import ProductCard from './ProductCard';
 import type { Product } from '@/lib/types';
 
@@ -40,28 +43,15 @@ vi.mock('next/link', () => ({
 vi.mock('@/lib/api', () => ({
   ecommerceApi: { products: { delete: vi.fn() } },
 }));
-vi.mock('@/lib/image-utils', () => ({
-  getProductCardImages: (product: {
-    image?: string
-    featured_image?: { file_url?: string; thumbnail_url?: string }
-    image_thumbnail?: string
-    image_thumbnails?: string[]
-  }) => {
-    const thumbs = Array.isArray(product.image_thumbnails)
-      ? product.image_thumbnails.filter(Boolean)
-      : []
-    if (thumbs.length > 0) return thumbs
-    if (product.image_thumbnail?.trim()) return [product.image_thumbnail.trim()]
-    if (product.featured_image?.thumbnail_url?.trim()) {
-      return [product.featured_image.thumbnail_url.trim()]
-    }
-    if (product.featured_image?.file_url?.trim()) {
-      return [product.featured_image.file_url.trim()]
-    }
-    if (product.image?.trim()) return [product.image.trim()]
-    return ['/images/products/default.svg']
-  },
-}));
+vi.mock('@/lib/image-utils', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/image-utils')>();
+  return {
+    ...actual,
+    getProductCardImages: (
+      ...args: Parameters<typeof actual.getProductCardImages>
+    ) => mockGetProductCardImages(...args),
+  };
+});
 
 const baseProduct: Product = {
   id: 'prod-1',
@@ -80,89 +70,101 @@ const baseProduct: Product = {
   in_stock: true,
 };
 
+async function renderProductCard(product: Product) {
+  await act(async () => {
+    render(<ProductCard product={product} />);
+  });
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+}
+
 describe('ProductCard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockGetProductCardImages.mockReturnValue([]);
   });
 
-  it('renders product name and price', () => {
-    render(<ProductCard product={baseProduct} />);
+  it('renders product name and price', async () => {
+    await renderProductCard(baseProduct);
     expect(screen.getByText('Test Plant')).toBeInTheDocument();
     expect(screen.getByText('R49.99')).toBeInTheDocument();
   });
 
-  it('renders product image when provided', () => {
+  it('renders product image when provided', async () => {
+    mockGetProductCardImages.mockReturnValue([TEST_IMAGE]);
     const product = { ...baseProduct, image: TEST_IMAGE };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     const img = screen.getByAltText('Test Plant');
     expect(img).toHaveAttribute('src', TEST_IMAGE);
   });
 
-  it('renders product image from featured_image when provided', () => {
+  it('renders product image from featured_image when provided', async () => {
+    mockGetProductCardImages.mockReturnValue([TEST_IMAGE]);
     const product = {
       ...baseProduct,
-      featured_image: { file_url: TEST_IMAGE } as any,
+      featured_image: { file_url: TEST_IMAGE } as Product['featured_image'],
     };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     const img = screen.getByAltText('Test Plant');
     expect(img).toHaveAttribute('src', TEST_IMAGE);
   });
 
-  it('shows category tag when product has category', () => {
+  it('shows category tag when product has category', async () => {
     const product = {
       ...baseProduct,
-      category: { id: '1', name: 'Succulents', slug: 'succulents' } as any,
+      category: { id: '1', name: 'Succulents', slug: 'succulents' } as Product['category'],
     };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     expect(screen.getByText('Succulents')).toBeInTheDocument();
   });
 
-  it('shows Sale tag when compare_at_price is greater than price', () => {
+  it('shows Sale tag when compare_at_price is greater than price', async () => {
     const product = {
       ...baseProduct,
       price: 39.99,
       compare_at_price: 49.99,
     };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     expect(screen.getByText('Sale')).toBeInTheDocument();
   });
 
-  it('does not show Sale tag when compare_at_price is less than or equal to price', () => {
+  it('does not show Sale tag when compare_at_price is less than or equal to price', async () => {
     const product = {
       ...baseProduct,
       price: 49.99,
       compare_at_price: 49.99,
     };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     expect(screen.queryByText('Sale')).not.toBeInTheDocument();
   });
 
-  it('shows Featured tag when product is featured', () => {
+  it('shows Featured tag when product is featured', async () => {
     const product = { ...baseProduct, featured: true };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     expect(screen.getByText('Featured')).toBeInTheDocument();
   });
 
-  it('renders description when provided', () => {
+  it('renders description when provided', async () => {
     const product = { ...baseProduct, description: 'A beautiful houseplant' };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     expect(screen.getByText('A beautiful houseplant')).toBeInTheDocument();
   });
 
-  it('shows "Only X left!" when quantity is low', () => {
+  it('shows "Only X left!" when quantity is low', async () => {
     const product = { ...baseProduct, quantity: 3 };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     expect(screen.getByText('Only 3 left!')).toBeInTheDocument();
   });
 
-  it('shows "Out of stock" when quantity is 0', () => {
+  it('shows "Out of stock" when quantity is 0', async () => {
     const product = { ...baseProduct, quantity: 0 };
-    render(<ProductCard product={product} />);
+    await renderProductCard(product);
     expect(screen.getByText('Out of stock')).toBeInTheDocument();
   });
 
-  it('has data-cy product-card attribute', () => {
-    render(<ProductCard product={baseProduct} />);
+  it('has data-cy product-card attribute', async () => {
+    await renderProductCard(baseProduct);
     const card = document.querySelector('[data-cy="product-card"]');
     expect(card).toBeInTheDocument();
   });

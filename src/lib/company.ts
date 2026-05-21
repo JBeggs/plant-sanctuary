@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { normaliseLogoUrl } from './image-utils'
 import { FALLBACK_COMPANY, companyMonogram, type Company } from './company-shared'
 import { getSiteSettingsMap } from './site-settings'
@@ -11,8 +12,7 @@ function coerceString(v: unknown): string {
   return String(v)
 }
 
-/** Server-side brand record from site settings (includes `site_logo` synced from company logo). */
-export async function getCompany(): Promise<Company> {
+async function fetchCompanyUncached(): Promise<Company> {
   try {
     const map = await getSiteSettingsMap()
     return {
@@ -37,4 +37,15 @@ export async function getCompany(): Promise<Company> {
     console.error('[getCompany] failed:', err)
     return FALLBACK_COMPANY
   }
+}
+
+const companySlug = process.env.NEXT_PUBLIC_COMPANY_SLUG || 'plant-sanctuary'
+
+const getCompanyCached = unstable_cache(fetchCompanyUncached, ['company', companySlug], {
+  revalidate: 300,
+})
+
+/** Server-side brand record from site settings (includes `site_logo` synced from company logo). */
+export async function getCompany(): Promise<Company> {
+  return getCompanyCached()
 }

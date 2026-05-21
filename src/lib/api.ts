@@ -910,6 +910,10 @@ export const ecommerceApi = {
     update: (id: string, data: any) => apiClient.patch(`/v1/orders/${id}/`, data),
     createShipment: (orderId: string) =>
       apiClient.post(`/v1/orders/${orderId}/create-shipment/`, {}),
+    cancelItem: (orderId: string, itemId: string) =>
+      apiClient.put(`/v1/orders/${orderId}/items/${itemId}/cancel/`, {}),
+    trackShipment: (orderId: string) =>
+      apiClient.get(`/v1/orders/${orderId}/track-shipment/`),
   },
 
   cart: {

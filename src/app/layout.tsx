@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
-import { Inter, Playfair_Display } from 'next/font/google'
 import { Suspense } from 'react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
@@ -18,20 +17,7 @@ import {
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CookieConsentBanner } from '@/components/layout/CookieConsentBanner'
-
-export const dynamic = 'force-dynamic'
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap'
-})
-
-const playfair = Playfair_Display({ 
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap'
-})
+import { themeFontClasses } from '@/lib/theme-fonts'
 
 async function generateMetadata(): Promise<Metadata> {
   try {
@@ -88,12 +74,13 @@ export default async function RootLayout({
 }) {
   const cookieStore = await cookies()
   const initialTheme = readThemeCookie(cookieStore.get('site_theme')?.value)
+  const { htmlVariables, bodyClassName } = themeFontClasses(initialTheme)
 
   return (
     <html
       lang="en"
       data-theme={initialTheme}
-      className={`${inter.variable} ${playfair.variable}`}
+      className={htmlVariables}
       data-scroll-behavior="smooth"
     >
       <head>
@@ -101,7 +88,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
       </head>
-      <body className={`${inter.className} antialiased bg-forest-background text-text`}>
+      <body className={`${bodyClassName} antialiased bg-forest-background text-text`}>
         <ThemeProvider initialTheme={initialTheme}>
           <ToastProvider>
             <AuthProvider>

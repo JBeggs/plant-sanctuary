@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { serverNewsApi } from '@/lib/api-server'
 import { Article } from '@/lib/types'
 import { Calendar, User, ArrowLeft, Clock } from 'lucide-react'
+import { resolveLocale } from '@/lib/locale'
+import { getArticleHeroImageUrl, IMAGE_DIM } from '@/lib/image-utils'
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>
@@ -22,17 +24,18 @@ async function getArticle(slug: string): Promise<Article | null> {
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params
   const article = await getArticle(slug)
+  const locale = resolveLocale()
 
   if (!article) {
     notFound()
   }
 
   return (
-    <div className="min-h-screen bg-forest-background">
+    <div className="min-h-screen bg-vintage-background">
       {/* Breadcrumb */}
-      <div className="bg-surface border-b border-border">
+      <div className="bg-white border-b border-gray-200">
         <div className="container-wide py-4">
-          <Link href="/articles" className="flex items-center text-text-muted hover:text-forest-primary transition-colors">
+          <Link href="/articles" className="flex items-center text-text-muted hover:text-vintage-primary transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Articles
           </Link>
@@ -41,11 +44,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       {/* Article Header */}
       <article>
-        {article.featured_media?.file_url && (
+        {(article.featured_media?.file_url || article.social_image?.file_url) && (
           <div className="w-full h-64 md:h-96 relative">
             <img
-              src={article.featured_media.file_url}
+              src={getArticleHeroImageUrl(article)}
               alt={article.title}
+              width={IMAGE_DIM.articleCard.width}
+              height={IMAGE_DIM.articleCard.height}
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -69,7 +76,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           )}
 
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-text-muted mb-8 pb-8 border-b border-border">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-text-muted mb-8 pb-8 border-b border-gray-200">
             {article.author?.full_name && (
               <span className="flex items-center gap-2">
                 <User className="w-4 h-4" />
@@ -79,7 +86,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {article.published_at && (
               <span className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                {new Date(article.published_at).toLocaleDateString('en-US', {
+                {new Date(article.published_at).toLocaleDateString(locale, {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
@@ -102,7 +109,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-border">
+            <div className="mt-12 pt-8 border-t border-gray-200">
               <h3 className="text-sm font-semibold text-text-muted mb-3">Tags</h3>
               <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) => (
@@ -117,7 +124,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </article>
 
       {/* CTA */}
-      <section className="py-12 bg-surface border-t border-border">
+      <section className="py-12 bg-white border-t border-gray-200">
         <div className="container-narrow text-center">
           <h2 className="text-2xl font-bold font-playfair text-text mb-4">
             Discover Our Collection

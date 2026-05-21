@@ -7,6 +7,8 @@ import { Cart, CartItem } from '@/lib/types'
 import { useToast } from '@/contexts/ToastContext'
 import { useCart } from '@/contexts/CartContext'
 import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, Leaf } from 'lucide-react'
+import { getCartItemImages } from '@/lib/cart-utils'
+import { IMAGE_DIM } from '@/lib/image-utils'
 
 export default function CartPage() {
   const [cart, setCart] = useState<Cart | null>(null)
@@ -109,20 +111,20 @@ export default function CartPage() {
           <div className="grid lg:grid-cols-3 gap-8" data-cy="cart-content">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
-              {items.map((item: CartItem) => (
+              {items.map((item: CartItem) => {
+                const thumb = getCartItemImages(item)[0]
+                return (
                 <div key={item.id} className="card p-4 flex gap-4" data-cy="cart-item">
                   {/* Product Image */}
                   <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-raised">
-                    {(item as any).product_image ? (
+                    {thumb ? (
                       <img
-                        src={(item as any).product_image}
+                        src={thumb}
                         alt={item.product_name || 'Product'}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (item.product?.featured_image?.file_url || item.product?.image) ? (
-                      <img
-                        src={item.product?.featured_image?.file_url || item.product?.image}
-                        alt={item.product_name || 'Product'}
+                        width={IMAGE_DIM.cartThumb.width}
+                        height={IMAGE_DIM.cartThumb.height}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -176,7 +178,7 @@ export default function CartPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
 
             {/* Order Summary */}
