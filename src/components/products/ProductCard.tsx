@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { ecommerceApi } from '@/lib/api'
 import { useToast } from '@/contexts/ToastContext'
 import { useRouter } from 'next/navigation'
+import { getProductCardImages } from '@/lib/image-utils'
 
 interface ProductCardProps {
   product: Product
@@ -18,6 +19,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const router = useRouter()
   const isAuthorized = profile?.role === 'admin' || profile?.role === 'business_owner'
   const categoryName = typeof product.category === 'object' && product.category ? (product.category as any).name : null
+  const cardImages = getProductCardImages(product)
+  const cardImage = cardImages[0]
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -43,9 +46,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             href={`/products/${product.slug}`}
             className="absolute inset-0 z-0"
           >
-            {product.featured_image?.file_url || product.image ? (
+            {cardImage && cardImage !== '/images/products/default.svg' ? (
               <img
-                src={product.featured_image?.file_url || product.image}
+                src={cardImage}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />

@@ -70,6 +70,80 @@ export function getArticleImageUrl(
   return ARTICLE_IMAGE_PLACEHOLDER
 }
 
+const DEFAULT_PLACEHOLDER = ARTICLE_IMAGE_PLACEHOLDER
+
+export function resolveCardImageUrl(full?: string | null, thumbnail?: string | null): string {
+  const thumb = (thumbnail || '').trim()
+  if (thumb) return ensureAbsoluteImageUrl(thumb)
+  const fullUrl = (full || '').trim()
+  if (fullUrl) return ensureAbsoluteImageUrl(fullUrl)
+  return DEFAULT_PLACEHOLDER
+}
+
+type ProductCardLike = {
+  image?: string | null
+  image_thumbnail?: string | null
+  image_thumbnails?: string[] | null
+  featured_image?: { file_url?: string | null; thumbnail_url?: string | null } | null
+}
+
+export function getProductCardImages(product: ProductCardLike | null | undefined): string[] {
+  if (!product) return [DEFAULT_PLACEHOLDER]
+  const apiThumbs = Array.isArray(product.image_thumbnails)
+    ? product.image_thumbnails.filter((u): u is string => typeof u === 'string' && !!u.trim())
+    : []
+  if (apiThumbs.length > 0) {
+    return apiThumbs.map((u) => ensureAbsoluteImageUrl(u)).filter(Boolean)
+  }
+  const mainThumb = (product.image_thumbnail || '').trim()
+  if (mainThumb) return [ensureAbsoluteImageUrl(mainThumb)]
+  const featuredThumb = product.featured_image?.thumbnail_url?.trim()
+  if (featuredThumb) return [ensureAbsoluteImageUrl(featuredThumb)]
+  const featured = product.featured_image?.file_url?.trim() || (product.image || '').trim()
+  if (featured) return [ensureAbsoluteImageUrl(featured)]
+  return [DEFAULT_PLACEHOLDER]
+}
+
+function pickArticleCardImageRaw(article?: {
+  social_image?: { file_url?: string | null; thumbnail_url?: string | null } | null
+  featured_media?: { file_url?: string | null; thumbnail_url?: string | null } | null
+} | null): string | null {
+  for (const media of [article?.social_image, article?.featured_media]) {
+    const thumb = media?.thumbnail_url?.trim()
+    if (thumb) return thumb
+  }
+  return pickArticleShareImageRaw(article || undefined)
+}
+
+export function getArticleCardImageUrl(
+  article?: {
+    social_image?: { file_url?: string | null; thumbnail_url?: string | null } | null
+    featured_media?: { file_url?: string | null; thumbnail_url?: string | null } | null
+  } | null,
+): string {
+  const raw = pickArticleCardImageRaw(article || undefined)
+  if (raw) return ensureAbsoluteImageUrl(raw)
+  return ARTICLE_IMAGE_PLACEHOLDER
+}
+
+export function getLogoCardUrl(
+  logo?: { file_url?: string | null; thumbnail_url?: string | null } | null,
+  logoUrl?: string | null,
+): string {
+  const fromObj = resolveCardImageUrl(logo?.file_url, logo?.thumbnail_url)
+  if (fromObj !== DEFAULT_PLACEHOLDER) return fromObj
+  const direct = (logoUrl || '').trim()
+  if (direct) return ensureAbsoluteImageUrl(direct)
+  return DEFAULT_PLACEHOLDER
+}
+
+export function getAvatarCardUrl(
+  profile?: { avatar_url?: string | null; avatar_thumbnail_url?: string | null } | null,
+): string {
+  const url = resolveCardImageUrl(profile?.avatar_url, profile?.avatar_thumbnail_url)
+  return url === DEFAULT_PLACEHOLDER ? '' : url
+}
+
 export function getArticleOpenGraphImageUrls(
   article?: {
     social_image?: { file_url?: string | null } | null
