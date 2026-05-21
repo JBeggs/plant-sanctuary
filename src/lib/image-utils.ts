@@ -45,3 +45,45 @@ export function normaliseLogoUrl(v: unknown): string | null {
   }
   return null
 }
+
+export const ARTICLE_IMAGE_PLACEHOLDER = '/images/products/default.svg'
+
+function pickArticleShareImageRaw(article?: {
+  social_image?: { file_url?: string | null } | null
+  featured_media?: { file_url?: string | null } | null
+} | null): string | null {
+  const social = article?.social_image?.file_url?.trim()
+  if (social) return social
+  const featured = article?.featured_media?.file_url?.trim()
+  if (featured) return featured
+  return null
+}
+
+export function getArticleImageUrl(
+  article?: {
+    social_image?: { file_url?: string | null } | null
+    featured_media?: { file_url?: string | null } | null
+  } | null,
+): string {
+  const raw = pickArticleShareImageRaw(article || undefined)
+  if (raw) return ensureAbsoluteImageUrl(raw)
+  return ARTICLE_IMAGE_PLACEHOLDER
+}
+
+export function getArticleOpenGraphImageUrls(
+  article?: {
+    social_image?: { file_url?: string | null } | null
+    featured_media?: { file_url?: string | null } | null
+  } | null,
+): string[] {
+  const raw = pickArticleShareImageRaw(article || undefined)
+  if (raw) {
+    return [ensureAbsoluteImageUrl(raw)]
+  }
+  const site = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '')
+  if (site) {
+    return [`${site}${ARTICLE_IMAGE_PLACEHOLDER}`]
+  }
+  return []
+}
+

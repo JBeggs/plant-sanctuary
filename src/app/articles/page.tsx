@@ -5,6 +5,8 @@ import {
   getArticleDisplaySettings,
 } from '@/lib/article-display-settings'
 import { Article } from '@/lib/types'
+import { getArticleImageUrl } from '@/lib/image-utils'
+import { resolveArticleAuthorLabel } from '@/lib/article-author-options'
 import { Calendar, User, ArrowRight } from 'lucide-react'
 import PageHero from '@/components/hero/PageHero'
 
@@ -40,17 +42,11 @@ export default async function ArticlesPage() {
             <div className="article-grid">
               {articles.map((article: Article) => (
                 <Link key={article.id} href={`/articles/${article.slug}`} className="card group overflow-hidden">
-                  {article.featured_media?.file_url ? (
-                    <img
-                      src={article.featured_media.file_url}
-                      alt={article.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-48 bg-forest-primary/10 flex items-center justify-center">
-                      <span className="text-4xl font-playfair text-forest-primary/30">P&P</span>
-                    </div>
-                  )}
+                  <img
+                    src={getArticleImageUrl(article)}
+                    alt={article.title}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                   <div className="p-5">
                     {article.category && (
                       <span className="tag tag-vintage mb-2">{article.category.name}</span>
@@ -69,12 +65,10 @@ export default async function ArticlesPage() {
                             {new Date(article.published_at).toLocaleDateString()}
                           </span>
                         )}
-                        {article.author?.full_name && (
-                          <span className="flex items-center gap-1">
-                            <User className="w-4 h-4" />
-                            {article.author.full_name}
-                          </span>
-                        )}
+                        <span className="flex items-center gap-1">
+                          <User className="w-4 h-4" />
+                          {resolveArticleAuthorLabel(article)}
+                        </span>
                       </div>
                     </div>
                     <div className="mt-4 flex items-center text-forest-primary font-medium text-sm">
