@@ -100,12 +100,17 @@ export default function ProductCard({ product }: ProductCardProps) {
         
         <div className="p-4 flex-1 flex flex-col">
           <Link href={`/products/${product.slug}`} className="group/title">
-            <h3 className="font-semibold text-text group-hover:text-forest-primary transition-colors line-clamp-1">
+            <h3
+              className="font-semibold text-text group-hover:text-forest-primary transition-colors line-clamp-2 leading-snug min-h-[2.75rem]"
+              title={product.name}
+            >
               {product.name}
             </h3>
           </Link>
-          {product.description && (
-            <p className="text-sm text-text-muted mt-1 line-clamp-2 min-h-[40px]">{product.description}</p>
+          {(product.short_description || product.description) && (
+            <p className="text-sm text-text-muted mt-1 line-clamp-2 min-h-[2.5rem]">
+              {product.short_description || product.description}
+            </p>
           )}
           <div className="mt-auto pt-3 flex items-center gap-2">
             <span className="price">
