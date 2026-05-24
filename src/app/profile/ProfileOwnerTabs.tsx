@@ -22,6 +22,11 @@ import {
   IntegrationSettingsUpdatePayload,
 } from '@/lib/types'
 import { useToast } from '@/contexts/ToastContext'
+import {
+  CUSTOM_CONTACT_EMAIL_SETTING,
+  PLATFORM_CONTACT_EMAIL,
+  isCustomContactEmailEnabled,
+} from '@/lib/platform-contact-email'
 
 const MASK_PREFIX = '•'
 const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const
@@ -65,6 +70,7 @@ export default function ProfileOwnerTabs({
   const [removingLogo, setRemovingLogo] = useState(false)
   const [siteSettings, setSiteSettings] = useState<Record<string, { id: string; value: string; type: string }>>({})
   const [siteSettingsValues, setSiteSettingsValues] = useState<Record<string, string>>({})
+  const [customContactEmailEnabled, setCustomContactEmailEnabled] = useState(false)
   const [updatingSiteSettings, setUpdatingSiteSettings] = useState(false)
   const [integrationSettings, setIntegrationSettings] = useState<IntegrationSettings | null>(null)
   const [integrationForm, setIntegrationForm] = useState<IntegrationSettingsUpdatePayload & Record<string, unknown>>({})
@@ -91,6 +97,7 @@ export default function ProfileOwnerTabs({
       })
       setSiteSettings(byKey)
       setSiteSettingsValues(vals)
+      setCustomContactEmailEnabled(isCustomContactEmailEnabled(vals))
     }).catch(() => {})
   }, [companyId])
 
@@ -159,6 +166,28 @@ export default function ProfileOwnerTabs({
     e.preventDefault()
     setUpdatingCompany(true)
     try {
+      const flagValue = customContactEmailEnabled ? 'true' : 'false'
+      const existingFlag = siteSettings[CUSTOM_CONTACT_EMAIL_SETTING]
+      if (existingFlag) {
+        if (existingFlag.value !== flagValue) {
+          await newsApi.siteSettings.update(existingFlag.id, {
+            key: CUSTOM_CONTACT_EMAIL_SETTING,
+            value: flagValue,
+            type: existingFlag.type || 'boolean',
+            description: '',
+            is_public: false,
+          })
+        }
+      } else {
+        await newsApi.siteSettings.create({
+          key: CUSTOM_CONTACT_EMAIL_SETTING,
+          value: flagValue,
+          type: 'boolean',
+          description: '',
+          is_public: false,
+        })
+      }
+
       const parsed: Record<string, unknown> = {}
       for (const [day, timeString] of Object.entries(companyForm.business_hours || {})) {
         if (!timeString || timeString.toLowerCase() === 'closed') parsed[day] = { closed: true }
@@ -167,9 +196,8 @@ export default function ProfileOwnerTabs({
           parsed[day] = { open: open.trim(), close: close.trim() }
         } else parsed[day] = timeString
       }
-      await ecommerceApi.companies.update(companyId, {
+      const companyPayload: Record<string, unknown> = {
         name: companyForm.name.trim(),
-        email: companyForm.email || '',
         phone: companyForm.phone || '',
         website: companyForm.website || '',
         address_street: companyForm.address_street || '',
@@ -187,7 +215,20 @@ export default function ProfileOwnerTabs({
         registration_number: companyForm.registration_number || '',
         tax_number: companyForm.tax_number || '',
         business_hours: parsed,
-      })
+      }
+      if (customContactEmailEnabled) {
+        companyPayload.email = companyForm.email || ''
+      }
+      await ecommerceApi.companies.update(companyId, companyPayload)
+      setSiteSettingsValues((prev) => ({ ...prev, [CUSTOM_CONTACT_EMAIL_SETTING]: flagValue }))
+      setSiteSettings((prev) => ({
+        ...prev,
+        [CUSTOM_CONTACT_EMAIL_SETTING]: {
+          id: existingFlag?.id ?? prev[CUSTOM_CONTACT_EMAIL_SETTING]?.id ?? '',
+          value: flagValue,
+          type: 'boolean',
+        },
+      }))
       showSuccess('Business profile updated')
       router.refresh()
     } catch (error: unknown) {
@@ -345,15 +386,35 @@ export default function ProfileOwnerTabs({
               ) : null}
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Business email</label>
-              <input type="email" value={companyForm.email} onChange={(e) => setCompanyForm({ ...companyForm, email: e.target.value })} className="form-input" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Phone</label>
-              <input type="tel" value={companyForm.phone} onChange={(e) => setCompanyForm({ ...companyForm, phone: e.target.value })} className="form-input" />
-            </div>
+          <div className="space-y-1">
+            <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Business email</label>
+            {!customContactEmailEnabled ? (
+              <>
+                <input type="email" readOnly value={PLATFORM_CONTACT_EMAIL} className="form-input bg-gray-50" />
+                <p className="text-xs text-text-muted">Temporary platform contact email shown on your storefront.</p>
+              </>
+            ) : (
+              <input
+                type="email"
+                value={companyForm.email}
+                onChange={(e) => setCompanyForm({ ...companyForm, email: e.target.value })}
+                className="form-input"
+                required
+              />
+            )}
+            <label className="flex items-center gap-2 mt-2 text-sm text-text-muted cursor-pointer">
+              <input
+                type="checkbox"
+                checked={customContactEmailEnabled}
+                onChange={(e) => setCustomContactEmailEnabled(e.target.checked)}
+                className="rounded border-gray-300"
+              />
+              Use my own contact email
+            </label>
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Phone</label>
+            <input type="tel" value={companyForm.phone} onChange={(e) => setCompanyForm({ ...companyForm, phone: e.target.value })} className="form-input" />
           </div>
           <div className="space-y-1">
             <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Website</label>

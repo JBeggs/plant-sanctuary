@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache'
 import { normaliseLogoUrl } from './image-utils'
 import { FALLBACK_COMPANY, companyMonogram, type Company } from './company-shared'
 import { getSiteSettingsMap } from './site-settings'
+import { resolvePublicContactEmail } from './platform-contact-email'
 
 export { FALLBACK_COMPANY, companyMonogram }
 export type { Company }
@@ -23,7 +24,7 @@ async function fetchCompanyUncached(): Promise<Company> {
       heroImageUrl: normaliseLogoUrl(map.hero_image ?? map.site_hero),
       ogImageUrl: normaliseLogoUrl(map.og_image ?? map.site_og_image),
       contact: {
-        email: coerceString(map.contact_email),
+        email: resolvePublicContactEmail(coerceString(map.contact_email), map),
         phone: coerceString(map.contact_phone),
         address: coerceString(map.contact_address),
       },
